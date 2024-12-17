@@ -1,9 +1,15 @@
 <?php
 
 
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Session;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BatteryController;
+use App\Http\Controllers\LubricantController;  
+use App\Http\Controllers\SupplierController;  
+use App\Http\Controllers\PosController;  
 use Illuminate\Support\Facades\Route;
 
 
@@ -38,8 +44,6 @@ Route::get('/', function () {
 
 
 
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Session;
 
 
 
@@ -380,6 +384,58 @@ Route::get('/clear-cache', function () {
     Artisan::call('route:clear');
     return "Cache is cleared";
 })->name('clear.cache');
+
+
+
+
+
+
+Route::get('/admin/batteries', function () {
+    return redirect()->route('batteries.index');
+})->name('home');
+
+// Battery Management Routes
+Route::prefix('admin/batteries')->name('batteries.')->group(function () {
+    Route::get('/', [BatteryController::class, 'index'])->name('index');          // Show all batteries
+    Route::get('/create', [BatteryController::class, 'create'])->name('create');  // Show form to create a new battery
+    Route::post('/', [BatteryController::class, 'store'])->name('store');         // Store a new battery
+    Route::get('/{id}', [BatteryController::class, 'show'])->name('show');        // Show details of a specific battery
+    Route::get('/{id}/edit', [BatteryController::class, 'edit'])->name('edit');   // Show form to edit a battery
+    Route::put('/{id}', [BatteryController::class, 'update'])->name('update');    // Update a specific battery
+    Route::delete('/{id}', [BatteryController::class, 'destroy'])->name('destroy'); // Delete a battery
+});
+
+Route::get('/admin/lubricants', function () {
+    return redirect()->route('lubricants.index');
+})->name('home');
+
+// Battery Management Routes
+Route::prefix('admin/lubricants')->name('lubricants.')->group(function () {
+    Route::get('/', [LubricantController::class, 'index'])->name('index');          // Show all batteries
+    Route::get('/create', [LubricantController::class, 'create'])->name('create');  // Show form to create a new battery
+    Route::post('/', [LubricantController::class, 'store'])->name('store');         // Store a new battery
+    Route::get('/{id}', [LubricantController::class, 'show'])->name('show');        // Show details of a specific battery
+    Route::get('/{id}/edit', [LubricantController::class, 'edit'])->name('edit');   // Show form to edit a battery
+    Route::put('/{id}', [LubricantController::class, 'update'])->name('update');    // Update a specific battery
+    Route::delete('/{id}', [LubricantController::class, 'destroy'])->name('destroy'); // Delete a battery
+});
+
+
+
+// suplier managemnt
+
+
+
+
+Route::get('/admin/supplier_management', function () {
+    return redirect()->route('supplier_management.index');
+})->name('home');
+
+
+// POS Management Routes
+Route::prefix('admin/POS')->name('POS.')->group(function () {
+    Route::get('/', [PosController::class, 'index'])->name('pos'); // Main POS page
+});
 
 
 
