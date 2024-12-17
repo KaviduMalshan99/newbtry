@@ -1,8 +1,47 @@
 <?php
 
+
+
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
+
+
+
+Route::get('/', function () {
+    return redirect()->route('admin.index'); // Redirects to the admin dashboard
+});
+
+// Show Registration Form
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('registration');
+
+// Handle Registration Form Submission
+Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+
+// Show Login Form
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+
+// Handle Login Form Submission
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+
+// Handle Logout
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Admin Dashboard - Accessible only to authenticated users
+Route::get('/admin/index', [AdminController::class, 'index'])->middleware('auth')->name('admin.index');
+
+// Redirecting after registration, login, and logout actions
+Route::get('/', function () {
+    return redirect()->route('login');
+});
+
+
+
+
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Session;
+
+
 
 Route::get('/', function () {
     return redirect()->route('index');
@@ -341,3 +380,10 @@ Route::get('/clear-cache', function () {
     Artisan::call('route:clear');
     return "Cache is cleared";
 })->name('clear.cache');
+
+
+
+
+
+
+

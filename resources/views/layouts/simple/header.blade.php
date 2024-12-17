@@ -12,7 +12,7 @@
       </div>
     </form>
     <div class="header-logo-wrapper col-auto p-0">
-      <div class="logo-wrapper"><a href="{{ route('index')}}"><img class="img-fluid" src="{{ asset('assets/images/logo/logo.png') }}" alt=""></a></div>
+      <div class="logo-wrapper"><a href=""><img class="img-fluid" src="{{ asset('assets/images/logo/logo.png') }}" alt=""></a></div>
       <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="align-center"></i></div>
     </div>
     <div class="left-header col-xxl-5 col-xl-6 col-lg-5 col-md-4 col-sm-3 p-0">
@@ -142,7 +142,7 @@
               <li class="total">
                 <h6 class="mb-0">Order Total : <span class="f-right">$1000.00</span></h6>
               </li>
-              <li class="text-center"><a class="d-block mb-3 view-cart f-w-700" href="{{ route('cart')}}">Go to your cart</a><a class="btn btn-primary view-checkout" href="{{ route('checkout')}}">Checkout</a></li>
+              <li class="text-center"><a class="d-block mb-3 view-cart f-w-700" href="">Go to your cart</a><a class="btn btn-primary view-checkout" href="">Checkout</a></li>
             </ul>
           </div>
         </li>
@@ -173,7 +173,7 @@
         </li>
         <li class="profile-nav onhover-dropdown pe-0 py-0">
           <div class="media profile-media"><img class="b-r-10" src="{{ asset('assets/images/dashboard/profile.png') }}" alt="">
-            <div class="media-body"><span>Emay Walter</span>
+            <div class="media-body"><span>{{ session('user_name') }}</span>
               <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
             </div>
           </div>
@@ -182,7 +182,12 @@
             <li><a href="#"><i data-feather="mail"></i><span>Inbox</span></a></li>
             <li><a href="#"><i data-feather="file-text"></i><span>Taskboard</span></a></li>
             <li><a href="#"><i data-feather="settings"></i><span>Settings</span></a></li>
-            <li><a href="#"><i data-feather="log-in"> </i><span>Log in</span></a></li>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit">Logout</button>
+                <li><a href=""><i data-feather="log-in"> </i><span>Log Out</span></a></li>
+            </form>
+           
           </ul>
         </li>
       </ul>
