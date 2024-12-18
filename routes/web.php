@@ -410,7 +410,7 @@ Route::put('users/{user}', [UserController::class, 'update'])->name('users.updat
 Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
 Route::resource('sales', SaleController::class);
-// Route::resource('purchases', PurchaseController::class);
+
 Route::get('/purchases/products/{type}', [PurchaseController::class, 'getProducts']);
 Route::get('purchases/add', [PurchaseController::class, 'create'])->name('purchases.create');
 Route::post('purchases/store', [PurchaseController::class, 'store'])->name('purchases.store');

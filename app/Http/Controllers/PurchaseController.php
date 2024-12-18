@@ -21,7 +21,7 @@ class PurchaseController extends Controller
     {
         $suppliers = Supplier::all();
         $productTypes = ['batteries', 'lubricants'];
-        return view('purchases.add', compact('suppliers', 'productTypes'));
+        return view('admin.purchases.add', compact('suppliers', 'productTypes'));
     }
 
     public function getProducts($type)
@@ -79,7 +79,7 @@ class PurchaseController extends Controller
 
 
         // Redirect with success message
-        return redirect()->route('purchases.add')->with('success', 'Purchase created successfully!');
+        return redirect()->route('purchases.create')->with('success', 'Purchase created successfully!');
     }
 
 
