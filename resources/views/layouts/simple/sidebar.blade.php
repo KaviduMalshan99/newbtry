@@ -73,6 +73,22 @@
                         </ul>
                     </li>
 
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
+                            href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
+                            </svg><span class="lan-6">Suppliers</span></a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('suppliers.create') }}">Add Supplier</a></li>
+                            <li><a
+                                    href="{{ request()->query('ref') === 'view' ? route('suppliers.show', $customer->id) : route('suppliers.index') }}">View
+                                    Supplier</a></li>
+                        </ul>
+                    </li>
+
                     <li class="sidebar-main-title">
                         <div>
                             <h6 class="lan-8">Applications</h6>
