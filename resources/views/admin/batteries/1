@@ -1,0 +1,84 @@
+
+
+
+
+@section('style')
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/animate.css') }}">
+@endsection
+
+
+
+@extends('layouts.simple.master')
+@section('title', 'Bootstrap Basic Tables')
+
+@section('css')
+@endsection
+
+@section('style')
+@endsection
+
+@section('breadcrumb-title')
+<h3>Bootstrap Basic Tables</h3>
+@endsection
+
+@section('breadcrumb-items')
+<li class="breadcrumb-item">Bootstrap Tables</li>
+
+@endsection
+
+@section('content')
+ <div class="container-fluid basic_table">
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="card">
+                  <div class="card-header">
+                    <a href="{{ route('lubricants.create') }}" class="btn btn-success mb-3">Add New Lubricant</a>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr class="border-bottom-primary">
+                          
+
+                          <th scope="col">ID</th>
+                          <th scope="col">Name</th>
+                          <th scope="col">Brand</th>
+                          <th scope="col">Purchase Price</th>
+                          <th scope="col">Sale Price</th>
+                          <th scope="col">Stock Quantity</th>
+                          <th scope="col">Unit</th>
+                          <th scope="col">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        @foreach ($batteries as $battery)
+                        <tr class="border-bottom-secondary">
+                          <th scope="row">1</th>
+                          <td> <img class="img-30 me-2" src="{{ asset('assets/images/user/1.jpg') }}" alt="profile"></td>
+                          <td>{{ $lubricant->id }}</td>
+                          <td>{{ $lubricant->name }}</td>
+                          <td>{{ $lubricant->brand }}</td>
+                          <td>{{ $lubricant->purchase_price }}</td>
+                          <td>{{ $lubricant->sale_price }}</td>
+                          <td>{{ $lubricant->stock_quantity }}</td>
+                          <td>{{ $lubricant->unit }}</td>
+                        </tr>
+                        @endforeach
+                        
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+             
+         
+@endsection
+
+@section('script')
+@endsection
