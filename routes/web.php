@@ -4,6 +4,13 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\RentalController;
+use App\Http\Controllers\RepairController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -382,8 +389,32 @@ Route::get('/clear-cache', function () {
 })->name('clear.cache');
 
 
+Route::resource('suppliers', SupplierController::class);
+
+Route::get('/customers/add', [CustomerController::class, 'create'])->name('customers.create');
+Route::post('/customers/store', [CustomerController::class, 'store'])->name('customers.store');
+Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+Route::get('/customers/{customer}/purchase-history', [CustomerController::class, 'viewPurchaseHistory'])->name('customers.purchase-history');
+Route::get('/customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
+Route::put('/customers/{customer}', [CustomerController::class, 'update'])->name('customers.update');
+Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+
+Route::get('user/add', [UserController::class, 'create'])->name('users.create');
+Route::post('user/store', [UserController::class, 'store'])->name('users.store');
+Route::get('users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+Route::resource('sales', SaleController::class);
+// Route::resource('purchases', PurchaseController::class);
+Route::get('/purchases/products/{type}', [PurchaseController::class, 'getProducts']);
+Route::get('purchases/add', [PurchaseController::class, 'create'])->name('purchases.create');
+Route::post('purchases/store', [PurchaseController::class, 'store'])->name('purchases.store');
 
 
+Route::resource('repairs', RepairController::class);
+Route::resource('rentals', RentalController::class);
 
 
 
