@@ -9,7 +9,7 @@ class CustomerController extends Controller
 {
     public function create()
     {
-        return view('customers.add'); // Path to the customers.add Blade file.
+        return view('admin/customers.create'); // Path to the customers.add Blade file.
     }
 
     public function store(Request $request)
@@ -41,7 +41,7 @@ class CustomerController extends Controller
         $customers = Customer::orderBy('updated_at', 'desc')->paginate(10);
 
         // Pass the customers to the view
-        return view('customers.view', compact('customers'));
+        return view('admin/customers.view', compact('customers'));
     }
 
     public function viewPurchaseHistory(Customer $customer)
@@ -50,12 +50,12 @@ class CustomerController extends Controller
         $purchaseHistories = collect(json_decode($customer->purchase_history));
 
         // Pass data to the view
-        return view('customers.view-purchase-history', compact('purchaseHistories', 'customer'));
+        return view('admin/customers.view-purchase-history', compact('purchaseHistories', 'customer'));
     }
 
     public function edit(Customer $customer)
     {
-        return view('customers.update', compact('customer'));
+        return view('admin/customers.update', compact('customer'));
     }
 
     public function update(Request $request, Customer $customer)
@@ -76,7 +76,7 @@ class CustomerController extends Controller
             'address' => $request->input('address'),
         ]);
 
-        return redirect()->route('customers.view')->with('success', 'Customer updated successfully.');
+        return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');
     }
 
     public function destroy(Customer $customer)

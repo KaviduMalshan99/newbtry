@@ -7,7 +7,7 @@
             <div class="toggle-sidebar"><i class="status_toggle middle sidebar-toggle" data-feather="grid"> </i></div>
         </div>
         <div class="logo-icon-wrapper"><a href="{{ route('index') }}"><img class="img-fluid"
-            src="{{ asset('assets/images/logo/logo-icon.png') }}" alt=""></a>
+                    src="{{ asset('assets/images/logo/logo-icon.png') }}" alt=""></a>
         </div>
         <nav class="sidebar-main">
             <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
@@ -40,7 +40,7 @@
                         <ul class="sidebar-submenu">
                             <li><a class="lan-4" href="{{ route('index') }}">Default</a></li>
                             <li><a class="lan-5" href="{{ route('dashboard-02') }}">Ecommerce</a></li>
-                            
+
                         </ul>
                     </li>
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
@@ -56,13 +56,29 @@
                             <li><a href="{{ route('chart-widget') }}">Chart</a></li>
                         </ul>
                     </li>
-                    
+
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
+                            href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
+                            </svg><span class="lan-6">Customers</span></a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('customers.create') }}">Add Customer</a></li>
+                            <li><a
+                                    href="{{ request()->query('ref') === 'view' ? route('customers.show', $customer->id) : route('customers.index') }}">View
+                                    Customer</a></li>
+                        </ul>
+                    </li>
+
                     <li class="sidebar-main-title">
                         <div>
                             <h6 class="lan-8">Applications</h6>
                         </div>
                     </li>
-                    
+
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
                             <svg class="stroke-icon">
@@ -75,11 +91,11 @@
                             <li><a href="{{ route('product') }}">Product</a></li>
                             <li><a href="{{ route('product-page') }}">Product page</a></li>
                             <li><a href="{{ route('list-products') }}">Product list</a></li>
-                           
+
                         </ul>
                     </li>
-                    
-                    
+
+
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
                             <svg class="stroke-icon">
@@ -111,7 +127,7 @@
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-contact') }}"> </use>
                             </svg><span>Contacts</span></a>
                     </li>
-                    
+
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
                             class="sidebar-link sidebar-title link-nav" href="{{ route('calendar-basic') }}">
                             <svg class="stroke-icon">
@@ -120,9 +136,9 @@
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-calender') }}"></use>
                             </svg><span>Calendar</span></a></li>
-                    
-                    
-                    
+
+
+
                     <li class="sidebar-main-title">
                         <div>
                             <h6>Forms & Table</h6>
@@ -399,111 +415,113 @@
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-starter-kit') }}"></use>
                             </svg><span>Starter kit</span></a></li>
-                    <li class="mega-menu sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
-                                href="#">
-                                <svg class="stroke-icon">
-                                    <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-others') }}"></use>
-                                </svg>
-                                <svg class="fill-icon">
-                                    <use href="{{ asset('assets/svg/icon-sprite.svg#fill-others') }}"></use>
-                                </svg><span>Others</span></a>
-                            <div class="mega-menu-container menu-content">
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <div class="col mega-box">
-                                            <div class="link-section">
-                                                <div class="submenu-title">
-                                                    <h5>Error Page</h5>
-                                                </div>
-                                                <ul class="submenu-content opensubmegamenu">
-                                                    <li><a href="{{ route('error-400') }}">Error 400</a></li>
-                                                    <li><a href="{{ route('error-401') }}">Error 401</a></li>
-                                                    <li><a href="{{ route('error-403') }}">Error 403</a></li>
-                                                    <li><a href="{{ route('error-404') }}">Error 404</a></li>
-                                                    <li><a href="{{ route('error-500') }}">Error 500</a></li>
-                                                    <li><a href="{{ route('error-503') }}">Error 503</a></li>
-                                                </ul>
+                    <li class="mega-menu sidebar-list"><i class="fa fa-thumb-tack"></i><a
+                            class="sidebar-link sidebar-title" href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-others') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-others') }}"></use>
+                            </svg><span>Others</span></a>
+                        <div class="mega-menu-container menu-content">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col mega-box">
+                                        <div class="link-section">
+                                            <div class="submenu-title">
+                                                <h5>Error Page</h5>
                                             </div>
+                                            <ul class="submenu-content opensubmegamenu">
+                                                <li><a href="{{ route('error-400') }}">Error 400</a></li>
+                                                <li><a href="{{ route('error-401') }}">Error 401</a></li>
+                                                <li><a href="{{ route('error-403') }}">Error 403</a></li>
+                                                <li><a href="{{ route('error-404') }}">Error 404</a></li>
+                                                <li><a href="{{ route('error-500') }}">Error 500</a></li>
+                                                <li><a href="{{ route('error-503') }}">Error 503</a></li>
+                                            </ul>
                                         </div>
-                                        <div class="col mega-box">
-                                            <div class="link-section">
-                                                <div class="submenu-title">
-                                                    <h5> Authentication</h5>
-                                                </div>
-                                                <ul class="submenu-content opensubmegamenu">
-                                                    <li><a href="{{ route('login') }}" target="_blank">Login
-                                                            Simple</a></li>
-                                                    <li><a href="{{ route('login-one') }}" target="_blank">Login
-                                                            with bg image</a>
-                                                    </li>
-                                                    <li><a href="{{ route('login-two') }}" target="_blank">Login
-                                                            with image two </a>
-                                                    </li>
-                                                    <li><a href="{{ route('login-bs-validation') }}"
-                                                            target="_blank">Login With
-                                                            validation</a></li>
-                                                    <li><a href="{{ route('login-bs-tt-validation') }}"
-                                                            target="_blank">Login with
-                                                            tooltip</a></li>
-                                                    <li><a href="{{ route('login-sa-validation') }}"
-                                                            target="_blank">Login with
-                                                            sweetalert</a></li>
-                                                    <li><a href="{{ route('sign-up') }}" target="_blank">Register
-                                                            Simple</a></li>
-                                                    <li><a href="{{ route('sign-up-one') }}"
-                                                            target="_blank">Register with Bg Image
-                                                        </a></li>
-                                                    <li><a href="{{ route('sign-up-two') }}"
-                                                            target="_blank">Register with image
-                                                            two</a></li>
-                                                    <li><a href="{{ route('sign-up-wizard') }}"
-                                                            target="_blank">Register wizard</a>
-                                                    </li>
-                                                    <li><a href="{{ route('unlock') }}">Unlock User</a></li>
-                                                    <li><a href="{{ route('forget-password') }}">Forget Password</a>
-                                                    </li>
-                                                    <li><a href="{{ route('reset-password') }}">Reset Password</a>
-                                                    </li>
-                                                    <li><a href="{{ route('maintenance') }}">Maintenance</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="col mega-box">
-                                            <div class="link-section">
-                                                <div class="submenu-title">
-                                                    <h5>Coming Soon</h5>
-                                                </div>
-                                                <ul class="submenu-content opensubmegamenu">
-                                                    <li><a href="{{ route('comingsoon') }}">Coming Simple</a></li>
-                                                    <li><a href="{{ route('comingsoon-bg-video') }}">Coming with Bg
-                                                            video</a></li>
-                                                    <li><a href="{{ route('comingsoon-bg-img') }}">Coming with Bg
-                                                            Image</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        
                                     </div>
+                                    <div class="col mega-box">
+                                        <div class="link-section">
+                                            <div class="submenu-title">
+                                                <h5> Authentication</h5>
+                                            </div>
+                                            <ul class="submenu-content opensubmegamenu">
+                                                <li><a href="{{ route('login') }}" target="_blank">Login
+                                                        Simple</a></li>
+                                                <li><a href="{{ route('login-one') }}" target="_blank">Login
+                                                        with bg image</a>
+                                                </li>
+                                                <li><a href="{{ route('login-two') }}" target="_blank">Login
+                                                        with image two </a>
+                                                </li>
+                                                <li><a href="{{ route('login-bs-validation') }}"
+                                                        target="_blank">Login With
+                                                        validation</a></li>
+                                                <li><a href="{{ route('login-bs-tt-validation') }}"
+                                                        target="_blank">Login with
+                                                        tooltip</a></li>
+                                                <li><a href="{{ route('login-sa-validation') }}"
+                                                        target="_blank">Login with
+                                                        sweetalert</a></li>
+                                                <li><a href="{{ route('sign-up') }}" target="_blank">Register
+                                                        Simple</a></li>
+                                                <li><a href="{{ route('sign-up-one') }}" target="_blank">Register
+                                                        with Bg Image
+                                                    </a></li>
+                                                <li><a href="{{ route('sign-up-two') }}" target="_blank">Register
+                                                        with image
+                                                        two</a></li>
+                                                <li><a href="{{ route('sign-up-wizard') }}" target="_blank">Register
+                                                        wizard</a>
+                                                </li>
+                                                <li><a href="{{ route('unlock') }}">Unlock User</a></li>
+                                                <li><a href="{{ route('forget-password') }}">Forget Password</a>
+                                                </li>
+                                                <li><a href="{{ route('reset-password') }}">Reset Password</a>
+                                                </li>
+                                                <li><a href="{{ route('maintenance') }}">Maintenance</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col mega-box">
+                                        <div class="link-section">
+                                            <div class="submenu-title">
+                                                <h5>Coming Soon</h5>
+                                            </div>
+                                            <ul class="submenu-content opensubmegamenu">
+                                                <li><a href="{{ route('comingsoon') }}">Coming Simple</a></li>
+                                                <li><a href="{{ route('comingsoon-bg-video') }}">Coming with Bg
+                                                        video</a></li>
+                                                <li><a href="{{ route('comingsoon-bg-img') }}">Coming with Bg
+                                                        Image</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
+                        </div>
                     </li>
                     <li class="sidebar-main-title">
                         <div>
                             <h6>Miscellaneous</h6>
                         </div>
                     </li>
-                    
-                    
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title link-nav" href="{{ route('faq') }}">
+
+
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
+                            class="sidebar-link sidebar-title link-nav" href="{{ route('faq') }}">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-faq') }}"></use>
                             </svg>
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-faq') }}"></use>
                             </svg><span>FAQ</span></a></li>
-                    
-                    
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="#">
+
+
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
+                            href="#">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-maps') }}"></use>
                             </svg>
@@ -515,7 +533,8 @@
                             <li><a href="{{ route('vector-map') }}">Vector Maps</a></li>
                         </ul>
                     </li>
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title" href="#">
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
+                            href="#">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-editors') }}"></use>
                             </svg>
@@ -529,7 +548,7 @@
                             <li><a href="{{ route('ace-code-editor') }}">ACE code editor </a></li>
                         </ul>
                     </li>
-                    
+
                 </ul>
             </div>
             <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>

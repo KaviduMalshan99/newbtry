@@ -391,13 +391,16 @@ Route::get('/clear-cache', function () {
 
 Route::resource('suppliers', SupplierController::class);
 
-Route::get('/customers/add', [CustomerController::class, 'create'])->name('customers.create');
-Route::post('/customers/store', [CustomerController::class, 'store'])->name('customers.store');
-Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
-Route::get('/customers/{customer}/purchase-history', [CustomerController::class, 'viewPurchaseHistory'])->name('customers.purchase-history');
-Route::get('/customers/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
-Route::put('/customers/{customer}', [CustomerController::class, 'update'])->name('customers.update');
-Route::delete('/customers/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+Route::prefix('customers')->group(function () {
+    Route::get('/create', [CustomerController::class, 'create'])->name('customers.create');
+    Route::post('/store', [CustomerController::class, 'store'])->name('customers.store');
+    Route::get('', [CustomerController::class, 'index'])->name('customers.index');
+    Route::get('/{customer}/purchase-history', [CustomerController::class, 'viewPurchaseHistory'])->name('customers.purchase-history');
+    Route::get('/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
+    Route::put('/{customer}', [CustomerController::class, 'update'])->name('customers.update');
+    Route::delete('/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
+
+});
 
 Route::get('user/add', [UserController::class, 'create'])->name('users.create');
 Route::post('user/store', [UserController::class, 'store'])->name('users.store');
@@ -415,6 +418,3 @@ Route::post('purchases/store', [PurchaseController::class, 'store'])->name('purc
 
 Route::resource('repairs', RepairController::class);
 Route::resource('rentals', RentalController::class);
-
-
-
