@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 
@@ -92,3 +93,6 @@ hhh
 
 @section('script')
 @endsection
+=======
+sales
+>>>>>>> 1ff6ed427f272eda638a0d864b93ef565a57f2bc
