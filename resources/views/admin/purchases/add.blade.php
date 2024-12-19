@@ -10,15 +10,14 @@
 @endsection
 
 @section('breadcrumb-title')
-    <h3>Supplier Management</h3>
+    <h3>Purchase Management</h3>
 @endsection
 
 @section('breadcrumb-items')
-    <li class="breadcrumb-item"> <a class="breadcrumb-item"
-            href="{{ request()->query('ref') === 'view' ? route('suppliers.show', $supplier->id) : route('suppliers.index') }}">
-            Suppliers
+    <li class="breadcrumb-item"> <a class="breadcrumb-item">
+            Purchase
         </a></li>
-    <li class="breadcrumb-item active">Add New Supplier</li>
+    <li class="breadcrumb-item active">Add New Purchase</li>
 @endsection
 
 @section('content')
@@ -26,7 +25,6 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="content-header">
-                    <h2 class="content-title">Add New Purchase</h2>
                     {{-- <button type="submit" form="saveForm" class="btn btn-md rounded font-sm hover-up">Save</button> --}}
                 </div>
             </div>
@@ -34,6 +32,18 @@
             <div class="col-lg-12">
                 <div class="card mb-4">
                     <div class="card-body">
+                        <div class="row gx-3">
+                            <div class="col-md-11 mb-4">
+                                <h2 class="content-title">Add New Purchase</h2>
+
+                            </div>
+                            <div class="col-md-1 mb-4">
+                                {{-- <a href="{{ request()->query('ref') === 'view' ? route('purchases.show', $purchase->id) : route('purchases.index') }}"
+                                    class="btn btn-light rounded font-sm mr-5 text-body hover-up">
+                                    Back
+                                </a> --}}
+                            </div>
+                        </div>
                         <form id="saveForm" action="{{ route('purchases.store') }}" method="POST">
                             @csrf
 
@@ -85,8 +95,8 @@
                             <!-- Add Button -->
 
                             <div class="mb-4">
+                                <br>
                                 <button type="button" id="addProduct" class="btn btn-primary col-md-3">Add</button>
-                                <button type="submit" form="saveForm" class="btn btn-success col-md-3">Save</button>
                             </div>
 
                             <!-- Dynamic Table -->
@@ -102,6 +112,13 @@
                                 </thead>
                                 <tbody></tbody>
                             </table>
+
+                            <div class="mb-4">
+                                <br>
+                                <button type="submit" form="saveForm" class="btn btn-success col-md-3">Save</button>
+                            </div>
+
+
                         </form>
                     </div>
                 </div>

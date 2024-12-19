@@ -57,38 +57,6 @@
                         </ul>
                     </li>
 
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
-                            href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
-                            </svg><span class="lan-6">Customers</span></a>
-                        <ul class="sidebar-submenu">
-                            <li><a href="{{ route('customers.create') }}">Add Customer</a></li>
-                            <li><a
-                                    href="{{ request()->query('ref') === 'view' ? route('customers.show', $customer->id) : route('customers.index') }}">View
-                                    Customer</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
-                            href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
-                            </svg><span class="lan-6">Suppliers</span></a>
-                        <ul class="sidebar-submenu">
-                            <li><a href="{{ route('suppliers.create') }}">Add Supplier</a></li>
-                            <li><a
-                                    href="{{ request()->query('ref') === 'view' ? route('suppliers.show', $customer->id) : route('suppliers.index') }}">View
-                                    Supplier</a></li>
-                        </ul>
-                    </li>
-
                     <li class="sidebar-main-title">
                         <div>
                             <h6 class="lan-8">Applications</h6>
@@ -107,6 +75,57 @@
                             <li><a href="{{ route('product') }}">Product</a></li>
                             <li><a href="{{ route('product-page') }}">Product page</a></li>
                             <li><a href="{{ route('list-products') }}">Product list</a></li>
+
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
+                            href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
+                            </svg><span>Customers</span></a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('customers.create') }}">Add Customer</a></li>
+                            <li><a
+                                    href="{{ request()->query('ref') === 'view' ? route('customers.show', $customer->id) : route('customers.index') }}">View
+                                    Customer</a></li>
+
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
+                            href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
+                            </svg><span>Supplier</span></a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('suppliers.create') }}">Add Supplier</a></li>
+                            <li><a
+                                    href="{{ request()->query('ref') === 'view' ? route('suppliers.show', $customer->id) : route('suppliers.index') }}">View
+                                    Supplier</a></li>
+
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
+                            href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
+                            </svg><span>Purchase</span></a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('purchases.create') }}">Add Purchase</a></li>
+                            {{-- <li><a
+                                    href="{{ request()->query('ref') === 'view' ? route('suppliers.show', $customer->id) : route('suppliers.index') }}">View
+                                    Supplier</a></li> --}}
 
                         </ul>
                     </li>

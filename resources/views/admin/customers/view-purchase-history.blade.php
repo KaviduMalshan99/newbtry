@@ -28,7 +28,18 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header pb-0 card-no-border">
-                        <h3>Manage your Customer efficiently.</h3>
+
+                        <div class="row gx-3">
+                            <div class="col-md-11 mb-4">
+                                <h3>Manage your Customer efficiently.</h3>
+                            </div>
+                            <div class="col-md-1 mb-4">
+                                <a href="{{ request()->query('ref') === 'view' ? route('customers.show', $customer->id) : route('customers.index') }}"
+                                    class="btn btn-light rounded font-sm mr-5 text-body hover-up">
+                                    Back
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="dt-ext table-responsive">

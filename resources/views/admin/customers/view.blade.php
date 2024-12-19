@@ -24,12 +24,22 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header pb-0 card-no-border">
-                        <h3>Customer List</h3>
-                        <div>
-                            <a href="{{ route('customers.create') }}" class="btn btn-primary btn-sm rounded">Create new</a>
-                        </div>
+
                     </div>
                     <div class="card-body">
+
+                        <div class="row gx-3">
+                            <div class="col-md-10 mb-4">
+                                <h3>Customer List</h3>
+                            </div>
+                            <div class="col-md-2 mb-4">
+                                <div>
+                                    <a href="{{ route('customers.create') }}" class="btn btn-primary btn-sm rounded">Create
+                                        new</a>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="dt-ext table-responsive">
                             <table class="display" id="keytable">
                                 <thead>

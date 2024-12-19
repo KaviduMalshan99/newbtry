@@ -25,9 +25,15 @@
             <div class="col-sm-12">
                 <div class="card">
                     <div class="card-header pb-0 card-no-border">
-                        <h3>Supplier List</h3>
-                        <div>
-                            <a href="{{ route('suppliers.create') }}" class="btn btn-primary btn-sm rounded">Create new</a>
+                        <div class="row gx-3">
+                            <div class="col-md-10 mb-4">
+                                <h3>Supplier List</h3>
+                            </div>
+                            <div class="col-md-2 mb-4">
+                                <a href="{{ route('suppliers.create') }}" class="btn btn-primary btn-sm rounded">Create
+                                    new</a>
+
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
