@@ -14,8 +14,7 @@
 @endsection
 
 @section('breadcrumb-items')
-    <li class="breadcrumb-item"> <a class="breadcrumb-item"
-            href="{{ request()->query('ref') === 'view' ? route('purchases.show', $purchase->id) : route('purchases.index') }}">
+    <li class="breadcrumb-item"> <a class="breadcrumb-item">
             Purchase
         </a></li>
     <li class="breadcrumb-item active">Add New Purchase</li>
