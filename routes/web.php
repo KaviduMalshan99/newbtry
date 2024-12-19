@@ -1,15 +1,16 @@
 <?php
 
 
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Session;
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\BatteryController;
-use App\Http\Controllers\LubricantController;  
-use App\Http\Controllers\SupplierController;  
-use App\Http\Controllers\PosController;  
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\RentalController;
+use App\Http\Controllers\RepairController;
+use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -44,6 +45,8 @@ Route::get('/', function () {
 
 
 
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Session;
 
 
 
@@ -386,60 +389,32 @@ Route::get('/clear-cache', function () {
 })->name('clear.cache');
 
 
+Route::resource('suppliers', SupplierController::class);
 
+Route::prefix('customers')->group(function () {
+    Route::get('/create', [CustomerController::class, 'create'])->name('customers.create');
+    Route::post('/store', [CustomerController::class, 'store'])->name('customers.store');
+    Route::get('', [CustomerController::class, 'index'])->name('customers.index');
+    Route::get('/{customer}/purchase-history', [CustomerController::class, 'viewPurchaseHistory'])->name('customers.purchase-history');
+    Route::get('/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
+    Route::put('/{customer}', [CustomerController::class, 'update'])->name('customers.update');
+    Route::delete('/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
 
-
-
-Route::get('/admin/batteries', function () {
-    return redirect()->route('batteries.index');
-})->name('home');
-
-// Battery Management Routes
-Route::prefix('admin/batteries')->name('batteries.')->group(function () {
-    Route::get('/', [BatteryController::class, 'index'])->name('index');          // Show all batteries
-    Route::get('/create', [BatteryController::class, 'create'])->name('create');  // Show form to create a new battery
-    Route::post('/', [BatteryController::class, 'store'])->name('store');         // Store a new battery
-    Route::get('/{id}', [BatteryController::class, 'show'])->name('show');        // Show details of a specific battery
-    Route::get('/{id}/edit', [BatteryController::class, 'edit'])->name('edit');   // Show form to edit a battery
-    Route::put('/{id}', [BatteryController::class, 'update'])->name('update');    // Update a specific battery
-    Route::delete('/{id}', [BatteryController::class, 'destroy'])->name('destroy'); // Delete a battery
 });
 
-Route::get('/admin/lubricants', function () {
-    return redirect()->route('lubricants.index');
-})->name('home');
+Route::get('user/add', [UserController::class, 'create'])->name('users.create');
+Route::post('user/store', [UserController::class, 'store'])->name('users.store');
+Route::get('users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
+Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
 
-// Battery Management Routes
-Route::prefix('admin/lubricants')->name('lubricants.')->group(function () {
-    Route::get('/', [LubricantController::class, 'index'])->name('index');          // Show all batteries
-    Route::get('/create', [LubricantController::class, 'create'])->name('create');  // Show form to create a new battery
-    Route::post('/', [LubricantController::class, 'store'])->name('store');         // Store a new battery
-    Route::get('/{id}', [LubricantController::class, 'show'])->name('show');        // Show details of a specific battery
-    Route::get('/{id}/edit', [LubricantController::class, 'edit'])->name('edit');   // Show form to edit a battery
-    Route::put('/{id}', [LubricantController::class, 'update'])->name('update');    // Update a specific battery
-    Route::delete('/{id}', [LubricantController::class, 'destroy'])->name('destroy'); // Delete a battery
-});
+Route::resource('sales', SaleController::class);
+
+Route::get('/purchases/products/{type}', [PurchaseController::class, 'getProducts']);
+Route::get('purchases/add', [PurchaseController::class, 'create'])->name('purchases.create');
+Route::post('purchases/store', [PurchaseController::class, 'store'])->name('purchases.store');
 
 
-
-// suplier managemnt
-
-
-
-
-Route::get('/admin/supplier_management', function () {
-    return redirect()->route('supplier_management.index');
-})->name('home');
-
-
-// POS Management Routes
-Route::prefix('admin/POS')->name('POS.')->group(function () {
-    Route::get('/', [PosController::class, 'index'])->name('pos'); // Main POS page
-});
-
-
-
-
-
-
-
+Route::resource('repairs', RepairController::class);
+Route::resource('rentals', RentalController::class);

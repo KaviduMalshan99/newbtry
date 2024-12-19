@@ -97,7 +97,7 @@ class Mailer implements MailerContract, MailQueueContract
      * @param  \Illuminate\Contracts\Events\Dispatcher|null  $events
      * @return void
      */
-    public function __construct(string $name, Factory $views, TransportInterface $transport, Dispatcher $events = null)
+    public function __construct(string $name, Factory $views, TransportInterface $transport, ?Dispatcher $events = null)
     {
         $this->name = $name;
         $this->views = $views;
@@ -253,7 +253,38 @@ class Mailer implements MailerContract, MailQueueContract
 
         $data['message'] = $this->createMessage();
 
-        return $this->renderView($view ?: $plain, $data);
+        return $this->replaceEmbeddedAttachments(
+            $this->renderView($view ?: $plain, $data),
+            $data['message']->getSymfonyMessage()->getAttachments()
+        );
+    }
+
+    /**
+     * Replace the embedded image attachments with raw, inline image data for browser rendering.
+     *
+     * @param  string  $renderedView
+     * @param  array  $attachments
+     * @return string
+     */
+    protected function replaceEmbeddedAttachments(string $renderedView, array $attachments)
+    {
+        if (preg_match_all('/<img.+?src=[\'"]cid:([^\'"]+)[\'"].*?>/i', $renderedView, $matches)) {
+            foreach (array_unique($matches[1]) as $image) {
+                foreach ($attachments as $attachment) {
+                    if ($attachment->getFilename() === $image) {
+                        $renderedView = str_replace(
+                            'cid:'.$image,
+                            'data:'.$attachment->getContentType().';base64,'.$attachment->bodyToString(),
+                            $renderedView
+                        );
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        return $renderedView;
     }
 
     /**
