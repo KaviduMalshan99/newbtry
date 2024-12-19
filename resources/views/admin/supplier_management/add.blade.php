@@ -26,13 +26,25 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="content-header">
-                    <h2 class="content-title">Add New Suppliers</h2>
 
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="card mb-4">
                     <div class="card-body">
+
+                        <div class="row gx-3">
+                            <div class="col-md-11 mb-4">
+                                <h2 class="content-title">Add New Suppliers</h2>
+                            </div>
+                            <div class="col-md-1 mb-4">
+                                <a href="{{ request()->query('ref') === 'view' ? route('suppliers.show', $customer->id) : route('suppliers.index') }}"
+                                    class="btn btn-light rounded font-sm mr-5 text-body hover-up">
+                                    Back
+                                </a>
+                            </div>
+                        </div>
+
                         <form id="supplierForm" action="{{ route('suppliers.store') }}" method="POST">
                             @csrf <!-- Laravel's CSRF protection -->
                             <div class="mb-4">

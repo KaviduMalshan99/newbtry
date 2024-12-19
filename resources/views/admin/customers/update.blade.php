@@ -27,12 +27,24 @@
             <div class="col-lg-12">
                 <div class="content-header">
 
-                    <h3 class="content-title">Update Customers</h3>
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="card mb-4">
                     <div class="card-body">
+
+                        <div class="row gx-3">
+                            <div class="col-md-11 mb-4">
+                                <h3 class="content-title">Update Customers</h3>
+                            </div>
+                            <div class="col-md-1 mb-4">
+                                <a href="{{ request()->query('ref') === 'view' ? route('customers.show', $customer->id) : route('customers.index') }}"
+                                    class="btn btn-light rounded font-sm mr-5 text-body hover-up">
+                                    Back
+                                </a>
+                            </div>
+                        </div>
+
                         <form id="customerForm" action="{{ route('customers.update', $customer->id) }}" method="POST">
                             @csrf
                             @method('PUT')
