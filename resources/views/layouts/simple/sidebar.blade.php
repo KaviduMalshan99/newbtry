@@ -123,9 +123,9 @@
                             </svg><span>Purchase</span></a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('purchases.create') }}">Add Purchase</a></li>
-                            {{-- <li><a
-                                    href="{{ request()->query('ref') === 'view' ? route('suppliers.show', $customer->id) : route('suppliers.index') }}">View
-                                    Supplier</a></li> --}}
+                            <li><a
+                                    href="{{ request()->query('ref') === 'view' ? route('purchases.show', $purchase->id) : route('purchases.index') }}">View
+                                    Supplier</a></li>
 
                         </ul>
                     </li>

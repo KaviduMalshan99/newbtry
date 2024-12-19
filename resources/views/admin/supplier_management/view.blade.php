@@ -83,7 +83,6 @@
                                             </td>
                                         </tr>
                                     @empty
-                                        <p class="text-center">No suppliers found.</p>
                                     @endforelse
                                 </tbody>
                             </table>

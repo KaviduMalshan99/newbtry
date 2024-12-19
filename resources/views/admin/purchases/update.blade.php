@@ -18,7 +18,7 @@
             href="{{ request()->query('ref') === 'view' ? route('purchases.show', $purchase->id) : route('purchases.index') }}">
             Purchase
         </a></li>
-    <li class="breadcrumb-item active">Add New Purchase</li>
+    <li class="breadcrumb-item active">Update Purchase</li>
 @endsection
 
 @section('content')
@@ -35,7 +35,7 @@
                     <div class="card-body">
                         <div class="row gx-3">
                             <div class="col-md-11 mb-4">
-                                <h2 class="content-title">Add New Purchase</h2>
+                                <h2 class="content-title">Update Purchase</h2>
 
                             </div>
                             <div class="col-md-1 mb-4">
@@ -45,8 +45,9 @@
                                 </a>
                             </div>
                         </div>
-                        <form id="saveForm" action="{{ route('purchases.store') }}" method="POST">
+                        <form id="updateForm" action="{{ route('purchases.update', $purchase->id) }}" method="POST">
                             @csrf
+                            @method('PUT')
 
                             <input type="hidden" name="items" id="items">
                             <!-- Supplier -->
@@ -61,7 +62,7 @@
                             </div>
 
                             <!-- Product Type -->
-                            <div class="mb-4">
+                            {{-- <div class="mb-4">
                                 <label for="product_type" class="form-label">Product Type</label>
                                 <select id="product_type" class="form-select" required>
                                     <option value="" disabled selected>Select Product Type</option>
@@ -69,6 +70,12 @@
                                         <option value="{{ $type }}">{{ ucfirst($type) }}</option>
                                     @endforeach
                                 </select>
+                            </div> --}}
+
+                            <div class="mb-4">
+                                <label for="product_type" class="form-label">Product Type</label>
+                                <input type="text" id="product_type" class="form-control" value="{{ $productType }}"
+                                    readonly>
                             </div>
 
                             <!-- Product -->
@@ -108,7 +115,6 @@
                                         <th>Product</th>
                                         <th>Quantity</th>
                                         <th>Price</th>
-                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -116,7 +122,7 @@
 
                             <div class="mb-4">
                                 <br>
-                                <button type="submit" form="saveForm" class="btn btn-success col-md-3">Save</button>
+                                <button type="submit" form="updateForm" class="btn btn-success col-md-3">Update</button>
                             </div>
 
 
@@ -127,23 +133,42 @@
         </div>
     </section>
 
+
+    ,
+
     <script>
         let productTypeLocked = false;
 
-        document.getElementById('product_type').addEventListener('change', function() {
-            if (productTypeLocked) return;
+        // Pre-fill the supplier dropdown
+        document.getElementById('supplier_id').value = "{{ $purchase->supplier_id }}";
 
-            fetch(`/purchases/products/${this.value}`)
-                .then(response => response.json())
-                .then(data => {
-                    const productDropdown = document.getElementById('product_id');
-                    productDropdown.innerHTML = '<option value="" disabled>Select Products</option>';
-                    data.forEach(product => {
-                        productDropdown.innerHTML +=
-                            `<option value="${product.id}">${product.type}</option>`;
-                    });
-                });
+        // Pre-fill the purchase items table
+        const purchaseItems = @json($purchase->purchaseItems);
+        const table = document.getElementById('productTable').querySelector('tbody');
+        purchaseItems.forEach(item => {
+            const productName = item.battery ? item.battery.type : item.lubricant.name; // Determine product name
+            const productId = item.battery_id || item.lubricant_id; // Determine product ID
+            const row = `
+        <tr data-product-id="${productId}">
+            <td>{{ $purchase->supplier->name }}</td>
+            <td>${productName}</td>
+            <td>${item.quantity}</td>
+            <td>${item.purchase_price}</td>
+        </tr>
+        `;
+            table.innerHTML += row;
         });
+
+        // Fetch products based on the product type
+        fetch(`/purchases/products/${document.getElementById('product_type').value}`)
+            .then(response => response.json())
+            .then(data => {
+                const productDropdown = document.getElementById('product_id');
+                productDropdown.innerHTML = '<option value="" disabled>Select Products</option>';
+                data.forEach(product => {
+                    productDropdown.innerHTML += `<option value="${product.id}">${product.type}</option>`;
+                });
+            });
 
         document.getElementById('addProduct').addEventListener('click', function() {
             const supplier = document.getElementById('supplier_id');
@@ -159,9 +184,8 @@
                 <td>${product.options[product.selectedIndex].text}</td>
                 <td>${quantity}</td>
                 <td>${price}</td>
-                <td><button type="button" class="btn btn-sm btn-danger">Remove</button></td>
             </tr>
-        `;
+         `;
 
                 // Lock the product type dropdown to prevent changes
                 document.getElementById('product_type').disabled = true;

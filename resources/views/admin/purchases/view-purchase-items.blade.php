@@ -11,11 +11,15 @@
 @endsection
 
 @section('breadcrumb-title')
-    <h3>Customer Management</h3>
+    <h3>Purchase Item List</h3>
 @endsection
 
 @section('breadcrumb-items')
-    <li class="breadcrumb-item active">Customers</li>
+    <li class="breadcrumb-item"> <a class="breadcrumb-item"
+            href="{{ request()->query('ref') === 'view' ? route('purchases.show', $customer->id) : route('purchases.index') }}">
+            Purchase
+        </a></li>
+    <li class="breadcrumb-item active">Purchase Item List</li>
 @endsection
 
 @section('content')
@@ -25,62 +29,40 @@
                 <div class="card">
                     <div class="card-header pb-0 card-no-border">
 
-                    </div>
-                    <div class="card-body">
-
                         <div class="row gx-3">
-                            <div class="col-md-10 mb-4">
-                                <h3>Customer List</h3>
+                            <div class="col-md-11 mb-4">
+                                <h3>Manage your Purchase efficiently.</h3>
                             </div>
-                            <div class="col-md-2 mb-4">
-                                <div>
-                                    <a href="{{ route('customers.create') }}" class="btn btn-primary btn-sm rounded">Create
-                                        new</a>
-                                </div>
+                            <div class="col-md-1 mb-4">
+                                <a href="{{ request()->query('ref') === 'view' ? route('customers.show', $customer->id) : route('customers.index') }}"
+                                    class="btn btn-light rounded font-sm mr-5 text-body hover-up">
+                                    Back
+                                </a>
                             </div>
                         </div>
-
+                    </div>
+                    <div class="card-body">
                         <div class="dt-ext table-responsive">
                             <table class="display" id="keytable">
                                 <thead>
                                     <tr>
-                                        <th>Customer Name</th>
-                                        <th>Phone Number</th>
-                                        <th>Email</th>
-                                        <th>Address</th>
+                                        <th>Supplier</th>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Price</th>
                                         <th>Date</th>
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($customers as $customer)
+                                    @forelse ($purchaseItems as $purchaseItem)
                                         <tr>
-                                            <td>{{ $customer->first_name }} {{ $customer->last_name }} </td>
-                                            <td>{{ $customer->phone_number }}</td>
-                                            <td>{{ $customer->email ?? 'N/A' }}</td>
-                                            <td>{{ $customer->address }}</td>
-                                            <td>{{ $customer->created_at->format('d.m.Y') }}</td>
+                                            <td>{{ $purchaseItem->supplier->name ?? 'N/A' }}</td>
                                             <td>
-                                                <ul class="action">
-                                                    <li class="edit btn btn-sm"> <a
-                                                            href="{{ route('customers.edit', $customer->id) }}"><i
-                                                                class="icon-pencil-alt"></i></a>
-                                                    </li>
-                                                    <li class="btn btn-sm"><a
-                                                            href="{{ route('customers.purchase-history', $customer->id) }}"><i
-                                                                class="icon-receipt"></i></a></li>
-
-                                                    <form action="{{ route('customers.destroy', $customer->id) }}"
-                                                        method="POST"
-                                                        onsubmit="return confirm('Are you sure you want to delete this customer?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="delete btn btn-sm">
-                                                            <i class="icon-trash"></i>
-                                                        </button>
-                                                    </form>
-                                                </ul>
+                                                {{ $purchaseItem->battery ? $purchaseItem->battery->type : $purchaseItem->lubricant->name }}
                                             </td>
+                                            <td>{{ $purchaseItem->quantity }}</td>
+                                            <td>{{ number_format($purchaseItem->purchase_price, 2) }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($purchaseItem->created_at)->format('d.m.Y') }}</td>
                                         </tr>
                                     @empty
                                     @endforelse
