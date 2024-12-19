@@ -7,7 +7,7 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/animate.css') }}">
 @endsection
 
-{{-- 
+{{--
 @section('content')
 <div class="container">
     <h1>Batteries</h1>
@@ -77,9 +77,9 @@
             <div class="row">
               <div class="col-sm-12">
                 <div class="card">
-                  
 
-hhh
+
+                            <d classivjnjffnjnjf
 
 
 
@@ -87,8 +87,8 @@ hhh
               </div>
             </div>
         </div>
-             
-         
+
+
 @endsection
 
 @section('script')
