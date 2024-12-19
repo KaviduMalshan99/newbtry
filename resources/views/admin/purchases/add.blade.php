@@ -10,15 +10,15 @@
 @endsection
 
 @section('breadcrumb-title')
-    <h3>Supplier Management</h3>
+    <h3>Purchase Management</h3>
 @endsection
 
 @section('breadcrumb-items')
     <li class="breadcrumb-item"> <a class="breadcrumb-item"
-            href="{{ request()->query('ref') === 'view' ? route('suppliers.show', $supplier->id) : route('suppliers.index') }}">
-            Suppliers
+            href="{{ request()->query('ref') === 'view' ? route('purchases.show', $purchase->id) : route('purchases.index') }}">
+            Purchase
         </a></li>
-    <li class="breadcrumb-item active">Add New Supplier</li>
+    <li class="breadcrumb-item active">Add New Purchase</li>
 @endsection
 
 @section('content')
