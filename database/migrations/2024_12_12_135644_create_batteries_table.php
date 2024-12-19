@@ -20,10 +20,10 @@ return new class extends Migration
             $table->decimal('sale_price', 10, 2);
             $table->integer('stock_quantity');
             $table->decimal('rental_price_per_day', 10, 2);
+            $table->string('image_path')->nullable(); // Add image_path here
             $table->timestamps();
         });
     }
-
 
     /**
      * Reverse the migrations.

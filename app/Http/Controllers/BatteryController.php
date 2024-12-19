@@ -4,93 +4,107 @@ namespace App\Http\Controllers;
 
 use App\Models\Battery;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BatteryController extends Controller
 {
-    /**
-     * Display a listing of the batteries.
-     */
     public function index()
     {
-        $batteries = Battery::all(); // Fetch all batteries
+        $batteries = Battery::all();
         return view('admin.batteries.index', compact('batteries'));
     }
 
-    /**
-     * Show the form for creating a new battery.
-     */
     public function create()
     {
         return view('admin.batteries.create');
     }
 
-    /**
-     * Store a newly created battery in storage.
-     */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $request->validate([
             'type' => 'required|string|max:255',
             'brand' => 'required|string|max:255',
             'model_number' => 'required|string|max:255',
-            'purchase_price' => 'required|numeric|min:0',
-            'sale_price' => 'required|numeric|min:0',
-            'stock_quantity' => 'required|integer|min:0',
-            'rental_price_per_day' => 'required|numeric|min:0',
+            'purchase_price' => 'required|numeric',
+            'sale_price' => 'required|numeric',
+            'stock_quantity' => 'required|integer',
+            'rental_price_per_day' => 'required|numeric',
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image
         ]);
 
-        Battery::create($validated);
+        // Handle file upload
+        $imagePath = $request->file('file')->store('uploads/battery', 'public');
 
-        return redirect()->route('batteries.index')->with('success', 'Battery created successfully.');
+        Battery::create([
+            'type' => $request->type,
+            'brand' => $request->brand,
+            'model_number' => $request->model_number,
+            'purchase_price' => $request->purchase_price,
+            'sale_price' => $request->sale_price,
+            'stock_quantity' => $request->stock_quantity,
+            'rental_price_per_day' => $request->rental_price_per_day,
+            'image_path' => $imagePath,
+        ]);
+
+        return redirect()->route('admin.batteries.index')->with('success', 'Battery created successfully!');
     }
 
-    /**
-     * Display the specified battery.
-     */
-    public function show($id)
-    {
-        $battery = Battery::findOrFail($id);
-        return view('admin.batteries.show', compact('battery'));
-    }
-
-    /**
-     * Show the form for editing the specified battery.
-     */
     public function edit($id)
     {
         $battery = Battery::findOrFail($id);
         return view('admin.batteries.edit', compact('battery'));
     }
 
-    /**
-     * Update the specified battery in storage.
-     */
     public function update(Request $request, $id)
     {
-        $validated = $request->validate([
+        $battery = Battery::findOrFail($id);
+
+        $request->validate([
             'type' => 'required|string|max:255',
             'brand' => 'required|string|max:255',
             'model_number' => 'required|string|max:255',
-            'purchase_price' => 'required|numeric|min:0',
-            'sale_price' => 'required|numeric|min:0',
-            'stock_quantity' => 'required|integer|min:0',
-            'rental_price_per_day' => 'required|numeric|min:0',
+            'purchase_price' => 'required|numeric',
+            'sale_price' => 'required|numeric',
+            'stock_quantity' => 'required|integer',
+            'rental_price_per_day' => 'required|numeric',
+            'file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate image if provided
         ]);
 
-        $battery = Battery::findOrFail($id);
-        $battery->update($validated);
+        // Handle file upload if a new file is provided
+        if ($request->hasFile('file')) {
+            // Delete old file if exists
+            if ($battery->image_path && Storage::disk('public')->exists($battery->image_path)) {
+                Storage::disk('public')->delete($battery->image_path);
+            }
 
-        return redirect()->route('batteries.index')->with('success', 'Battery updated successfully.');
+            $imagePath = $request->file('file')->store('uploads/battery', 'public');
+            $battery->image_path = $imagePath;
+        }
+
+        $battery->update($request->only([
+            'type',
+            'brand',
+            'model_number',
+            'purchase_price',
+            'sale_price',
+            'stock_quantity',
+            'rental_price_per_day',
+        ]));
+
+        return redirect()->route('admin.batteries.index')->with('success', 'Battery updated successfully!');
     }
 
-    /**
-     * Remove the specified battery from storage.
-     */
     public function destroy($id)
     {
         $battery = Battery::findOrFail($id);
+
+        // Delete associated file
+        if ($battery->image_path && Storage::disk('public')->exists($battery->image_path)) {
+            Storage::disk('public')->delete($battery->image_path);
+        }
+
         $battery->delete();
 
-        return redirect()->route('batteries.index')->with('success', 'Battery deleted successfully.');
+        return redirect()->route('admin.batteries.index')->with('success', 'Battery deleted successfully!');
     }
 }

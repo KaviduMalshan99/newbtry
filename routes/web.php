@@ -348,7 +348,7 @@ Route::prefix('editors')->group(function () {
     Route::view('ace-code-editor', 'apps.ace-code-editor')->name('ace-code-editor');
 });
 
-Route::view('knowledgebase', 'apps.knowledgebase')->name('knowledgebase');
+Route::view('knowledgebase', 'apps.kowledgebase')->name('knowledgebase');
 Route::view('support-ticket', 'apps.support-ticket')->name('support-ticket');
 Route::view('landing-page', 'pages.landing-page')->name('landing-page');
 
@@ -418,3 +418,35 @@ Route::post('purchases/store', [PurchaseController::class, 'store'])->name('purc
 
 Route::resource('repairs', RepairController::class);
 Route::resource('rentals', RentalController::class);
+
+
+
+
+
+
+use App\Http\Controllers\BatteryController;
+use App\Http\Controllers\LubricantController;
+
+Route::prefix('admin/batteries')->group(function () {
+    Route::get('/', [BatteryController::class, 'index'])->name('batteries.index');
+    Route::get('/create', [BatteryController::class, 'create'])->name('batteries.create');
+    Route::post('/store', [BatteryController::class, 'store'])->name('batteries.store');
+    Route::get('/{id}', [BatteryController::class, 'show'])->name('batteries.show');
+    Route::get('/{id}/edit', [BatteryController::class, 'edit'])->name('batteries.edit');
+    Route::post('/{id}/update', [BatteryController::class, 'update'])->name('batteries.update');
+    Route::delete('/{id}', [BatteryController::class, 'destroy'])->name('batteries.destroy');
+});
+
+
+// Lubricant Management
+
+
+Route::prefix('admin/lubricants')->group(function () {
+    Route::get('/', [LubricantController::class, 'index'])->name('lubricants.index');
+    Route::get('/create', [LubricantController::class, 'create'])->name('lubricants.create');
+    Route::post('/', [LubricantController::class, 'store'])->name('lubricants.store');
+    Route::get('/{id}', [LubricantController::class, 'show'])->name('lubricants.show');
+    Route::get('/{id}/edit', [LubricantController::class, 'edit'])->name('lubricants.edit');
+    Route::put('/{id}', [LubricantController::class, 'update'])->name('lubricants.update');
+    Route::delete('/{id}', [LubricantController::class, 'destroy'])->name('lubricants.destroy');
+});
