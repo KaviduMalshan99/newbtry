@@ -1,21 +1,48 @@
-@extends('master')
+@extends('layouts.simple.master')
+@section('title', 'Ecommerce')
+
+@section('css')
+
+@endsection
+
+@section('style')
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/animate.css') }}">
+@endsection
+
+@section('breadcrumb-title')
+    <h3>Supplier Management</h3>
+@endsection
+
+@section('breadcrumb-items')
+    <li class="breadcrumb-item"> <a class="breadcrumb-item"
+            href="{{ request()->query('ref') === 'view' ? route('suppliers.show', $supplier->id) : route('suppliers.index') }}">
+            Suppliers
+        </a></li>
+    <li class="breadcrumb-item active">Update Supplier</li>
+@endsection
+
 @section('content')
     <section class="content-main">
         <div class="row">
             <div class="col-lg-12">
                 <div class="content-header">
-                    <h2 class="content-title">Update Suppliers</h2>
-                    <div>
-                        <a href="{{ route('suppliers.show', "view") }}" class="btn btn-light rounded font-sm mr-5 text-body hover-up">
-                            Back
-                        </a>                        
-                        <button type="submit" form="supplierForm" class="btn btn-md rounded font-sm hover-up">Update</button>
-                    </div>
+
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="card mb-4">
                     <div class="card-body">
+                        <div class="row gx-3">
+                            <div class="col-md-11 mb-4">
+                                <h2 class="content-title">Update Suppliers</h2>
+                            </div>
+                            <div class="col-md-1 mb-4">
+                                <a href="{{ request()->query('ref') === 'view' ? route('suppliers.show', $customer->id) : route('suppliers.index') }}"
+                                    class="btn btn-light rounded font-sm mr-5 text-body hover-up">
+                                    Back
+                                </a>
+                            </div>
+                        </div>
                         <form id="supplierForm" action="{{ route('suppliers.update', $supplier->id) }}" method="POST">
                             @csrf
                             @method('PUT')
@@ -43,14 +70,28 @@
                             </div>
                             <div class="mb-4">
                                 <label class="form-label">Product Type</label>
-                                <select name="product_type" class="form-select" required>
+                                {{-- <select name="product_type" class="form-select" required>
+                                @foreach ($productTypes as $type)
+                                    <option value="{{ $type }}"
+                                        {{ $supplier->product_type == $type ? 'selected' : '' }}>
+                                        {{ ucfirst($type) }}
+                                    </option>
+                                @endforeach
+                            </select> --}}
+                                <div class="col-lg-12">
                                     @foreach ($productTypes as $type)
-                                        <option value="{{ $type }}"
-                                            {{ $supplier->product_type == $type ? 'selected' : '' }}>
-                                            {{ ucfirst($type) }}
-                                        </option>
+                                        <label class="form-check my-2">
+                                            <input type="checkbox" class="form-check-input" name="product_type[]"
+                                                value="{{ $type }}"
+                                                {{ in_array($type, json_decode($supplier->product_type, true)) ? 'checked' : '' }} />
+                                            <span class="form-check-label">{{ ucfirst($type) }}</span>
+                                        </label>
                                     @endforeach
-                                </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <button form="supplierForm" class="btn btn-primary col-md-3" type="submit">Update</button>
                             </div>
                         </form>
                     </div>
@@ -58,4 +99,14 @@
             </div>
         </div>
     </section>
+@endsection
+
+@section('script')
+    <script src="{{ asset('assets/js/chart/apex-chart/apex-chart.js') }}"></script>
+    <script src="{{ asset('assets/js/chart/apex-chart/stock-prices.js') }}"></script>
+    <script src="{{ asset('assets/js/counter/jquery.waypoints.min.js') }}"></script>
+    <script src="{{ asset('assets/js/counter/jquery.counterup.min.js') }}"></script>
+    <script src="{{ asset('assets/js/counter/counter-custom.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/dashboard_2.js') }}"></script>
+    <script src="{{ asset('assets/js/animation/wow/wow.min.js') }}"></script>
 @endsection

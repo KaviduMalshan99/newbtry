@@ -11,14 +11,21 @@ class SupplierController extends Controller
     {
         $suppliers = Supplier::orderBy('updated_at', 'desc')->paginate(10);
         $productTypes = ['batteries', 'lubricants'];
-        return view('suppliers.view', compact('suppliers', 'productTypes'));
+        return view('admin.supplier_management.view', compact('suppliers', 'productTypes'));
+    }
+
+    public function index()
+    {
+        $suppliers = Supplier::orderBy('updated_at', 'desc')->paginate(10);
+        $productTypes = ['batteries', 'lubricants'];
+        return view('admin.supplier_management.view', compact('suppliers', 'productTypes'));
     }
 
     public function create()
     {
         $productTypes = ['batteries', 'lubricants'];
 
-        return view('suppliers.add', compact('productTypes'));
+        return view('admin.supplier_management.add', compact('productTypes'));
     }
 
     public function store(Request $request)
@@ -28,12 +35,19 @@ class SupplierController extends Controller
             'email' => 'nullable|email|max:255|unique:suppliers,email,' . ($supplier->id ?? 'NULL'),
             'phone_number' => 'required|string|max:15|unique:suppliers,phone_number,' . ($supplier->id ?? 'NULL'),
             'address' => 'required|string|max:255',
-            'product_type' => 'required|in:batteries,lubricants',
+            'product_type' => 'required|array', // Expect an array for product types
+            'product_type.*' => 'in:batteries,lubricants', // Validate each value
         ]);
-        
+
 
         // Create a new supplier
-        Supplier::create($request->all());
+    Supplier::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'phone_number' => $request->phone_number,
+        'address' => $request->address,
+        'product_type' => json_encode($request->product_type), // Store product types as JSON
+    ]);
 
         // Redirect with a success message
         return redirect()->route('suppliers.create')->with('success', 'Supplier added successfully!');
@@ -44,21 +58,28 @@ class SupplierController extends Controller
         $supplier = Supplier::findOrFail($id);
         $productTypes = ['batteries', 'lubricants'];
 
-        return view('suppliers.update', compact('supplier', 'productTypes'));
+        return view('admin.supplier_management.update', compact('supplier', 'productTypes'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'nullable|email|max:255|unique:suppliers,email,' . $id, 
+            'email' => 'nullable|email|max:255|unique:suppliers,email,' . $id,
             'phone_number' => 'required|string|max:15|unique:suppliers,phone_number,' . $id,
             'address' => 'required|string|max:255',
-            'product_type' => 'required|in:batteries,lubricants',
-        ]);      
+            'product_type' => 'required|array', // Expect an array for product types
+        'product_type.*' => 'in:batteries,lubricants', // Validate each value
+        ]);
 
         $supplier = Supplier::findOrFail($id);
-        $supplier->update($request->all());
+        $supplier->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'address' => $request->address,
+            'product_type' => json_encode($request->product_type), // Store product types as JSON
+        ]);
 
         return redirect()->route('suppliers.show', "view")
             ->with('success', 'Supplier updated successfully!');

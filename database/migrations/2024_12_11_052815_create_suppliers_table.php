@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('phone_number'); 
             $table->string('email')->nullable(); 
             $table->string('address'); 
-            $table->enum('product_type', ['batteries', 'lubricants']);
+            $table->json('product_type');
             $table->timestamps();
         });
     }
