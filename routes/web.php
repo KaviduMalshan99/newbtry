@@ -418,6 +418,7 @@ Route::prefix('purchases')->group(function () {
     Route::get('/{purchase}/purchase-items', [PurchaseController::class, 'viewPurchaseItems'])->name('purchases.purchase-items');
     Route::delete('/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
     Route::put('/{purchase}', [PurchaseController::class, 'update'])->name('purchases.update');
+    Route::get('/{purchase}/grn', [PurchaseController::class, 'generateGrn'])->name('purchases.grn');
 });
 
 Route::resource('repairs', RepairController::class);

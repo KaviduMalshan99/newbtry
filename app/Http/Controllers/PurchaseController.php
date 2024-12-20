@@ -7,6 +7,7 @@ use App\Models\Lubricant;
 use App\Models\Purchase;
 use App\Models\PurchaseItem;
 use App\Models\Supplier;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class PurchaseController extends Controller
@@ -79,7 +80,8 @@ class PurchaseController extends Controller
 
 
         // Redirect with success message
-        return redirect()->route('purchases.create')->with('success', 'Purchase created successfully!');
+        // return redirect()->route('purchases.create')->with('success', 'Purchase created successfully!');
+        return redirect()->route('purchases.grn', $purchase->id)->with('success', 'Purchase created successfully!');
     }
 
 
@@ -201,5 +203,22 @@ class PurchaseController extends Controller
     {
         $purchase->delete();
         return redirect()->route('purchases.index')->with('success', 'Purchase deleted successfully!');
+    }
+
+
+    public function generateGrn(Purchase $purchase)
+    {
+        // Load the related purchase items and supplier
+        $purchase->load(['supplier', 'purchaseItems.battery', 'purchaseItems.lubricant']);
+
+        // Current date and time
+        $currentDateTime = Carbon::now()->format('d.m.Y H:i');
+
+        // Pass the data to the view
+        return view('admin.purchases.grn', [
+            'purchase' => $purchase,
+            'purchaseItems' => $purchase->purchaseItems,
+            'currentDateTime' => $currentDateTime,
+        ]);
     }
 }
