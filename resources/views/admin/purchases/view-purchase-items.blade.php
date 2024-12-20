@@ -34,7 +34,7 @@
                                 <h3>Manage your Purchase efficiently.</h3>
                             </div>
                             <div class="col-md-1 mb-4">
-                                <a href="{{ request()->query('ref') === 'view' ? route('customers.show', $customer->id) : route('customers.index') }}"
+                                <a href="{{ request()->query('ref') === 'view' ? route('purchases.show', $purchase->id) : route('purchases.index') }}"
                                     class="btn btn-light rounded font-sm mr-5 text-body hover-up">
                                     Back
                                 </a>
