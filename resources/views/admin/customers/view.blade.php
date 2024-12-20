@@ -70,12 +70,13 @@
                                                             href="{{ route('customers.purchase-history', $customer->id) }}"><i
                                                                 class="icon-receipt"></i></a></li>
 
-                                                    <form action="{{ route('customers.destroy', $customer->id) }}"
-                                                        method="POST"
-                                                        onsubmit="return confirm('Are you sure you want to delete this customer?');">
+                                                    <form id="deleteForm{{ $customer->id }}"
+                                                        action="{{ route('customers.destroy', $customer->id) }}"
+                                                        method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="delete btn btn-sm">
+                                                        <button type="button" class="delete btn btn-sm"
+                                                            onclick="confirmDelete('deleteForm{{ $customer->id }}', 'Are you sure you want to delete this product?')">
                                                             <i class="icon-trash"></i>
                                                         </button>
                                                     </form>

@@ -70,12 +70,14 @@
                                                                 class="icon-pencil-alt"></i></a>
                                                     </li>
 
-                                                    <form action="{{ route('suppliers.destroy', $supplier->id) }}"
-                                                        method="POST"
-                                                        onsubmit="return confirm('Are you sure you want to delete this supplier?');">
+
+                                                    <form id="deleteForm{{ $supplier->id }}"
+                                                        action="{{ route('suppliers.destroy', $supplier->id) }}"
+                                                        method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="delete btn btn-sm">
+                                                        <button type="button" class="delete btn btn-sm"
+                                                            onclick="confirmDelete('deleteForm{{ $supplier->id }}', 'Are you sure you want to delete this supplier?')">
                                                             <i class="icon-trash"></i>
                                                         </button>
                                                     </form>

@@ -66,12 +66,14 @@
                                                             href="{{ route('purchases.purchase-items', $purchase->id) }}"><i
                                                                 class="icon-receipt"></i></a></li>
 
-                                                    <form action="{{ route('purchases.destroy', $purchase->id) }}"
-                                                        method="POST"
-                                                        onsubmit="return confirm('Are you sure you want to delete this purchase?');">
+
+                                                    <form id="deleteForm{{ $purchase->id }}"
+                                                        action="{{ route('purchases.destroy', $purchase->id) }}"
+                                                        method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="delete btn btn-sm">
+                                                        <button type="button" class="delete btn btn-sm"
+                                                            onclick="confirmDelete('deleteForm{{ $purchase->id }}', 'Are you sure you want to delete this purchase?')">
                                                             <i class="icon-trash"></i>
                                                         </button>
                                                     </form>
