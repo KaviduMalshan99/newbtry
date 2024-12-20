@@ -1,12 +1,8 @@
-
-
-
-
 @section('style')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/animate.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/animate.css') }}">
 @endsection
 
-{{-- 
+{{--
 @section('content')
 <div class="container">
     <h1>Batteries</h1>
@@ -63,70 +59,98 @@
 @endsection
 
 @section('breadcrumb-title')
-<h3>Bootstrap Basic Tables</h3>
+    <h3>Battery Management</h3>
 @endsection
 
-{{-- @section('breadcrumb-items')
-<li class="breadcrumb-item">Bootstrap Tables</li>
+@section('breadcrumb-items')
+    <li class="breadcrumb-item">Battery Management</li>
+    <li class="breadcrumb-item">Add Battery</li>
 
-@endsection --}}
+@endsection
 
 @section('content')
- <div class="container-fluid basic_table">
-            <div class="row">
-              <div class="col-sm-12">
+    <div class="container-fluid basic_table">
+        <div class="row">
+            <div class="col-sm-12">
                 <div class="card">
-                  
+
 
 
                     <div class="container  card-body">
                         <!-- Form to create or update battery -->
-                        <form action="{{ isset($battery) ? route('batteries.update', $battery->id) : route('batteries.store') }}" method="POST">
+                        <form
+                            action="{{ isset($battery) ? route('batteries.update', $battery->id) : route('batteries.store') }}"
+                            method="POST">
                             @csrf
-                            @if(isset($battery))
+                            @if (isset($battery))
                                 @method('PUT')
                             @endif
-                    
-                            <div class="form-group">
-                                <label for="type my-2">Type</label>
-                                <input type="text" name="type" class="form-control" value="{{ old('type', $battery->type ?? '') }}" required>
+
+                            <div class="row gx-3">
+                                <div class="col-md-6 mb-4">
+                                    <label for="type my-2">Type</label>
+                                    <input type="text" name="type" class="form-control"
+                                        value="{{ old('type', $battery->type ?? '') }}" required>
+
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="brand">Brand</label>
+                                    <input type="text" name="brand" class="form-control"
+                                        value="{{ old('brand', $battery->brand ?? '') }}" required>
+
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="brand">Brand</label>
-                                <input type="text" name="brand" class="form-control" value="{{ old('brand', $battery->brand ?? '') }}" required>
-                            </div>
-                            <div class="form-group">
+                            <div class="mb-4">
                                 <label for="model_number my-2">Model Number</label>
-                                <input type="text" name="model_number" class="form-control" value="{{ old('model_number', $battery->model_number ?? '') }}" required>
+                                <input type="text" name="model_number" class="form-control"
+                                    value="{{ old('model_number', $battery->model_number ?? '') }}" required>
+
                             </div>
-                            <div class="form-group">
-                                <label for="purchase_price my-2">Purchase Price</label>
-                                <input type="number" name="purchase_price" class="form-control" step="0.01" value="{{ old('purchase_price', $battery->purchase_price ?? '') }}" required>
+                            <div class="row gx-3">
+                                <div class="col-md-6 mb-4">
+                                    <label for="purchase_price my-2">Purchase Price</label>
+                                    <input type="number" name="purchase_price" class="form-control" step="0.01"
+                                        value="{{ old('purchase_price', $battery->purchase_price ?? '') }}" required>
+
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="sale_price my-2">Sale Price</label>
+                                    <input type="number" name="sale_price" class="form-control" step="0.01"
+                                        value="{{ old('sale_price', $battery->sale_price ?? '') }}" required>
+
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="sale_price my-2">Sale Price</label>
-                                <input type="number" name="sale_price" class="form-control" step="0.01" value="{{ old('sale_price', $battery->sale_price ?? '') }}" required>
-                            </div>
-                            <div class="form-group">
+                            <div class="mb-4">
                                 <label for="stock_quantity my-2">Stock Quantity</label>
-                                <input type="number" name="stock_quantity" class="form-control" value="{{ old('stock_quantity', $battery->stock_quantity ?? '') }}" required>
+                                <input type="number" name="stock_quantity" class="form-control"
+                                    value="{{ old('stock_quantity', $battery->stock_quantity ?? '') }}" required>
+
                             </div>
-                            <div class="form-group">
+                            <div class="mb-4">
                                 <label for="rental_price_per_day my-2">Rental Price/Day</label>
-                                <input type="number" name="rental_price_per_day" class="form-control" step="0.01" value="{{ old('rental_price_per_day', $battery->rental_price_per_day ?? '') }}" required>
+                                <input type="number" name="rental_price_per_day" class="form-control" step="0.01"
+                                    value="{{ old('rental_price_per_day', $battery->rental_price_per_day ?? '') }}"
+                                    required>
+
                             </div>
-                    
-                            <button type="submit" class="btn btn-primary my-2">{{ isset($battery) ? 'Update' : 'Create' }} Battery</button>
+                            <div class="mb-4">
+                                <button type="submit"
+                                    class="btn btn-primary my-2">{{ isset($battery) ? 'Update' : 'Create' }}
+                                    Battery</button>
+                            </div>
+
+
+
                         </form>
                     </div>
 
 
                 </div>
-              </div>
             </div>
         </div>
-             
-         
+    </div>
+
+
 @endsection
 
 @section('script')
