@@ -11,11 +11,11 @@
 @endsection
 
 @section('breadcrumb-title')
-    <h3>Customer Management</h3>
+    <h3>Purchase Management</h3>
 @endsection
 
 @section('breadcrumb-items')
-    <li class="breadcrumb-item active">Customers</li>
+    <li class="breadcrumb-item active">Purchases</li>
 @endsection
 
 @section('content')
@@ -30,11 +30,11 @@
 
                         <div class="row gx-3">
                             <div class="col-md-10 mb-4">
-                                <h3>Customer List</h3>
+                                <h3>Purchase List</h3>
                             </div>
                             <div class="col-md-2 mb-4">
                                 <div>
-                                    <a href="{{ route('customers.create') }}" class="btn btn-primary btn-sm rounded">Create
+                                    <a href="{{ route('purchases.create') }}" class="btn btn-primary btn-sm rounded">Create
                                         new</a>
                                 </div>
                             </div>
@@ -44,39 +44,36 @@
                             <table class="display" id="keytable">
                                 <thead>
                                     <tr>
-                                        <th>Customer Name</th>
-                                        <th>Phone Number</th>
-                                        <th>Email</th>
-                                        <th>Address</th>
+                                        <th>Supplier Name</th>
+                                        <th>Total Price</th>
                                         <th>Date</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($customers as $customer)
+                                    @forelse ($purchases as $purchase)
                                         <tr>
-                                            <td>{{ $customer->first_name }} {{ $customer->last_name }} </td>
-                                            <td>{{ $customer->phone_number }}</td>
-                                            <td>{{ $customer->email ?? 'N/A' }}</td>
-                                            <td>{{ $customer->address }}</td>
-                                            <td>{{ $customer->created_at->format('d.m.Y') }}</td>
+                                            <td>{{ $purchase->supplier->name }}</td>
+                                            <td>{{ number_format($purchase->total_price, 2) }}</td>
+                                            <td>{{ $purchase->created_at->format('d.m.Y') }}</td>
                                             <td>
                                                 <ul class="action">
                                                     <li class="edit btn btn-sm"> <a
-                                                            href="{{ route('customers.edit', $customer->id) }}"><i
+                                                            href="{{ route('purchases.edit', $purchase->id) }}"><i
                                                                 class="icon-pencil-alt"></i></a>
                                                     </li>
                                                     <li class="btn btn-sm"><a
-                                                            href="{{ route('customers.purchase-history', $customer->id) }}"><i
+                                                            href="{{ route('purchases.purchase-items', $purchase->id) }}"><i
                                                                 class="icon-receipt"></i></a></li>
 
-                                                    <form id="deleteForm{{ $customer->id }}"
-                                                        action="{{ route('customers.destroy', $customer->id) }}"
+
+                                                    <form id="deleteForm{{ $purchase->id }}"
+                                                        action="{{ route('purchases.destroy', $purchase->id) }}"
                                                         method="POST" style="display: inline;">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="button" class="delete btn btn-sm"
-                                                            onclick="confirmDelete('deleteForm{{ $customer->id }}', 'Are you sure you want to delete this product?')">
+                                                            onclick="confirmDelete('deleteForm{{ $purchase->id }}', 'Are you sure you want to delete this purchase?')">
                                                             <i class="icon-trash"></i>
                                                         </button>
                                                     </form>

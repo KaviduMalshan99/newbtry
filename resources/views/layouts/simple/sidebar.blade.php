@@ -123,9 +123,9 @@
                             </svg><span>Purchase</span></a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('purchases.create') }}">Add Purchase</a></li>
-                            {{-- <li><a
-                                    href="{{ request()->query('ref') === 'view' ? route('suppliers.show', $customer->id) : route('suppliers.index') }}">View
-                                    Supplier</a></li> --}}
+                            <li><a
+                                    href="{{ request()->query('ref') === 'view' ? route('purchases.show', $purchase->id) : route('purchases.index') }}">View
+                                    Supplier</a></li>
 
                         </ul>
                     </li>
@@ -176,7 +176,7 @@
 
                     <li class="sidebar-main-title">
                         <div>
-                            <h6>Batteries & Lubricants</h6>
+                            <h6>Forms & Table</h6>
                         </div>
                     </li>
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
@@ -186,18 +186,19 @@
                             </svg>
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-form') }}"> </use>
-                            </svg><span>Batteries</span></a>
+                            </svg><span>Forms</span></a>
                         <ul class="sidebar-submenu">
-                            <li><a class="submenu-title" href="{{route('batteries.create')}}">Add Batteries<span class="sub-arrow"></span></a>
-                                {{-- <ul class="nav-sub-childmenu submenu-content">
+                            <li><a class="submenu-title" href="#">Form Controls<span class="sub-arrow"><i
+                                            class="fa fa-angle-right"></i></span></a>
+                                <ul class="nav-sub-childmenu submenu-content">
                                     <li><a href="{{ route('form-validation') }}">Form Validation</a></li>
                                     <li><a href="{{ route('base-input') }}">Base Inputs</a></li>
                                     <li><a href="{{ route('radio-checkbox-control') }}">Checkbox & Radio</a></li>
                                     <li><a href="{{ route('input-group') }}">Input Groups</a></li>
                                     <li><a href="{{ route('megaoptions') }}">Mega Options</a></li>
-                                </ul> --}}
+                                </ul>
                             </li>
-                            {{-- <li><a class="submenu-title" href="#">Form Widgets<span class="sub-arrow"><i
+                            <li><a class="submenu-title" href="#">Form Widgets<span class="sub-arrow"><i
                                             class="fa fa-angle-right"></i></span></a>
                                 <ul class="nav-sub-childmenu submenu-content">
                                     <li><a href="{{ route('datepicker') }}">Datepicker</a></li>
@@ -209,15 +210,16 @@
                                     <li><a href="{{ route('switch') }}">Switch</a></li>
                                     <li><a href="{{ route('typeahead') }}">Typeahead</a></li>
                                     <li><a href="{{ route('clipboard') }}">Clipboard</a></li>
-                                </ul> --}}
+                                </ul>
                             </li>
-                            <li><a class="submenu-title" href="{{route('batteries.index')}}">View Batteries <span class="sub-arrow"></span></a>
-                                {{-- <ul class="nav-sub-childmenu submenu-content">
+                            <li><a class="submenu-title" href="#">Form layout<span class="sub-arrow"><i
+                                            class="fa fa-angle-right"></i></span></a>
+                                <ul class="nav-sub-childmenu submenu-content">
                                     <li><a href="{{ route('default-form') }}">Default Forms</a></li>
                                     <li><a href="{{ route('form-wizard') }}">Form Wizard 1</a></li>
                                     <li><a href="{{ route('form-wizard-two') }}">Form Wizard 2</a></li>
                                     <li><a href="{{ route('form-wizard-three') }}">Form Wizard 3</a></li>
-                                </ul> --}}
+                                </ul>
                             </li>
                         </ul>
                     </li>
@@ -228,20 +230,22 @@
                             </svg>
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-table') }}"></use>
-                            </svg><span>Lubricants</span></a>
+                            </svg><span>Tables</span></a>
                         <ul class="sidebar-submenu">
-                            <li><a class="submenu-title" href="{{route('lubricants.create')}}">Add Lubricants<span class="sub-arrow"></span></a>
-                                {{-- <ul class="nav-sub-childmenu submenu-content">
+                            <li><a class="submenu-title" href="#">Bootstrap Tables<span class="sub-arrow"><i
+                                            class="fa fa-angle-right"></i></span></a>
+                                <ul class="nav-sub-childmenu submenu-content">
                                     <li><a href="{{ route('bootstrap-basic-table') }}">Basic Tables</a></li>
                                     <li><a href="{{ route('table-components') }}">Table components</a></li>
-                                </ul> --}}
+                                </ul>
                             </li>
-                            <li><a class="submenu-title" href="{{route('lubricants.index')}}">View Lubricants<span class="sub-arrow"></span></a>
-                                {{-- <ul class="nav-sub-childmenu submenu-content">
+                            <li><a class="submenu-title" href="#">Data Tables<span class="sub-arrow"><i
+                                            class="fa fa-angle-right"></i></span></a>
+                                <ul class="nav-sub-childmenu submenu-content">
                                     <li><a href="{{ route('datatable-basic-init') }}">Basic Init</a></li>
                                     <li><a href="{{ route('datatable-api') }}">API</a></li>
                                     <li><a href="{{ route('datatable-data-source') }}">Data Sources</a></li>
-                                </ul> --}}
+                                </ul>
                             </li>
                             <li><a href="{{ route('datatable-ext-autofill') }}">Ex. Data Tables</a></li>
                             <li><a href="{{ route('jsgrid-table') }}">Js Grid Table </a></li>
