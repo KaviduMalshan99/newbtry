@@ -67,7 +67,6 @@ Route::get('lang/{locale}', function ($locale) {
 Route::prefix('dashboard')->group(function () {
     Route::view('index', 'dashboard.index')->name('index');
     Route::view('dashboard-02', 'dashboard.dashboard-02')->name('dashboard-02');
-
 });
 
 Route::prefix('widgets')->group(function () {
@@ -399,7 +398,6 @@ Route::prefix('customers')->group(function () {
     Route::get('/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
     Route::put('/{customer}', [CustomerController::class, 'update'])->name('customers.update');
     Route::delete('/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
-
 });
 
 Route::get('user/add', [UserController::class, 'create'])->name('users.create');
@@ -411,16 +409,16 @@ Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.
 
 Route::resource('sales', SaleController::class);
 
-Route::get('/purchases/products/{type}', [PurchaseController::class, 'getProducts']);
-Route::get('purchases/add', [PurchaseController::class, 'create'])->name('purchases.create');
-Route::post('purchases/store', [PurchaseController::class, 'store'])->name('purchases.store');
-Route::get('/purchases', [PurchaseController::class, 'index'])->name('purchases.index');
-Route::get('/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchases.edit');
-Route::get('/{purchase}/purchase-items', [PurchaseController::class, 'viewPurchaseItems'])->name('purchases.purchase-items');
-Route::delete('/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
-Route::put('/purchases/{purchase}', [PurchaseController::class, 'update'])->name('purchases.update');
-
-
+Route::prefix('purchases')->group(function () {
+    Route::get('/products/{type}', [PurchaseController::class, 'getProducts']);
+    Route::get('/add', [PurchaseController::class, 'create'])->name('purchases.create');
+    Route::post('/store', [PurchaseController::class, 'store'])->name('purchases.store');
+    Route::get('/', [PurchaseController::class, 'index'])->name('purchases.index');
+    Route::get('/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchases.edit');
+    Route::get('/{purchase}/purchase-items', [PurchaseController::class, 'viewPurchaseItems'])->name('purchases.purchase-items');
+    Route::delete('/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
+    Route::put('/{purchase}', [PurchaseController::class, 'update'])->name('purchases.update');
+});
 
 Route::resource('repairs', RepairController::class);
 Route::resource('rentals', RentalController::class);
