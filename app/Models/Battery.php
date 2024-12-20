@@ -9,6 +9,7 @@ class Battery extends Model
 {
     use HasFactory;
 
+    // Add only the fields that exist in your database table
     protected $fillable = [
         'type',
         'brand',
@@ -17,6 +18,5 @@ class Battery extends Model
         'sale_price',
         'stock_quantity',
         'rental_price_per_day',
-        'image_path',
     ];
 }

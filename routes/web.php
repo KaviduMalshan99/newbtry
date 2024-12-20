@@ -67,7 +67,6 @@ Route::get('lang/{locale}', function ($locale) {
 Route::prefix('dashboard')->group(function () {
     Route::view('index', 'dashboard.index')->name('index');
     Route::view('dashboard-02', 'dashboard.dashboard-02')->name('dashboard-02');
-
 });
 
 Route::prefix('widgets')->group(function () {
@@ -348,7 +347,7 @@ Route::prefix('editors')->group(function () {
     Route::view('ace-code-editor', 'apps.ace-code-editor')->name('ace-code-editor');
 });
 
-Route::view('knowledgebase', 'apps.kowledgebase')->name('knowledgebase');
+Route::view('knowledgebase', 'apps.knowledgebase')->name('knowledgebase');
 Route::view('support-ticket', 'apps.support-ticket')->name('support-ticket');
 Route::view('landing-page', 'pages.landing-page')->name('landing-page');
 
@@ -399,7 +398,6 @@ Route::prefix('customers')->group(function () {
     Route::get('/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
     Route::put('/{customer}', [CustomerController::class, 'update'])->name('customers.update');
     Route::delete('/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
-
 });
 
 Route::get('user/add', [UserController::class, 'create'])->name('users.create');
@@ -411,42 +409,17 @@ Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.
 
 Route::resource('sales', SaleController::class);
 
-Route::get('/purchases/products/{type}', [PurchaseController::class, 'getProducts']);
-Route::get('purchases/add', [PurchaseController::class, 'create'])->name('purchases.create');
-Route::post('purchases/store', [PurchaseController::class, 'store'])->name('purchases.store');
-
+Route::prefix('purchases')->group(function () {
+    Route::get('/products/{type}', [PurchaseController::class, 'getProducts']);
+    Route::get('/add', [PurchaseController::class, 'create'])->name('purchases.create');
+    Route::post('/store', [PurchaseController::class, 'store'])->name('purchases.store');
+    Route::get('/', [PurchaseController::class, 'index'])->name('purchases.index');
+    Route::get('/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchases.edit');
+    Route::get('/{purchase}/purchase-items', [PurchaseController::class, 'viewPurchaseItems'])->name('purchases.purchase-items');
+    Route::delete('/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
+    Route::put('/{purchase}', [PurchaseController::class, 'update'])->name('purchases.update');
+    Route::get('/{purchase}/grn', [PurchaseController::class, 'generateGrn'])->name('purchases.grn');
+});
 
 Route::resource('repairs', RepairController::class);
 Route::resource('rentals', RentalController::class);
-
-
-
-
-
-
-use App\Http\Controllers\BatteryController;
-use App\Http\Controllers\LubricantController;
-
-Route::prefix('admin/batteries')->group(function () {
-    Route::get('/', [BatteryController::class, 'index'])->name('batteries.index');
-    Route::get('/create', [BatteryController::class, 'create'])->name('batteries.create');
-    Route::post('/store', [BatteryController::class, 'store'])->name('batteries.store');
-    Route::get('/{id}', [BatteryController::class, 'show'])->name('batteries.show');
-    Route::get('/{id}/edit', [BatteryController::class, 'edit'])->name('batteries.edit');
-    Route::post('/{id}/update', [BatteryController::class, 'update'])->name('batteries.update');
-    Route::delete('/{id}', [BatteryController::class, 'destroy'])->name('batteries.destroy');
-});
-
-
-// Lubricant Management
-
-
-Route::prefix('admin/lubricants')->group(function () {
-    Route::get('/', [LubricantController::class, 'index'])->name('lubricants.index');
-    Route::get('/create', [LubricantController::class, 'create'])->name('lubricants.create');
-    Route::post('/', [LubricantController::class, 'store'])->name('lubricants.store');
-    Route::get('/{id}', [LubricantController::class, 'show'])->name('lubricants.show');
-    Route::get('/{id}/edit', [LubricantController::class, 'edit'])->name('lubricants.edit');
-    Route::put('/{id}', [LubricantController::class, 'update'])->name('lubricants.update');
-    Route::delete('/{id}', [LubricantController::class, 'destroy'])->name('lubricants.destroy');
-});
