@@ -12,11 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('repairs', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade');
-            $table->foreignId('battery_id')->constrained('batteries')->onDelete('cascade');
-            $table->decimal('repair_cost', 10, 2);
-            $table->text('repair_details');
+            $table->id(); // Repair ID
+            $table->foreignId('customer_id')->constrained()->cascadeOnDelete(); // Foreign Key to Customers
+            $table->foreignId('repair_battery_id')->constrained('repair_batteries')->cascadeOnDelete(); // Foreign Key to Repair Batteries
+            $table->date('repair_order_start_date');
+            $table->date('repair_order_end_date')->nullable();
+            $table->text('diagnostic_report')->nullable();
+            $table->json('items_used')->nullable();
+            $table->decimal('repair_cost', 10, 2)->nullable();
+            $table->decimal('labor_charges', 10, 2)->nullable();
+            $table->decimal('total_cost', 10, 2)->nullable();
+            $table->enum('repair_status', ['In Progress', 'Completed'])->default('In Progress');
+            $table->text('notes')->nullable();
             $table->timestamps();
         });
     }

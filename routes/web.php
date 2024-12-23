@@ -427,7 +427,19 @@ Route::prefix('purchases')->group(function () {
     Route::get('/{purchase}/grn', [PurchaseController::class, 'generateGrn'])->name('purchases.grn');
 });
 
-Route::resource('repairs', RepairController::class);
+
+Route::prefix('admin/repairs')->group(function () {
+    Route::get('/create', [RepairController::class, 'create'])->name('repairs.create');
+    Route::post('/store', [RepairController::class, 'store'])->name('repairs.store');
+    Route::get('', [RepairController::class, 'index'])->name('repairs.index');
+    Route::get('/{customer}/purchase-history', [RepairController::class, 'viewPurchaseHistory'])->name('repairs.purchase-history');
+    Route::get('/{customer}/edit', [RepairController::class, 'edit'])->name('repairs.edit');
+    Route::put('/{customer}', [RepairController::class, 'update'])->name('repairs.update');
+    Route::delete('/{customer}', [RepairController::class, 'destroy'])->name('repairs.destroy');
+});
+
+// Route::resource('admin/repairs', RepairController::class);
+
 Route::resource('rentals', RentalController::class);
 
 Route::prefix('admin/batteries')->group(function () {
