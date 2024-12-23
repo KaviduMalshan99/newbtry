@@ -29,13 +29,20 @@
                     <div class="card-body">
 
                         <div class="row gx-3">
-                            <div class="col-md-10 mb-4">
+                            <div class="col-md-8 mb-4">
                                 <h3>Purchase List</h3>
                             </div>
                             <div class="col-md-2 mb-4">
                                 <div>
                                     <a href="{{ route('purchases.create') }}" class="btn btn-primary btn-sm rounded">Create
-                                        new</a>
+                                        Product New</a>
+                                </div>
+                            </div>
+                            <div class="col-md-2 mb-4">
+                                <div>
+                                    <a href="{{ route('purchases.create_battery') }}"
+                                        class="btn btn-primary btn-sm rounded">Create
+                                        Battery New</a>
                                 </div>
                             </div>
                         </div>

@@ -75,10 +75,10 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="add_product" class="form-label" id="product_label">Create New
+                                    <label for="add_product_view" class="form-label" id="product_label">Create New
                                         Product</label>
-                                    <input type="submit" id="add_product" class="form-control" value="Create New Product"
-                                        disabled />
+                                    <input type="button" id="add_product_view" class="form-control"
+                                        value="Create New Product" disabled />
                                 </div>
                             </div>
 
@@ -151,7 +151,7 @@
                     productDropdown.innerHTML = '<option value="" disabled>Select Products</option>';
                     data.forEach(product => {
                         productDropdown.innerHTML +=
-                            `<option value="${product.id}">${product.type}</option>`;
+                            `<option value="${product.id}">${product.brand}</option>`;
                     });
                 });
         });
@@ -225,7 +225,7 @@
     <script>
         const productTypeDropdown = document.getElementById('product_type');
         const productLabel = document.getElementById('product_label');
-        const addProductButton = document.getElementById('add_product');
+        const addProductButton = document.getElementById('add_product_view');
 
         productTypeDropdown.addEventListener('change', function() {
             const selectedType = productTypeDropdown.options[productTypeDropdown.selectedIndex].text;

@@ -122,10 +122,10 @@
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
                             </svg><span>Purchase</span></a>
                         <ul class="sidebar-submenu">
-                            <li><a href="{{ route('purchases.create') }}">Add Purchase</a></li>
+                            <li><a href="{{ route('purchases.create') }}">Add New Battery Purchase</a></li>
                             <li><a
                                     href="{{ request()->query('ref') === 'view' ? route('purchases.show', $purchase->id) : route('purchases.index') }}">View
-                                    Supplier</a></li>
+                                    Purchase</a></li>
 
                         </ul>
                     </li>

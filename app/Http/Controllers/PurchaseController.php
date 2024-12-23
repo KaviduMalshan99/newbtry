@@ -18,6 +18,7 @@ class PurchaseController extends Controller
         return view('admin.purchases.view', compact('purchases'));
     }
 
+    // remove
     public function create()
     {
         $suppliers = Supplier::all();
@@ -25,6 +26,14 @@ class PurchaseController extends Controller
         return view('admin.purchases.add', compact('suppliers', 'productTypes'));
     }
 
+    public function create_battery()
+    {
+        $suppliers = Supplier::all();
+        $productTypes = ['batteries', 'lubricants'];
+        return view('admin.purchases.add_battery', compact('suppliers', 'productTypes'));
+    }
+
+    // remove
     public function getProducts($type)
     {
         if ($type == 'batteries') {
@@ -38,6 +47,18 @@ class PurchaseController extends Controller
         return response()->json($products);
     }
 
+    public function createBatteryPurchase()
+    {
+        // Fetch suppliers where product_type matches 'batteries' using LIKE
+        $suppliers = Supplier::where('product_type', 'LIKE', '%batteries%')->get();
+
+        // Fetch all batteries
+        $batteries = Battery::all();
+
+        return view('admin.purchases.add_battery', compact('suppliers', 'batteries'));
+    }
+
+    // remove
     public function store(Request $request)
     {
         // Validate the incoming request
@@ -97,7 +118,63 @@ class PurchaseController extends Controller
         return redirect()->route('purchases.grn', $purchase->id)->with('success', 'Purchase created successfully!');
     }
 
+    public function storeBatteryPurchase(Request $request)
+    {
+        // Validate the incoming request
+        $data = $request->validate([
+            'supplier_id' => 'required|exists:suppliers,id',
+            'items' => 'required|json', // Items should be a JSON string
+        ]);
 
+        $items = json_decode($data['items'], true);
+
+        if (empty($items)) {
+            return redirect()->back()->with('error', 'No items to process.');
+        }
+
+        $totalPrice = 0;
+        $supplierId = $data['supplier_id'];
+
+        // Create the purchase
+        $purchase = Purchase::create([
+            'supplier_id' => $supplierId,
+            'total_price' => $totalPrice,
+        ]);
+
+        // Process each item in the purchase
+        foreach ($items as $item) {
+            $batteryId = $item['battery_id'];
+            $quantity = $item['quantity'];
+            $purchasePrice = $item['purchase_price'];
+
+            // Validate the battery exists
+            $battery = Battery::find($batteryId);
+            if (!$battery) {
+                return redirect()->back()->with('error', "Battery with ID {$batteryId} not found.");
+            }
+
+            // Update the battery's stock quantity
+            $battery->increment('stock_quantity', $quantity);
+
+            // Calculate total price for this item
+            $totalPrice += $quantity * $purchasePrice;
+
+            // Insert into the PurchaseItem table
+            PurchaseItem::create([
+                'purchase_id' => $purchase->id,
+                'supplier_id' => $supplierId,
+                'battery_id' => $batteryId,
+                'quantity' => $quantity,
+                'purchase_price' => $purchasePrice,
+            ]);
+        }
+
+        // Update the total price of the purchase
+        $purchase->update(['total_price' => $totalPrice]);
+        return redirect()->route('purchases.grn', $purchase->id)->with('success', 'Purchase created successfully!');
+    }
+
+    //remove
     public function edit($id)
     {
         $purchase = Purchase::with('purchaseItems.battery', 'purchaseItems.lubricant', 'supplier')->findOrFail($id);
@@ -116,6 +193,8 @@ class PurchaseController extends Controller
 
         return view('admin.purchases.update', compact('purchase', 'suppliers', 'productType', 'productTypes', 'products'));
     }
+
+    public function editBattery($id) {}
 
     // In your controller
     public function getProductsByType($type)

@@ -412,14 +412,18 @@ Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.
 Route::resource('sales', SaleController::class);
 
 Route::prefix('purchases')->group(function () {
-    Route::get('/products/{type}', [PurchaseController::class, 'getProducts']);
-    Route::get('/add', [PurchaseController::class, 'create'])->name('purchases.create');
-    Route::post('/store', [PurchaseController::class, 'store'])->name('purchases.store');
+    Route::get('/products/{type}', [PurchaseController::class, 'getProducts']); //remove
+    Route::get('/add', [PurchaseController::class, 'create'])->name('purchases.create'); //remove
+    Route::post('/store', [PurchaseController::class, 'store'])->name('purchases.store'); // remove
+    Route::get('/battery/create', [PurchaseController::class, 'createBatteryPurchase'])->name('purchases.create_battery');
+    Route::post('/battery/store', [PurchaseController::class, 'storeBatteryPurchase'])->name('purchases.store_battery');
+
     Route::get('/', [PurchaseController::class, 'index'])->name('purchases.index');
-    // Route::get('/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchases.edit');
+    Route::get('/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchases.edit'); //remove
+    Route::get('/battery/{purchase}/edit', [PurchaseController::class, 'editBattery'])->name('purchases.edit_battery');
     Route::get('/{purchase}/purchase-items', [PurchaseController::class, 'viewPurchaseItems'])->name('purchases.purchase-items');
     Route::delete('/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
-    // Route::put('/{purchase}', [PurchaseController::class, 'update'])->name('purchases.update');
+    Route::put('/{purchase}', [PurchaseController::class, 'update'])->name('purchases.update');
     Route::get('/{purchase}/grn', [PurchaseController::class, 'generateGrn'])->name('purchases.grn');
 });
 
