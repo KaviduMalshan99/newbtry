@@ -73,6 +73,19 @@ class PurchaseController extends Controller
                 'quantity' => $quantity,
                 'purchase_price' => $purchasePrice,
             ]);
+
+            // Update the quantity in the respective product table
+            if ($productType == 'batteries') {
+                $battery = Battery::find($productId);
+                if ($battery) {
+                    $battery->increment('stock_quantity', $quantity);
+                }
+            } elseif ($productType == 'lubricants') {
+                $lubricant = Lubricant::find($productId);
+                if ($lubricant) {
+                    $lubricant->increment('stock_quantity', $quantity);
+                }
+            }
         }
         $purchase->update([
             'total_price' => $totalPrice,

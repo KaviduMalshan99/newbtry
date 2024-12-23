@@ -62,13 +62,24 @@
 
                             <!-- Product Type -->
                             <div class="mb-4">
-                                <label for="product_type" class="form-label">Product Type</label>
-                                <select id="product_type" class="form-select" required>
-                                    <option value="" disabled selected>Select Product Type</option>
-                                    @foreach ($productTypes as $type)
-                                        <option value="{{ $type }}">{{ ucfirst($type) }}</option>
-                                    @endforeach
-                                </select>
+
+                            </div>
+                            <div class="row gx-3">
+                                <div class="col-md-6">
+                                    <label for="product_type" class="form-label">Product Type</label>
+                                    <select id="product_type" class="form-select" required>
+                                        <option value="" disabled selected>Select Product Type</option>
+                                        @foreach ($productTypes as $type)
+                                            <option value="{{ $type }}">{{ ucfirst($type) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="add_product" class="form-label" id="product_label">Create New
+                                        Product</label>
+                                    <input type="submit" id="add_product" class="form-control" value="Create New Product"
+                                        disabled />
+                                </div>
                             </div>
 
                             <!-- Product -->
@@ -210,6 +221,39 @@
             }
         });
     </script>
+
+    <script>
+        const productTypeDropdown = document.getElementById('product_type');
+        const productLabel = document.getElementById('product_label');
+        const addProductButton = document.getElementById('add_product');
+
+        productTypeDropdown.addEventListener('change', function() {
+            const selectedType = productTypeDropdown.options[productTypeDropdown.selectedIndex].text;
+
+            if (selectedType) {
+                productLabel.textContent = `Create New Product (${selectedType})`;
+                addProductButton.value = `Create New ${selectedType}`;
+                addProductButton.disabled = false; // Enable the button
+            } else {
+                productLabel.textContent = "Create New Product";
+                addProductButton.value = "Create New Product";
+                addProductButton.disabled = true; // Disable the button
+            }
+        });
+
+        addProductButton.addEventListener('click', function() {
+            const selectedType = productTypeDropdown.value;
+
+            if (selectedType === 'batteries') {
+                window.location.href = "{{ route('batteries.create') }}";
+            } else if (selectedType === 'lubricants') {
+                window.location.href = "{{ route('lubricants.create') }}";
+            } else {
+                alert('Please select a valid product type.');
+            }
+        });
+    </script>
+
 
     @if ($errors->any())
         <div class="alert alert-danger">

@@ -58,10 +58,10 @@
                                             <td>{{ $purchase->created_at->format('d.m.Y') }}</td>
                                             <td>
                                                 <ul class="action">
-                                                    <li class="edit btn btn-sm"> <a
+                                                    {{-- <li class="edit btn btn-sm"> <a
                                                             href="{{ route('purchases.edit', $purchase->id) }}"><i
                                                                 class="icon-pencil-alt"></i></a>
-                                                    </li>
+                                                    </li> --}}
                                                     <li class="btn btn-sm"><a
                                                             href="{{ route('purchases.purchase-items', $purchase->id) }}"><i
                                                                 class="icon-receipt"></i></a></li>

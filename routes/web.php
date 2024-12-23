@@ -416,10 +416,10 @@ Route::prefix('purchases')->group(function () {
     Route::get('/add', [PurchaseController::class, 'create'])->name('purchases.create');
     Route::post('/store', [PurchaseController::class, 'store'])->name('purchases.store');
     Route::get('/', [PurchaseController::class, 'index'])->name('purchases.index');
-    Route::get('/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchases.edit');
+    // Route::get('/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchases.edit');
     Route::get('/{purchase}/purchase-items', [PurchaseController::class, 'viewPurchaseItems'])->name('purchases.purchase-items');
     Route::delete('/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
-    Route::put('/{purchase}', [PurchaseController::class, 'update'])->name('purchases.update');
+    // Route::put('/{purchase}', [PurchaseController::class, 'update'])->name('purchases.update');
     Route::get('/{purchase}/grn', [PurchaseController::class, 'generateGrn'])->name('purchases.grn');
 });
 
