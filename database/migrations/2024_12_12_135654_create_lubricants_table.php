@@ -18,16 +18,17 @@ return new class extends Migration
             $table->decimal('purchase_price', 10, 2);
             $table->decimal('sale_price', 10, 2);
             $table->integer('stock_quantity');
+            $table->string('type', 50);
             $table->string('unit');
+            $table->string('image')->nullable(); // New image column
             $table->timestamps();
         });
     }
 
-
     /**
      * Reverse the migrations.
      */
-    public function down(): void
+    public function down()
     {
         Schema::dropIfExists('lubricants');
     }

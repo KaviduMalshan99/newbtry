@@ -5,11 +5,30 @@
 @section('title', 'Default')
 
 @section('css')
-    
+
 @endsection
+
+
+<link rel="stylesheet" type="text/css" href="../assets/css/font-awesome.css">
+<!-- ico-font-->
+<link rel="stylesheet" type="text/css" href="../assets/css/vendors/icofont.css">
+<!-- Themify icon-->
+<link rel="stylesheet" type="text/css" href="../assets/css/vendors/themify.css">
+<!-- Flag icon-->
+<link rel="stylesheet" type="text/css" href="../assets/css/vendors/flag-icon.css">
+<!-- Feather icon-->
+<link rel="stylesheet" type="text/css" href="../assets/css/vendors/feather-icon.css">
+<!-- Plugins css start-->
+
+</head>
 
 @section('style')
 <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/animate.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/responsive.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/color-1.css') }}">
+
+{{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}"> --}}
+{{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/bootstrap.css') }}"> --}}
 @endsection
 
 @section('breadcrumb-title')
@@ -26,7 +45,7 @@
 
 
 
-   
+
           <div class="container-fluid">
             <div class="page-title">
               <div class="row">
@@ -35,7 +54,7 @@
                 </div>
                 <div class="col-6">
                   <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">                                       
+                    <li class="breadcrumb-item"><a href="index.html">
                         <svg class="stroke-icon">
                           <use href="../assets/svg/icon-sprite.svg#stroke-home"></use>
                         </svg></a></li>
@@ -53,43 +72,66 @@
           <div class="container-fluid">
             <div class="row">
               <div class="col-xxl-9 col-xl-8">
-                <div class="row"> 
-                  <div class="col-xl-12"> 
+                <div class="row">
+                  <div class="col-xl-12">
                     <div class="card">
-                      <div class="card-header card-no-border"> 
-                        <div class="header-top"> 
+                      <div class="card-header card-no-border">
+                        <div class="header-top">
                           <h5>Shop by Categories</h5>
                           <div class="card-header-right-btn"><a class="font-dark f-12" href="javascript:void(0)">View All </a></div>
                         </div>
                       </div>
                       <div class="card-body pt-0">
-                        <div class="slider-wrapper arrow-round"> 
-                          <div class="swiper shop-category-slider">
-                            <div class="swiper-wrapper">
-                              <div class="swiper-slide"><a class="shop-box" href="#"><img src="../assets/images/dashboard-8/shop-categories/phone.png" alt="phone"></a><span class="m-t-10 category-title f-w-500 text-gray">Phone</span></div>
-                              <div class="swiper-slide"><a class="shop-box" href="#"><img src="../assets/images/dashboard-8/shop-categories/camera.png" alt="Camera"></a><span class="m-t-10 category-title f-w-500 text-gray">Camera</span></div>
-                              <div class="swiper-slide"><a class="shop-box" href="#"><img src="../assets/images/dashboard-8/shop-categories/laptop.png" alt="Laptop"></a><span class="m-t-10 category-title f-w-500 text-gray">Laptop</span></div>
-                              <div class="swiper-slide"><a class="shop-box" href="#"><img src="../assets/images/dashboard-8/shop-categories/mouse.png" alt="Mouse"></a><span class="m-t-10 category-title f-w-500 text-gray">Mouse</span></div>
-                              <div class="swiper-slide"><a class="shop-box" href="#"><img src="../assets/images/dashboard-8/shop-categories/keyboard.png" alt="Keyboard"></a><span class="m-t-10 category-title f-w-500 text-gray">Keyboard</span></div>
-                              <div class="swiper-slide"><a class="shop-box" href="#"><img src="../assets/images/dashboard-8/shop-categories/dron.png" alt="Drone"></a><span class="m-t-10 category-title f-w-500 text-gray">Drone</span></div>
-                              <div class="swiper-slide"><a class="shop-box" href="#"><img src="../assets/images/dashboard-8/shop-categories/watch.png" alt="watch"></a><span class="m-t-10 category-title f-w-500 text-gray">Watch</span></div>
-                              <div class="swiper-slide"><a class="shop-box" href="#"><img src="../assets/images/dashboard-8/shop-categories/headphone.png" alt="headphone"></a><span class="m-t-10 category-title f-w-500 text-gray">Headphone</span></div>
-                              <div class="swiper-slide"><a class="shop-box" href="#"><img src="../assets/images/dashboard-8/shop-categories/laptop-bag.png" alt="laptop bag"></a><span class="m-t-10 category-title f-w-500 text-gray">Laptop Bag</span></div>
+
+                        <div class="slider-wrapper arrow-round">
+                            <div class="swiper shop-category-slider">
+                              <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                  <a class="shop-box" href="#"><img src="../assets/images/dashboard-8/shop-categories/battery.png" alt="Battery"></a>
+                                  <span class="m-t-10 category-title f-w-500 text-gray">Battery</span>
+                                </div>
+                                <div class="swiper-slide">
+                                  <a class="shop-box" href="#"><img src="../assets/images/dashboard-8/shop-categories/lubricant.png" alt="Lubricant"></a>
+                                  <span class="m-t-10 category-title f-w-500 text-gray">Lubricant</span>
+                                </div>
+                                <div class="swiper-slide">
+                                  <a class="shop-box" href="#"><img src="../assets/images/dashboard-8/shop-categories/charger.png" alt="Charger"></a>
+                                  <span class="m-t-10 category-title f-w-500 text-gray">Charger</span>
+                                </div>
+                                {{-- <div class="swiper-slide">
+                                  <a class="shop-box" href="#"><img src="../assets/images/dashboard-8/shop-categories/inverter.png" alt="Inverter"></a>
+                                  <span class="m-t-10 category-title f-w-500 text-gray">Inverter</span>
+                                </div> --}}
+                                {{-- <div class="swiper-slide">
+                                  <a class="shop-box" href="#"><img src="../assets/images/dashboard-8/shop-categories/solar-panel.png" alt="Solar Panel"></a>
+                                  <span class="m-t-10 category-title f-w-500 text-gray">Solar Panel</span>
+                                </div> --}}
+                                <div class="swiper-slide">
+                                  <a class="shop-box" href="#"><img src="../assets/images/dashboard-8/shop-categories/old-battery.png" alt="Old Battery"></a>
+                                  <span class="m-t-10 category-title f-w-500 text-gray">Old Battery</span>
+                                </div>
+                                <div class="swiper-slide">
+                                  <a class="shop-box" href="#"><img src="../assets/images/dashboard-8/shop-categories/accessories.png" alt="Accessories"></a>
+                                  <span class="m-t-10 category-title f-w-500 text-gray">Accessories</span>
+                                </div>
+                              </div>
                             </div>
                           </div>
-                        </div>
+
+
+
                       </div>
                     </div>
                   </div>
                   <div class="col-xl-12">
                     <div class="card">
-                      <div class="card-header card-no-border"> 
+                      <div class="card-header card-no-border">
                         <div class="main-product-wrapper">
                           <div class="product-header">
                             <h5>Our Product</h5>
                             <p class="f-m-light mt-1 text-gray f-w-500">Browse & Discover Thousands of products here!</p>
                           </div>
-                          <div class="product-body"> 
+                          <div class="product-body">
                             <div class="input-group product-search"><span class="input-group-text"><i class="search-icon text-gray" data-feather="search"></i></span>
                               <input class="form-control" type="text" placeholder="Search here.." list="datalistOptionssearch" id="exampleDataList1">
                               <datalist id="datalistOptionssearch">
@@ -126,7 +168,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-xxl-3 col-sm-4"> 
+                          <div class="col-xxl-3 col-sm-4">
                             <div class="our-product-wrapper h-100 widget-hover">
                               <div class="our-product-img"><img src="../assets/images/dashboard-8/product-categories/laptop.png" alt="laptop"></div>
                               <div class="our-product-content">
@@ -140,7 +182,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-xxl-3 col-sm-4"> 
+                          <div class="col-xxl-3 col-sm-4">
                             <div class="our-product-wrapper h-100 widget-hover">
                               <div class="our-product-img"><img src="../assets/images/dashboard-8/product-categories/headphone.png" alt="headphone"></div>
                               <div class="our-product-content">
@@ -154,7 +196,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-xxl-3 col-sm-4"> 
+                          <div class="col-xxl-3 col-sm-4">
                             <div class="our-product-wrapper h-100 widget-hover">
                               <div class="our-product-img"><img src="../assets/images/dashboard-8/product-categories/phone.png" alt="phone"></div>
                               <div class="our-product-content">
@@ -168,7 +210,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-xxl-3 col-sm-4"> 
+                          <div class="col-xxl-3 col-sm-4">
                             <div class="our-product-wrapper h-100 widget-hover">
                               <div class="our-product-img"><img src="../assets/images/dashboard-8/product-categories/dvd.png" alt="DVD player"></div>
                               <div class="our-product-content">
@@ -182,7 +224,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-xxl-3 col-sm-4"> 
+                          <div class="col-xxl-3 col-sm-4">
                             <div class="our-product-wrapper h-100 widget-hover">
                               <div class="our-product-img"><img src="../assets/images/dashboard-8/product-categories/mac-laptop.png" alt="pink laptop"></div>
                               <div class="our-product-content">
@@ -196,7 +238,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-xxl-3 col-sm-4"> 
+                          <div class="col-xxl-3 col-sm-4">
                             <div class="our-product-wrapper h-100 widget-hover">
                               <div class="our-product-img"><img src="../assets/images/dashboard-8/product-categories/speaker.png" alt="speaker"></div>
                               <div class="our-product-content">
@@ -210,7 +252,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-xxl-3 col-sm-4"> 
+                          <div class="col-xxl-3 col-sm-4">
                             <div class="our-product-wrapper h-100 widget-hover">
                               <div class="our-product-img"><img src="../assets/images/dashboard-8/product-categories/mouse.png" alt="mouse"></div>
                               <div class="our-product-content">
@@ -224,7 +266,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-xxl-3 col-sm-4"> 
+                          <div class="col-xxl-3 col-sm-4">
                             <div class="our-product-wrapper h-100 widget-hover">
                               <div class="our-product-img"><img src="../assets/images/dashboard-8/product-categories/wireless-headphone.png" alt="wireless-headphone"></div>
                               <div class="our-product-content">
@@ -238,7 +280,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-xxl-3 col-sm-4"> 
+                          <div class="col-xxl-3 col-sm-4">
                             <div class="our-product-wrapper h-100 widget-hover">
                               <div class="our-product-img"><img src="../assets/images/dashboard-8/product-categories/keyboard.png" alt="keyboard"></div>
                               <div class="our-product-content">
@@ -252,7 +294,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-xxl-3 col-sm-4"> 
+                          <div class="col-xxl-3 col-sm-4">
                             <div class="our-product-wrapper h-100 widget-hover">
                               <div class="our-product-img"><img src="../assets/images/dashboard-8/product-categories/ipad.png" alt="ipad"></div>
                               <div class="our-product-content">
@@ -266,7 +308,7 @@
                               </div>
                             </div>
                           </div>
-                          <div class="col-xxl-3 col-sm-4"> 
+                          <div class="col-xxl-3 col-sm-4">
                             <div class="our-product-wrapper h-100 widget-hover">
                               <div class="our-product-img"><img src="../assets/images/dashboard-8/product-categories/drone.png" alt="drone"></div>
                               <div class="our-product-content">
@@ -360,7 +402,7 @@
                                 </div>
                               </div>
                               <div class="right-details">
-                                <div class="touchspin-wrapper"> 
+                                <div class="touchspin-wrapper">
                                   <button class="decrement-touchspin btn-touchspin"><i class="fa fa-minus text-gray"></i></button>
                                   <input class="input-touchspin" id="inputData" type="number" value="9">
                                   <button class="increment-touchspin btn-touchspin"><i class="fa fa-plus text-gray"></i></button>
@@ -380,7 +422,7 @@
                                 </div>
                               </div>
                               <div class="right-details">
-                                <div class="touchspin-wrapper"> 
+                                <div class="touchspin-wrapper">
                                   <button class="decrement-touchspin btn-touchspin"><i class="fa fa-minus text-gray"></i></button>
                                   <input class="input-touchspin" id="inputData1" type="number" value="9">
                                   <button class="increment-touchspin btn-touchspin"><i class="fa fa-plus text-gray"></i></button>
@@ -411,7 +453,7 @@
                           <div>
                             <div class="bg-payment widget-hover"> <img src="../assets/images/dashboard-8/payment-option/card.svg" alt="card"></div><span class="f-w-500 text-gray">Card</span>
                           </div>
-                          <div> 
+                          <div>
                             <div class="bg-payment widget-hover"> <img src="../assets/images/dashboard-8/payment-option/wallet.svg" alt="wallet"></div><span class="f-w-500 text-gray">E-Wallet</span>
                           </div>
                         </div>
@@ -427,13 +469,13 @@
           </div>
           <!-- Container-fluid Ends-->
         </div>
-      
+
 
         <script type="text/javascript">
             var session_layout = '{{ session()->get('layout') }}';
         </script>
     @endsection
-    
+
     @section('script')
     <script src="{{ asset('assets/js/clock.js') }}"></script>
     <script src="{{ asset('assets/js/chart/apex-chart/moment.min.js') }}"></script>
@@ -448,6 +490,6 @@
     <script src="{{ asset('assets/js/height-equal.js') }}"></script>
     <script src="{{ asset('assets/js/animation/wow/wow.min.js') }}"></script>
     @endsection
-    
+
 
 

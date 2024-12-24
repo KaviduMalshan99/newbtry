@@ -13,6 +13,8 @@ use App\Http\Controllers\RepairController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PosController;
+use App\Http\Controllers\OldBatteryController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -279,22 +281,22 @@ Route::prefix('others')->group(function () {
     Route::view('503', 'errors.503')->name('error-503');
 });
 
-Route::prefix('authentication')->group(function () {
-    Route::view('login', 'authentication.login')->name('login');
-    Route::view('login-one', 'authentication.login-one')->name('login-one');
-    Route::view('login-two', 'authentication.login-two')->name('login-two');
-    Route::view('login-bs-validation', 'authentication.login-bs-validation')->name('login-bs-validation');
-    Route::view('login-bs-tt-validation', 'authentication.login-bs-tt-validation')->name('login-bs-tt-validation');
-    Route::view('login-sa-validation', 'authentication.login-sa-validation')->name('login-sa-validation');
-    Route::view('sign-up', 'authentication.sign-up')->name('sign-up');
-    Route::view('sign-up-one', 'authentication.sign-up-one')->name('sign-up-one');
-    Route::view('sign-up-two', 'authentication.sign-up-two')->name('sign-up-two');
-    Route::view('sign-up-wizard', 'authentication.sign-up-wizard')->name('sign-up-wizard');
-    Route::view('unlock', 'authentication.unlock')->name('unlock');
-    Route::view('forget-password', 'authentication.forget-password')->name('forget-password');
-    Route::view('reset-password', 'authentication.reset-password')->name('reset-password');
-    Route::view('maintenance', 'authentication.maintenance')->name('maintenance');
-});
+// Route::prefix('authentication')->group(function () {
+//     Route::view('login', 'authentication.login')->name('login');
+//     Route::view('login-one', 'authentication.login-one')->name('login-one');
+//     Route::view('login-two', 'authentication.login-two')->name('login-two');
+//     Route::view('login-bs-validation', 'authentication.login-bs-validation')->name('login-bs-validation');
+//     Route::view('login-bs-tt-validation', 'authentication.login-bs-tt-validation')->name('login-bs-tt-validation');
+//     Route::view('login-sa-validation', 'authentication.login-sa-validation')->name('login-sa-validation');
+//     Route::view('sign-up', 'authentication.sign-up')->name('sign-up');
+//     Route::view('sign-up-one', 'authentication.sign-up-one')->name('sign-up-one');
+//     Route::view('sign-up-two', 'authentication.sign-up-two')->name('sign-up-two');
+//     Route::view('sign-up-wizard', 'authentication.sign-up-wizard')->name('sign-up-wizard');
+//     Route::view('unlock', 'authentication.unlock')->name('unlock');
+//     Route::view('forget-password', 'authentication.forget-password')->name('forget-password');
+//     Route::view('reset-password', 'authentication.reset-password')->name('reset-password');
+//     Route::view('maintenance', 'authentication.maintenance')->name('maintenance');
+// });
 
 Route::view('comingsoon', 'comingsoon.comingsoon')->name('comingsoon');
 Route::view('comingsoon-bg-video', 'comingsoon.comingsoon-bg-video')->name('comingsoon-bg-video');
@@ -411,6 +413,8 @@ Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.
 
 Route::resource('sales', SaleController::class);
 
+
+
 Route::prefix('purchases')->group(function () {
     Route::get('/products/{type}', [PurchaseController::class, 'getProducts']);
     Route::get('/add', [PurchaseController::class, 'create'])->name('purchases.create');
@@ -437,6 +441,18 @@ Route::prefix('admin/batteries')->group(function () {
 });
 
 
+Route::prefix('admin/batteries')->name('admin.old-batteries.')->group(function () {
+    Route::get('old-batteries/', [OldBatteryController::class, 'index'])->name('index');
+    Route::get('old-batteries/create', [OldBatteryController::class, 'create'])->name('create');
+    Route::post('old-batteries/', [OldBatteryController::class, 'store'])->name('store');
+    Route::get('old-batteries/{id}', [OldBatteryController::class, 'show'])->name('show');
+    Route::get('old-batteries/{id}/edit', [OldBatteryController::class, 'edit'])->name('edit');
+    Route::put('old-batteries/{id}', [OldBatteryController::class, 'update'])->name('update');
+    Route::delete('old-batteries/{id}', [OldBatteryController::class, 'destroy'])->name('destroy');
+});
+
+
+
 // Lubricant Management
 
 
@@ -449,3 +465,9 @@ Route::prefix('admin/lubricants')->group(function () {
     Route::put('/{id}', [LubricantController::class, 'update'])->name('lubricants.update');
     Route::delete('/{id}', [LubricantController::class, 'destroy'])->name('lubricants.destroy');
 });
+
+
+
+
+Route::get('admin/POS',[PosController::class,'index'])->name('POS.index');
+
