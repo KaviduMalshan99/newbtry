@@ -18,7 +18,7 @@
             href="{{ request()->query('ref') === 'view' ? route('repairs.show', $repair->id) : route('repairs.index') }}">
             Repairs
         </a></li>
-    <li class="breadcrumb-item active">Add New Repair</li>
+    <li class="breadcrumb-item active">Update Repair</li>
 @endsection
 
 @section('content')
@@ -35,7 +35,7 @@
 
                         <div class="row gx-3">
                             <div class="col-md-11 mb-4">
-                                <h2 class="content-title">Add New Repairs</h2>
+                                <h2 class="content-title">Update Repairs</h2>
                             </div>
                             <div class="col-md-1 mb-4">
                                 <a href="{{ request()->query('ref') === 'view' ? route('repairs.show', $repair->id) : route('repairs.index') }}"
@@ -45,17 +45,19 @@
                             </div>
                         </div>
 
-                        <form id="repairForm" action="{{ route('repairs.store') }}" method="POST">
+                        <form id="repairForm" action="{{ route('repairs.update', $repair) }}" method="POST">
                             @csrf <!-- Laravel's CSRF protection -->
+                            @method('PUT')
                             <!-- Customer -->
                             <div class="row gx-3">
                                 <div class="col-md-10 mb-4">
                                     <label for="customer_id" class="form-label">Customer</label>
                                     <select name="customer_id" id="customer_id" class="form-select" required>
-                                        <option value="" disabled selected>Select Customer</option>
                                         @foreach ($customers as $customer)
-                                            <option value="{{ $customer->id }}">{{ $customer->first_name }}
-                                                {{ $customer->last_name }}</option>
+                                            <option value="{{ $customer->id }}"
+                                                {{ $customer->id == $repair->customer_id ? 'selected' : '' }}>
+                                                {{ $customer->first_name }} {{ $customer->last_name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -72,20 +74,20 @@
                                 <div class="col-md-6 mb-4">
                                     <label for="type my-2">Type</label>
                                     <input type="text" name="type" class="form-control"
-                                        value="{{ old('type', $battery->type ?? '') }}" required>
+                                        value="{{ old('type', $repair->repairBattery->type) }}" required>
 
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <label for="brand">Brand</label>
                                     <input type="text" name="brand" class="form-control"
-                                        value="{{ old('brand', $battery->brand ?? '') }}" required>
+                                        value="{{ old('brand', $repair->repairBattery->brand ?? '') }}" required>
 
                                 </div>
                             </div>
                             <div class="mb-4">
                                 <label for="model_number my-2">Model Number</label>
                                 <input type="text" name="model_number" class="form-control"
-                                    value="{{ old('model_number', $battery->model_number ?? '') }}" required>
+                                    value="{{ old('model_number', $repair->repairBattery->model_number ?? '') }}" required>
 
                             </div>
 
@@ -93,10 +95,51 @@
                             <div class="mb-4">
                                 <label for="repair_order_end_date" class="form-label">Repair Order End Date</label>
                                 <input type="date" name="repair_order_end_date" placeholder="Type here"
-                                    class="form-control" id="name" />
+                                    class="form-control" id="name"
+                                    value="{{ old('model_number', $repair->repair_order_end_date ?? '') }}" />
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="diagnostic_report" class="form-label">Diagnostic Report</label>
+                                <textarea name="diagnostic_report" placeholder="Type here" class="form-control" id="diagnostic_report"> {{ old('diagnostic_report', $repair->diagnostic_report) }}</textarea>
+
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="items_used" class="form-label">Items Used</label>
+                                <textarea name="items_used" placeholder="Type here" class="form-control" id="items_used"> {{ old('items_used', is_array($repair->items_used) ? implode(', ', $repair->items_used) : $repair->items_used) }}</textarea>
+
+                            </div>
+                            <div class="row gx-3">
+                                <div class="col-md-4 mb-4">
+                                    <label for="repair_cost" class="form-label">Repair Cost</label>
+                                    <input type="number" name="repair_cost" placeholder="Type here" class="form-control"
+                                        id="repair_cost" value="{{ old('repair_cost', $repair->repair_cost) }}" />
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <label for="labor_charges" class="form-label">Labor Charges</label>
+                                    <input type="number" name="labor_charges" placeholder="Type here" class="form-control"
+                                        id="labor_charges" value="{{ old('labor_charges', $repair->labor_charges) }}" />
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <label for="total_cost" class="form-label">Total Cost</label>
+                                    <input type="number" name="total_cost" placeholder="Type here" class="form-control"
+                                        id="total_cost" value="{{ old('total_cost', $repair->total_cost) }}" />
+                                </div>
                             </div>
                             <div class="mb-4">
-                                <button type="submit" form="repairForm" class="btn btn-success col-md-3">Save</button>
+                                <label for="repair_status" class="form-label">Repair Status</label>
+                                <select name="repair_status" id="repair_status" class="form-select" required>
+                                    <option value="In Progress"
+                                        {{ $repair->repair_status == 'In Progress' ? 'selected' : '' }}>In Progress
+                                    </option>
+                                    <option value="Completed"
+                                        {{ $repair->repair_status == 'Completed' ? 'selected' : '' }}>Completed</option>
+                                </select>
+
+                            </div>
+                            <div class="mb-4">
+                                <button type="submit" form="repairForm" class="btn btn-success col-md-3">Update</button>
                             </div>
                         </form>
                     </div>
