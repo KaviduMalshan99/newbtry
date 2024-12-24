@@ -396,6 +396,7 @@ Route::prefix('customers')->group(function () {
     Route::get('/create', [CustomerController::class, 'create'])->name('customers.create');
     Route::post('/store', [CustomerController::class, 'store'])->name('customers.store');
     Route::get('', [CustomerController::class, 'index'])->name('customers.index');
+    Route::get('/{customer}/battery-repair', [CustomerController::class, 'indexByCustomer'])->name('customers.indexByCustomer');
     Route::get('/{customer}/purchase-history', [CustomerController::class, 'viewPurchaseHistory'])->name('customers.purchase-history');
     Route::get('/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
     Route::put('/{customer}', [CustomerController::class, 'update'])->name('customers.update');

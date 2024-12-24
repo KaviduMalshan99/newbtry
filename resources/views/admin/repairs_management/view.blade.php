@@ -99,7 +99,7 @@
                                             <td>
                                                 <ul
                                                     class="action d-flex justify-content-center align-items-center gap-1 p-0 m-0">
-                                                    <li class="btn btn-sm">
+                                                    <li class="edit btn btn-sm">
                                                         <a href="{{ route('repairs.edit', $repair->id) }}"
                                                             class="text-decoration-none">
                                                             <i class="icon-pencil-alt"></i>

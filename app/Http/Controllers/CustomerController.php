@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Repair;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -87,5 +88,11 @@ class CustomerController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('customers.index')->with('error', 'Failed to delete customer.');
         }
+    }
+
+    public function indexByCustomer($customerId)
+    {
+        $repairs = Repair::where('customer_id', $customerId)->orderBy('updated_at', 'desc')->get();
+        return view('admin.repairs_management.view', compact('repairs'));
     }
 }
