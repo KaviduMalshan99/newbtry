@@ -440,6 +440,7 @@ Route::prefix('admin/repairs')->group(function () {
     Route::put('/{repair}', [RepairController::class, 'update'])->name('repairs.update');
     Route::put('/{repair}/completed-order', [RepairController::class, 'updateCompletedRepair'])->name('repairs.updateCompletedRepair');
     Route::delete('/{repair}', [RepairController::class, 'destroy'])->name('repairs.destroy');
+    Route::get('/{repair}/completed-order/bill', [RepairController::class, 'generateBill'])->name('repairs.bill');
 });
 
 // Route::resource('admin/repairs', RepairController::class);

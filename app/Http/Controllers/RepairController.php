@@ -6,6 +6,7 @@ use App\Models\Battery;
 use App\Models\Customer;
 use App\Models\Repair;
 use App\Models\RepairBattery;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RepairController extends Controller
@@ -135,7 +136,8 @@ class RepairController extends Controller
         ]);
 
         // Redirect with a success message
-        return redirect()->route('repairs.index')->with('success', 'Repair updated successfully!');
+        // return redirect()->route('repairs.index')->with('success', 'Repair updated successfully!');
+        return redirect()->route('repairs.bill', $repair->id)->with('success', 'Repair updated successfully!');
     }
 
     public function destroy(Repair $repair)
@@ -178,5 +180,18 @@ class RepairController extends Controller
         ]);
 
         return redirect()->route('repairs.view-repair-details', $id)->with('success', 'Delivery status updated successfully!');
+    }
+
+    public function generateBill($id)
+    {
+        $repair = Repair::with(['customer', 'repairBattery'])->findOrFail($id);
+        // Current date and time
+        $currentDateTime = Carbon::now()->format('d.m.Y H:i');
+
+        // Pass the data to the view
+        return view('admin.repairs_management.bill', [
+            'repair' => $repair,
+            'currentDateTime' => $currentDateTime,
+        ]);
     }
 }
