@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('labor_charges', 10, 2)->nullable();
             $table->decimal('total_cost', 10, 2)->nullable();
             $table->enum('repair_status', ['In Progress', 'Completed'])->default('In Progress');
+            $table->enum('delivery_status', ['Not Delivered', 'Delivered'])->default('Not Delivered');
             $table->text('notes')->nullable();
             $table->timestamps();
         });

@@ -434,8 +434,11 @@ Route::prefix('admin/repairs')->group(function () {
     Route::get('', [RepairController::class, 'index'])->name('repairs.index');
     Route::get('/{repair}/view-repair-details', [RepairController::class, 'viewRepairDetails'])->name('repairs.view-repair-details');
     Route::put('/{repair}/view-repair-details/update-status', [RepairController::class, 'changeStatus'])->name('repairs.updateStatus');
+    Route::put('/{repair}/view-repair-details/update-delivery-status', [RepairController::class, 'changeDeliveryStatus'])->name('repairs.updateDeliveryStatus');
     Route::get('/{repair}/edit', [RepairController::class, 'edit'])->name('repairs.edit');
+    Route::get('/{repair}/completed-order', [RepairController::class, 'completedOrder'])->name('repairs.completedOrder');
     Route::put('/{repair}', [RepairController::class, 'update'])->name('repairs.update');
+    Route::put('/{repair}/completed-order', [RepairController::class, 'updateCompletedRepair'])->name('repairs.updateCompletedRepair');
     Route::delete('/{repair}', [RepairController::class, 'destroy'])->name('repairs.destroy');
 });
 

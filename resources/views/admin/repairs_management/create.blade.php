@@ -89,6 +89,12 @@
 
                             </div>
 
+                            <div class="mb-4">
+                                <label for="diagnostic_report" class="form-label">Diagnostic Report</label>
+                                <textarea name="diagnostic_report" placeholder="Type here" class="form-control" id="diagnostic_report" required></textarea>
+
+                            </div>
+
 
                             <div class="mb-4">
                                 <label for="repair_order_end_date" class="form-label">Repair Order End Date</label>

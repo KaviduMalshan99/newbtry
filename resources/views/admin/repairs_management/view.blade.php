@@ -8,6 +8,39 @@
 @section('style')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/datatables.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/datatable-extension.css') }}">
+
+    <style>
+        .action {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            /* Adjust spacing between buttons */
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .action .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            border: none;
+            background-color: transparent;
+        }
+
+        .action .btn i {
+            font-size: 16px;
+            /* Adjust icon size */
+        }
+
+        .action form {
+            margin: 0;
+        }
+    </style>
 @endsection
 
 @section('breadcrumb-title')
@@ -48,6 +81,7 @@
                                         <th>Battery Details</th>
                                         <th>Order Start Date</th>
                                         <th>Order End Date</th>
+                                        <th>Delivery Status</th>
                                         <th>Repair Status</th>
                                         <th>Action</th>
                                     </tr>
@@ -61,28 +95,43 @@
                                             <td>{{ $repair->repair_order_start_date }}</td>
                                             <td>{{ $repair->repair_order_end_date }}</td>
                                             <td>{{ $repair->repair_status }}</td>
+                                            <td>{{ $repair->delivery_status }}</td>
                                             <td>
-                                                <ul class="action">
-                                                    <li class="edit btn btn-sm"> <a
-                                                            href="{{ route('repairs.edit', $repair->id) }}"><i
-                                                                class="icon-pencil-alt"></i></a>
+                                                <ul
+                                                    class="action d-flex justify-content-center align-items-center gap-1 p-0 m-0">
+                                                    <li class="btn btn-sm">
+                                                        <a href="{{ route('repairs.edit', $repair->id) }}"
+                                                            class="text-decoration-none">
+                                                            <i class="icon-pencil-alt"></i>
+                                                        </a>
                                                     </li>
-                                                    <li class="btn btn-sm"><a
-                                                            href="{{ route('repairs.view-repair-details', $repair->id) }}"><i
-                                                                class="icon-receipt"></i></a></li>
-
-                                                    <form id="deleteForm{{ $repair->id }}"
-                                                        action="{{ route('repairs.destroy', $repair->id) }}" method="POST"
-                                                        style="display: inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="button" class="delete btn btn-sm"
-                                                            onclick="confirmDelete('deleteForm{{ $repair->id }}', 'Are you sure you want to delete this repair?')">
-                                                            <i class="icon-trash"></i>
-                                                        </button>
-                                                    </form>
+                                                    <li class="btn btn-sm">
+                                                        <a href="{{ route('repairs.view-repair-details', $repair->id) }}"
+                                                            class="text-decoration-none">
+                                                            <i class="icon-receipt"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li class="btn btn-sm">
+                                                        <a href="{{ route('repairs.completedOrder', $repair->id) }}"
+                                                            class="text-decoration-none">
+                                                            <i class="icon-pencil-alt"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <form id="deleteForm{{ $repair->id }}"
+                                                            action="{{ route('repairs.destroy', $repair->id) }}"
+                                                            method="POST" style="display: inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="button" class="delete btn btn-sm"
+                                                                onclick="confirmDelete('deleteForm{{ $repair->id }}', 'Are you sure you want to delete this repair?')">
+                                                                <i class="icon-trash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </li>
                                                 </ul>
                                             </td>
+
                                         </tr>
                                     @empty
                                     @endforelse

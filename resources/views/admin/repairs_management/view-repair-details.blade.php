@@ -1,129 +1,266 @@
 @extends('layouts.simple.master')
-@section('title', 'Autofill Datatables')
+@section('title', 'Ecommerce')
 
 @section('css')
 
 @endsection
 
 @section('style')
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/datatables.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/datatable-extension.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/animate.css') }}">
 @endsection
 
 @section('breadcrumb-title')
-    <h3>Repair Full List</h3>
+    <h3>Repair Management</h3>
 @endsection
 
 @section('breadcrumb-items')
     <li class="breadcrumb-item"> <a class="breadcrumb-item"
             href="{{ request()->query('ref') === 'view' ? route('repairs.show', $repair->id) : route('repairs.index') }}">
-            Repair
+            Repairs
         </a></li>
-    <li class="breadcrumb-item active">Repair Full List</li>
+    <li class="breadcrumb-item active">Repair Full Details</li>
 @endsection
 
 @section('content')
-    <div class="container-fluid">
+
+    <section class="content-main">
         <div class="row">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-header pb-0 card-no-border">
-
-                        <div class="row gx-3">
-                            <div class="col-md-11 mb-4">
-                                <h3>Manage your Repair efficiently.</h3>
-                            </div>
-                            <div class="col-md-1 mb-4">
-                                <a href="{{ request()->query('ref') === 'view' ? route('repairs.show', $repair->id) : route('repairs.index') }}"
-                                    class="btn btn-light rounded font-sm mr-5 text-body hover-up">
-                                    Back
-                                </a>
-                            </div>
-                        </div>
-                        <div class="row gx-3">
-
-                            <div class="col-md-3 mb-4">
-                                <h6>Change Repair Status</h6>
+            <div class="col-lg-12">
+                <div class=" content-header">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row gx-3">
+                                <div class="col-md-11 mb-4">
+                                    <h2 class="content-title">View Repair Details</h2>
+                                </div>
+                                <div class="col-md-1 mb-4">
+                                    <a href="{{ request()->query('ref') === 'view' ? route('repairs.show', $repair->id) : route('repairs.index') }}"
+                                        class="btn btn-light rounded font-sm mr-5 text-body hover-up">
+                                        Back
+                                    </a>
+                                </div>
                             </div>
 
-                            <div class="col-md-8 mb-4">
-                                <form id="repairStatusUpdateForm" action="{{ route('repairs.updateStatus', $repair->id) }}"
-                                    method="POST">
-                                    @csrf <!-- Laravel's CSRF protection -->
-                                    @method('PUT')
-                                    <select name="repair_status" id="repair_status" class="form-select" required>
-                                        <option value="In Progress"
-                                            {{ $repair->repair_status == 'In Progress' ? 'selected' : '' }}>In Progress
-                                        </option>
-                                        <option value="Completed"
-                                            {{ $repair->repair_status == 'Completed' ? 'selected' : '' }}>
-                                            Completed</option>
-                                    </select>
-                                </form>
+                            <div class="row gx-3">
+
+                                <div class="col-md-3 mb-4">
+                                    <h6>Change Repair Status</h6>
+                                </div>
+
+                                <div class="col-md-8 mb-4">
+                                    <form id="repairStatusUpdateForm"
+                                        action="{{ route('repairs.updateStatus', $repair->id) }}" method="POST">
+                                        @csrf <!-- Laravel's CSRF protection -->
+                                        @method('PUT')
+                                        <select name="repair_status" id="repair_status" class="form-select" required>
+                                            <option value="In Progress"
+                                                {{ $repair->repair_status == 'In Progress' ? 'selected' : '' }}>In Progress
+                                            </option>
+                                            <option value="Completed"
+                                                {{ $repair->repair_status == 'Completed' ? 'selected' : '' }}>
+                                                Completed</option>
+                                        </select>
+                                    </form>
+
+                                </div>
+                                <div class="col-md-1 mb-4">
+                                    <button form="repairStatusUpdateForm" type="submit"
+                                        class="btn btn-success rounded font-sm mr-5 text-body hover-up">
+                                        Apply
+                                    </button>
+                                </div>
 
                             </div>
-                            <div class="col-md-1 mb-4">
-                                <button form="repairStatusUpdateForm" type="submit"
-                                    class="btn btn-success rounded font-sm mr-5 text-body hover-up">
-                                    Apply
-                                </button>
-                            </div>
 
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="dt-ext table-responsive">
-                            <table class="display" id="keytable">
-                                <thead>
-                                    <tr>
-                                        <th>Diagnostic Report</th>
-                                        <th>Items Used</th>
-                                        <th>Repair Cost</th>
-                                        <th>Labor Charges</th>
-                                        <th>Total Cost</th>
-                                        <th>Repair Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>{{ $repair->diagnostic_report ?? 'N/A' }}</td>
-                                        <td>
-                                            {{ $repair->items_used }}
-                                        </td>
-                                        <td>{{ number_format($repair->repair_cost, 2) }}</td>
-                                        <td>{{ number_format($repair->labor_charges, 2) }}</td>
-                                        <td>{{ number_format($repair->total_cost, 2) }}</td>
-                                        <td>{{ $repair->repair_status }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            @if ($repair->repair_status == 'Completed')
+                                <div class="row gx-3">
+
+                                    <div class="col-md-3 mb-4">
+                                        <h6>Change Delivery Status</h6>
+                                    </div>
+
+                                    <div class="col-md-8 mb-4">
+                                        <form id="repairStatusUpdateForm"
+                                            action="{{ route('repairs.updateDeliveryStatus', $repair->id) }}"
+                                            method="POST">
+                                            @csrf <!-- Laravel's CSRF protection -->
+                                            @method('PUT')
+                                            <select name="repair_delivery_status" id="repair_delivery_status"
+                                                class="form-select" required>
+                                                <option value="Not Delivered"
+                                                    {{ $repair->delivery_status == 'Not Delivered' ? 'selected' : '' }}>Not
+                                                    Delivered
+                                                </option>
+                                                <option value="Delivered"
+                                                    {{ $repair->delivery_status == 'Delivered' ? 'selected' : '' }}>
+                                                    Delivered</option>
+
+                                            </select>
+                                        </form>
+
+                                    </div>
+                                    <div class="col-md-1 mb-4">
+                                        <button form="repairStatusUpdateForm" type="submit"
+                                            class="btn btn-secondary rounded font-sm mr-5 text-body hover-up">
+                                            Apply
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                                <div class="row gx-3">
+                                    <div class="col-md-10 mb-4">
+                                    </div>
+                                    <div class="col-md-2 mb-4">
+                                        <a href="{{ route('repairs.completedOrder', $repair->id) }}"
+                                            class="btn btn-air-light rounded font-sm mr-5 text-body hover-up">
+                                            Completed Repair
+                                        </a>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="col-lg-12">
+                <div class="card mb-4">
+                    <div class="card-body">
+
+                        @if (!empty($repair->customer->first_name) && !empty($repair->customer->last_name))
+                            <!-- Customer -->
+                            <div class="row gx-3">
+                                <div class="col-md-2 mb-4">
+                                    <label for="customer_id" class="form-label">Customer</label>
+                                </div>
+
+                                <div class="col-md-1 mb-4">
+                                    <label class="form-label"> : </label>
+                                </div>
+                                <div class="col-md-9 mb-4">
+                                    <label class="form-label">{{ $repair->customer->first_name }}
+                                        {{ $repair->customer->last_name }}</label>
+                                </div>
+                            </div>
+                        @endif
+                        @if (!empty($repair->repairBattery->type))
+                            <div class="row gx-3">
+                                <div class="col-md-2 mb-4">
+                                    <label class="form-label">Battery Type</label>
+                                </div>
+
+                                <div class="col-md-1 mb-4">
+                                    <label class="form-label"> : </label>
+                                </div>
+                                <div class="col-md-9 mb-4">
+                                    <label class="form-label">{{ $repair->repairBattery->type }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        @endif
+                        @if (!empty($repair->repairBattery->brand))
+                            <div class="row gx-3">
+                                <div class="col-md-2 mb-4">
+                                    <label class="form-label">Battery Brand</label>
+                                </div>
+
+                                <div class="col-md-1 mb-4">
+                                    <label class="form-label"> : </label>
+                                </div>
+                                <div class="col-md-9 mb-4">
+                                    <label class="form-label">{{ $repair->repairBattery->brand }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        @endif
+                        @if (!empty($repair->repairBattery->model_number))
+                            <div class="row gx-3">
+                                <div class="col-md-2 mb-4">
+                                    <label class="form-label">Battery Model Number</label>
+                                </div>
+
+                                <div class="col-md-1 mb-4">
+                                    <label class="form-label"> : </label>
+                                </div>
+                                <div class="col-md-9 mb-4">
+                                    <label class="form-label">{{ $repair->repairBattery->model_number }}</label>
+                                    </label>
+                                </div>
+                            </div>
+                        @endif
+                        @if (!empty($repair->repair_order_start_date))
+                            <div class="row gx-3">
+                                <div class="col-md-2 mb-4">
+                                    <label class="form-label">Repair Order Start Date</label>
+                                </div>
+
+                                <div class="col-md-1 mb-4">
+                                    <label class="form-label"> : </label>
+                                </div>
+                                <div class="col-md-9 mb-4">
+                                    <label class="form-label">{{ $repair->repair_order_start_date }}
+                                    </label>
+                                </div>
+                            </div>
+                        @endif
+                        @if (!empty($repair->repair_order_end_date))
+                            <div class="row gx-3">
+                                <div class="col-md-2 mb-4">
+                                    <label class="form-label">Repair Order End Date</label>
+                                </div>
+
+                                <div class="col-md-1 mb-4">
+                                    <label class="form-label"> : </label>
+                                </div>
+                                <div class="col-md-9 mb-4">
+                                    <label class="form-label">{{ $repair->repair_order_end_date }}
+                                    </label>
+                                </div>
+                            </div>
+                        @endif
+                        @if (!empty($repair->diagnostic_report))
+                            <div class="row gx-3">
+                                <div class="col-md-2 mb-4">
+                                    <label class="form-label">Diagnostic Report</label>
+                                </div>
+
+                                <div class="col-md-1 mb-4">
+                                    <label class="form-label"> : </label>
+                                </div>
+                                <div class="col-md-9 mb-4">
+                                    <label class="form-label">{{ $repair->diagnostic_report }}
+                                    </label>
+                                </div>
+                            </div>
+                        @endif
+                        @if (!empty($repair->items_used))
+                            <div class="row gx-3">
+                                <div class="col-md-2 mb-4">
+                                    <label class="form-label">Items Used</label>
+                                </div>
+
+                                <div class="col-md-1 mb-4">
+                                    <label class="form-label"> : </label>
+                                </div>
+                                <div class="col-md-9 mb-4">
+                                    <label class="form-label">{{ $repair->items_used }}
+                                    </label>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 @endsection
 
 @section('script')
-    <script src="{{ asset('assets/js/datatable/datatables/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/jszip.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/vfs_fonts.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/dataTables.autoFill.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/dataTables.select.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/buttons.print.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/dataTables.responsive.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/responsive.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/dataTables.keyTable.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/dataTables.colReorder.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/dataTables.fixedHeader.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/dataTables.rowReorder.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/dataTables.scroller.min.js') }}"></script>
-    <script src="{{ asset('assets/js/datatable/datatable-extension/custom.js') }}"></script>
+    <script src="{{ asset('assets/js/chart/apex-chart/apex-chart.js') }}"></script>
+    <script src="{{ asset('assets/js/chart/apex-chart/stock-prices.js') }}"></script>
+    <script src="{{ asset('assets/js/counter/jquery.waypoints.min.js') }}"></script>
+    <script src="{{ asset('assets/js/counter/jquery.counterup.min.js') }}"></script>
+    <script src="{{ asset('assets/js/counter/counter-custom.js') }}"></script>
+    <script src="{{ asset('assets/js/dashboard/dashboard_2.js') }}"></script>
+    <script src="{{ asset('assets/js/animation/wow/wow.min.js') }}"></script>
 @endsection

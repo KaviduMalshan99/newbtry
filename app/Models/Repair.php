@@ -20,6 +20,7 @@ class Repair extends Model
         'labor_charges',
         'total_cost',
         'repair_status',
+        'delivery_status',
         'notes'
     ];
 

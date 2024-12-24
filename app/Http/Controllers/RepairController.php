@@ -33,6 +33,7 @@ class RepairController extends Controller
             'type' => 'required|string|max:255',
             'brand' => 'required|string|max:255',
             'model_number' => 'required|string|max:255',
+            'diagnostic_report' => 'required|string',
             'repair_order_end_date' => 'nullable|date',
         ]);
 
@@ -48,6 +49,7 @@ class RepairController extends Controller
             'customer_id' => $validatedData['customer_id'],
             'repair_battery_id' => $battery->id,
             'repair_order_start_date' => now(),
+            'diagnostic_report' => $validatedData['diagnostic_report'] ?? null,
             'repair_order_end_date' => $validatedData['repair_order_end_date'] ?? null,
             'repair_status' => 'In Progress', // Default status
         ]);
@@ -63,6 +65,13 @@ class RepairController extends Controller
         return view('admin.repairs_management.update', compact('repair', 'customers'));
     }
 
+    public function completedOrder($id)
+    {
+        $repair = Repair::with(['customer', 'repairBattery'])->findOrFail($id);
+        $customers = Customer::all();
+        return view('admin.repairs_management.completed-order', compact('repair', 'customers'));
+    }
+
     public function update(Request $request, $id)
     {
         $repair = Repair::findOrFail($id);
@@ -75,11 +84,6 @@ class RepairController extends Controller
             'model_number' => 'required|string|max:255',
             'repair_order_end_date' => 'nullable|date',
             'diagnostic_report' => 'nullable|string',
-            'items_used' => 'nullable|string', // Assuming JSON string input
-            'repair_cost' => 'nullable|numeric',
-            'labor_charges' => 'nullable|numeric',
-            'total_cost' => 'nullable|numeric',
-            'repair_status' => 'nullable|string',
         ]);
 
         // Update or create the associated battery
@@ -100,17 +104,39 @@ class RepairController extends Controller
             'repair_battery_id' => $battery->id,
             'repair_order_end_date' => $validatedData['repair_order_end_date'] ?? null,
             'diagnostic_report' => $validatedData['diagnostic_report'] ?? null,
-            'items_used' => $validatedData['items_used'] ? json_decode($validatedData['items_used'], true) : null,
-            'repair_cost' => $validatedData['repair_cost'] ?? null,
-            'labor_charges' => $validatedData['labor_charges'],
-            'total_cost' => $validatedData['total_cost'],
-            'repair_status' => $validatedData['repair_status'],
         ]);
 
         // Redirect with a success message
         return redirect()->route('repairs.index')->with('success', 'Repair updated successfully!');
     }
 
+    public function updateCompletedRepair(Request $request, $id)
+    {
+        $repair = Repair::findOrFail($id);
+
+        // Validate incoming data
+        $validatedData = $request->validate([
+            'items_used' => 'required|json', // Assuming JSON string input
+            'repair_cost' => 'required|numeric',
+            'labor_charges' => 'required|numeric',
+            'total_cost' => 'required|numeric',
+            'repair_status' => 'required|string',
+            'delivery_status' => 'required|string',
+        ]);
+
+        // Update the repair record
+        $repair->update([
+            'items_used' => $validatedData['items_used'] ? json_decode($validatedData['items_used'], true) : null,
+            'repair_cost' => $validatedData['repair_cost'] ?? null,
+            'labor_charges' => $validatedData['labor_charges'],
+            'total_cost' => $validatedData['total_cost'],
+            'repair_status' => $validatedData['repair_status'],
+            'delivery_status' => $validatedData['delivery_status'],
+        ]);
+
+        // Redirect with a success message
+        return redirect()->route('repairs.index')->with('success', 'Repair updated successfully!');
+    }
 
     public function destroy(Repair $repair)
     {
@@ -137,5 +163,20 @@ class RepairController extends Controller
         ]);
 
         return redirect()->route('repairs.view-repair-details', $id)->with('success', 'Repair status updated successfully!');
+    }
+
+    public function changeDeliveryStatus(Request $request, $id)
+    {
+        $repair = Repair::findOrFail($id);
+
+        // Validate incoming data
+        $validatedData = $request->validate([
+            'delivery_status' => 'nullable|string',
+        ]);
+        $repair->update([
+            'delivery_status' => $validatedData['delivery_status'],
+        ]);
+
+        return redirect()->route('repairs.view-repair-details', $id)->with('success', 'Delivery status updated successfully!');
     }
 }
