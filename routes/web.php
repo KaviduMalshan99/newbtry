@@ -4,13 +4,17 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BatteryController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\LubricantController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\RepairController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PosController;
+use App\Http\Controllers\OldBatteryController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -67,7 +71,6 @@ Route::get('lang/{locale}', function ($locale) {
 Route::prefix('dashboard')->group(function () {
     Route::view('index', 'dashboard.index')->name('index');
     Route::view('dashboard-02', 'dashboard.dashboard-02')->name('dashboard-02');
-
 });
 
 Route::prefix('widgets')->group(function () {
@@ -278,22 +281,22 @@ Route::prefix('others')->group(function () {
     Route::view('503', 'errors.503')->name('error-503');
 });
 
-Route::prefix('authentication')->group(function () {
-    Route::view('login', 'authentication.login')->name('login');
-    Route::view('login-one', 'authentication.login-one')->name('login-one');
-    Route::view('login-two', 'authentication.login-two')->name('login-two');
-    Route::view('login-bs-validation', 'authentication.login-bs-validation')->name('login-bs-validation');
-    Route::view('login-bs-tt-validation', 'authentication.login-bs-tt-validation')->name('login-bs-tt-validation');
-    Route::view('login-sa-validation', 'authentication.login-sa-validation')->name('login-sa-validation');
-    Route::view('sign-up', 'authentication.sign-up')->name('sign-up');
-    Route::view('sign-up-one', 'authentication.sign-up-one')->name('sign-up-one');
-    Route::view('sign-up-two', 'authentication.sign-up-two')->name('sign-up-two');
-    Route::view('sign-up-wizard', 'authentication.sign-up-wizard')->name('sign-up-wizard');
-    Route::view('unlock', 'authentication.unlock')->name('unlock');
-    Route::view('forget-password', 'authentication.forget-password')->name('forget-password');
-    Route::view('reset-password', 'authentication.reset-password')->name('reset-password');
-    Route::view('maintenance', 'authentication.maintenance')->name('maintenance');
-});
+// Route::prefix('authentication')->group(function () {
+//     Route::view('login', 'authentication.login')->name('login');
+//     Route::view('login-one', 'authentication.login-one')->name('login-one');
+//     Route::view('login-two', 'authentication.login-two')->name('login-two');
+//     Route::view('login-bs-validation', 'authentication.login-bs-validation')->name('login-bs-validation');
+//     Route::view('login-bs-tt-validation', 'authentication.login-bs-tt-validation')->name('login-bs-tt-validation');
+//     Route::view('login-sa-validation', 'authentication.login-sa-validation')->name('login-sa-validation');
+//     Route::view('sign-up', 'authentication.sign-up')->name('sign-up');
+//     Route::view('sign-up-one', 'authentication.sign-up-one')->name('sign-up-one');
+//     Route::view('sign-up-two', 'authentication.sign-up-two')->name('sign-up-two');
+//     Route::view('sign-up-wizard', 'authentication.sign-up-wizard')->name('sign-up-wizard');
+//     Route::view('unlock', 'authentication.unlock')->name('unlock');
+//     Route::view('forget-password', 'authentication.forget-password')->name('forget-password');
+//     Route::view('reset-password', 'authentication.reset-password')->name('reset-password');
+//     Route::view('maintenance', 'authentication.maintenance')->name('maintenance');
+// });
 
 Route::view('comingsoon', 'comingsoon.comingsoon')->name('comingsoon');
 Route::view('comingsoon-bg-video', 'comingsoon.comingsoon-bg-video')->name('comingsoon-bg-video');
@@ -399,7 +402,6 @@ Route::prefix('customers')->group(function () {
     Route::get('/{customer}/edit', [CustomerController::class, 'edit'])->name('customers.edit');
     Route::put('/{customer}', [CustomerController::class, 'update'])->name('customers.update');
     Route::delete('/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
-
 });
 
 Route::get('user/add', [UserController::class, 'create'])->name('users.create');
@@ -411,10 +413,61 @@ Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.
 
 Route::resource('sales', SaleController::class);
 
-Route::get('/purchases/products/{type}', [PurchaseController::class, 'getProducts']);
-Route::get('purchases/add', [PurchaseController::class, 'create'])->name('purchases.create');
-Route::post('purchases/store', [PurchaseController::class, 'store'])->name('purchases.store');
 
+
+Route::prefix('purchases')->group(function () {
+    Route::get('/products/{type}', [PurchaseController::class, 'getProducts']);
+    Route::get('/add', [PurchaseController::class, 'create'])->name('purchases.create');
+    Route::post('/store', [PurchaseController::class, 'store'])->name('purchases.store');
+    Route::get('/', [PurchaseController::class, 'index'])->name('purchases.index');
+    Route::get('/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchases.edit');
+    Route::get('/{purchase}/purchase-items', [PurchaseController::class, 'viewPurchaseItems'])->name('purchases.purchase-items');
+    Route::delete('/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
+    Route::put('/{purchase}', [PurchaseController::class, 'update'])->name('purchases.update');
+    Route::get('/{purchase}/grn', [PurchaseController::class, 'generateGrn'])->name('purchases.grn');
+});
 
 Route::resource('repairs', RepairController::class);
 Route::resource('rentals', RentalController::class);
+
+Route::prefix('admin/batteries')->group(function () {
+    Route::get('/', [BatteryController::class, 'index'])->name('batteries.index');
+    Route::get('/create', [BatteryController::class, 'create'])->name('batteries.create');
+    Route::post('/store', [BatteryController::class, 'store'])->name('batteries.store');
+    Route::get('/{id}', [BatteryController::class, 'show'])->name('batteries.show');
+    Route::get('/{id}/edit', [BatteryController::class, 'edit'])->name('batteries.edit');
+    Route::post('/{id}/update', [BatteryController::class, 'update'])->name('batteries.update');
+    Route::delete('/{id}', [BatteryController::class, 'destroy'])->name('batteries.destroy');
+});
+
+
+Route::prefix('admin/batteries')->name('admin.old-batteries.')->group(function () {
+    Route::get('old-batteries/', [OldBatteryController::class, 'index'])->name('index');
+    Route::get('old-batteries/create', [OldBatteryController::class, 'create'])->name('create');
+    Route::post('old-batteries/', [OldBatteryController::class, 'store'])->name('store');
+    Route::get('old-batteries/{id}', [OldBatteryController::class, 'show'])->name('show');
+    Route::get('old-batteries/{id}/edit', [OldBatteryController::class, 'edit'])->name('edit');
+    Route::put('old-batteries/{id}', [OldBatteryController::class, 'update'])->name('update');
+    Route::delete('old-batteries/{id}', [OldBatteryController::class, 'destroy'])->name('destroy');
+});
+
+
+
+// Lubricant Management
+
+
+Route::prefix('admin/lubricants')->group(function () {
+    Route::get('/', [LubricantController::class, 'index'])->name('lubricants.index');
+    Route::get('/create', [LubricantController::class, 'create'])->name('lubricants.create');
+    Route::post('/', [LubricantController::class, 'store'])->name('lubricants.store');
+    Route::get('/{id}', [LubricantController::class, 'show'])->name('lubricants.show');
+    Route::get('/{id}/edit', [LubricantController::class, 'edit'])->name('lubricants.edit');
+    Route::put('/{id}', [LubricantController::class, 'update'])->name('lubricants.update');
+    Route::delete('/{id}', [LubricantController::class, 'destroy'])->name('lubricants.destroy');
+});
+
+
+
+
+Route::get('admin/POS',[PosController::class,'index'])->name('POS.index');
+
