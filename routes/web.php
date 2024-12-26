@@ -8,6 +8,7 @@ use App\Http\Controllers\BatteryController;
 use App\Http\Controllers\BatteryPurchaseController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LubricantController;
+use App\Http\Controllers\OldBatteryController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\RepairController;
@@ -444,6 +445,21 @@ Route::prefix('admin/repairs')->group(function () {
     Route::put('/{repair}', [RepairController::class, 'update'])->name('repairs.update');
     Route::put('/{repair}/completed-order', [RepairController::class, 'updateCompletedRepair'])->name('repairs.updateCompletedRepair');
     Route::delete('/{repair}', [RepairController::class, 'destroy'])->name('repairs.destroy');
+    Route::get('/{repair}/completed-order/bill', [RepairController::class, 'generateBill'])->name('repairs.bill');
+});
+
+Route::prefix('admin/old-battery')->group(function () {
+    Route::get('/create', [OldBatteryController::class, 'create'])->name('oldBatteries.create');
+    Route::post('/store', [OldBatteryController::class, 'store'])->name('oldBatteries.store');
+    Route::get('', [OldBatteryController::class, 'index'])->name('oldBatteries.index');
+    Route::get('/{oldBattery}/view-old-battery-details', [OldBatteryController::class, 'viewOldBatteryDetails'])->name('oldBatteries.view-old-battery-details');
+    Route::put('/{repair}/view-repair-details/update-status', [RepairController::class, 'changeStatus'])->name('repairs.updateStatus');
+    Route::put('/{repair}/view-repair-details/update-delivery-status', [RepairController::class, 'changeDeliveryStatus'])->name('repairs.updateDeliveryStatus');
+    Route::get('/{oldBattery}/edit', [OldBatteryController::class, 'edit'])->name('oldBatteries.edit');
+    Route::get('/{repair}/completed-order', [RepairController::class, 'completedOrder'])->name('repairs.completedOrder');
+    Route::put('/{oldBattery}', [OldBatteryController::class, 'update'])->name('oldBatteries.update');
+    Route::put('/{repair}/completed-order', [RepairController::class, 'updateCompletedRepair'])->name('repairs.updateCompletedRepair');
+    Route::delete('/{oldBattery}', [OldBatteryController::class, 'destroy'])->name('oldBatteries.destroy');
     Route::get('/{repair}/completed-order/bill', [RepairController::class, 'generateBill'])->name('repairs.bill');
 });
 

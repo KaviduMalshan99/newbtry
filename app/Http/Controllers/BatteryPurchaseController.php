@@ -179,7 +179,9 @@ class BatteryPurchaseController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('purchases.edit_battery', ['purchase' => $purchase->id])->with('success', 'Battery purchase updated successfully');
+
+            return redirect()->route('purchases.index')->with('success', 'Battery Purchase updated successfully!');
+            // return redirect()->route('purchases.edit_battery', ['purchase' => $purchase->id])->with('success', 'Battery purchase updated successfully');
         } catch (\Exception $e) {
             DB::rollBack();
             // return back()->with('error', 'Error updating battery purchase');
