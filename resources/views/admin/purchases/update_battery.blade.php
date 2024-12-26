@@ -135,6 +135,46 @@
                                 </tbody>
                             </table>
 
+                            <hr class="mt-4 form-horizontal">
+                            <br />
+
+                            <div class="row gx-3">
+                                <div class="col-md-11 mb-4">
+                                    <h2 class="content-title">Payment Section</h2>
+                                </div>
+                            </div>
+
+                            <!--  Price -->
+                            <div class="row gx-3">
+                                <div class="col-md-6">
+                                    <label for="total_price" class="form-label">Total Price</label>
+                                    <input type="number" id="total_price" name="total_price" class="form-control"
+                                        placeholder="Total Price" value="{{ $purchase->total_price }}" readonly />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="paid_amount" class="form-label">Paid Amount</label>
+                                    <input type="number" id="paid_amount" name="paid_amount"
+                                        value="{{ $purchase->paid_amount }}" class="form-control" step="0.01"
+                                        placeholder="Enter price" />
+                                </div>
+                            </div>
+
+                            <!-- payment -->
+                            <div class="row gx-3">
+                                <div class="col-md-6">
+                                    <label for="due_amount" class="form-label">Due Amount</label>
+                                    <input type="number" id="due_amount" name="due_amount" class="form-control"
+                                        step="0.01" placeholder="Due Amount" readonly
+                                        value="{{ $purchase->due_amount }}" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="payment_type" class="form-label">Payment Type</label>
+                                    <input type="text" id="payment_type" name="payment_type"
+                                        value="{{ $purchase->payment_type }}" class="form-control" step="0.01"
+                                        placeholder="Enter Type" />
+                                </div>
+                            </div>
+
                             <div class="mb-4">
                                 <br>
                                 <button type="submit" form="updateForm" class="btn btn-success col-md-3">Update</button>
@@ -188,13 +228,20 @@
 
             // Update hidden input with JSON data
             updateItems();
+            updateTotals();
         });
 
         document.getElementById('productTable').addEventListener('click', function(event) {
             if (event.target.classList.contains('remove-row')) {
                 event.target.closest('tr').remove();
                 updateItems();
+                updateTotals();
             }
+        });
+
+        // Trigger updateTotals when paid_amount changes
+        document.getElementById('paid_amount').addEventListener('input', function() {
+            updateTotals();
         });
 
         function updateItems() {
@@ -246,7 +293,32 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', updateItems);
+        // Update total_price and due_amount dynamically
+        function updateTotals() {
+            const rows = document.querySelectorAll('#productTable tbody tr');
+            let totalPrice = 0;
+
+            // Calculate the total price
+            rows.forEach(row => {
+                const quantity = parseFloat(row.getAttribute('data-quantity')) || 0;
+                const price = parseFloat(row.getAttribute('data-price')) || 0;
+                totalPrice += quantity * price;
+            });
+
+            // Update the total_price input
+            document.getElementById('total_price').value = totalPrice.toFixed(2);
+
+            // Calculate and update due_amount
+            const paidAmount = parseFloat(document.getElementById('paid_amount').value) || 0;
+            const dueAmount = Math.max(totalPrice - paidAmount, 0);
+            document.getElementById('due_amount').value = dueAmount.toFixed(2);
+        }
+
+        // Initial calculation on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateItems();
+            updateTotals();
+        });
     </script>
 @endsection
 

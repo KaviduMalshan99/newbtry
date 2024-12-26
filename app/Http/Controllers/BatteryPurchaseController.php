@@ -157,13 +157,26 @@ class BatteryPurchaseController extends Controller
         $purchase = BatteryPurchase::findOrFail($id);
         $items = json_decode($request->items, true);
 
+        $paid_amount = $request->paid_amount;
+        $totalPrice = collect($items)->sum(function ($item) {
+            return $item['quantity'] * $item['purchase_price'];
+        });
+        $paymentStatus = 'Pending';
+        if ($paid_amount == $totalPrice) {
+            $paymentStatus = 'Completed';
+        } elseif ($paid_amount > 0 && $paid_amount < $totalPrice) {
+            $paymentStatus = 'Not Completed';
+        }
+
         DB::beginTransaction();
         try {
             $purchase->update([
                 'supplier_id' => $request->supplier_id,
-                'total_price' => collect($items)->sum(function ($item) {
-                    return $item['quantity'] * $item['purchase_price'];
-                })
+                'total_price' => $totalPrice,
+                'paid_amount' => $paid_amount,
+                'due_amount' => $totalPrice - $paid_amount,
+                'payment_type' => $request->payment_type,
+                'payment_status' => $paymentStatus,
             ]);
 
             // Get existing item IDs
