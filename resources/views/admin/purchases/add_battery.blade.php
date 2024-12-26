@@ -112,6 +112,43 @@
                                 <tbody></tbody>
                             </table>
 
+                            <hr class="mt-4 form-horizontal">
+                            <br />
+
+                            <div class="row gx-3">
+                                <div class="col-md-11 mb-4">
+                                    <h2 class="content-title">Payment Section</h2>
+                                </div>
+                            </div>
+
+                            <!--  Price -->
+                            <div class="row gx-3">
+                                <div class="col-md-6">
+                                    <label for="total_price" class="form-label">Total Price</label>
+                                    <input type="number" id="total_price" name="total_price" class="form-control"
+                                        placeholder="Total Price" readonly />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="paid_amount" class="form-label">Paid Amount</label>
+                                    <input type="number" id="paid_amount" name="paid_amount" class="form-control"
+                                        step="0.01" placeholder="Enter price" />
+                                </div>
+                            </div>
+
+                            <!-- payment -->
+                            <div class="row gx-3">
+                                <div class="col-md-6">
+                                    <label for="due_amount" class="form-label">Due Amount</label>
+                                    <input type="number" id="due_amount" name="due_amount" class="form-control"
+                                        step="0.01" placeholder="Due Amount" readonly />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="payment_type" class="form-label">Payment Type</label>
+                                    <input type="text" id="payment_type" name="payment_type" class="form-control"
+                                        step="0.01" placeholder="Enter Type" />
+                                </div>
+                            </div>
+
                             <div class="mb-4">
                                 <br>
                                 <button type="submit" form="saveForm" class="btn btn-success col-md-3">Save</button>
@@ -178,14 +215,35 @@
         function updateItems() {
             const productTable = document.getElementById('productTable').querySelector('tbody');
             const rows = productTable.querySelectorAll('tr');
-            const items = Array.from(rows).map(row => ({
-                supplier_id: row.getAttribute('data-supplier-id'),
-                battery_id: row.getAttribute('data-battery-id'),
-                quantity: row.getAttribute('data-quantity'),
-                purchase_price: row.getAttribute('data-price')
-            }));
+            let totalPrice = 0;
+
+            const items = Array.from(rows).map(row => {
+                const quantity = parseFloat(row.getAttribute('data-quantity'));
+                const price = parseFloat(row.getAttribute('data-price'));
+                totalPrice += quantity * price; // Calculate total price
+                return {
+                    supplier_id: row.getAttribute('data-supplier-id'),
+                    battery_id: row.getAttribute('data-battery-id'),
+                    quantity,
+                    purchase_price: price
+                };
+            });
             document.getElementById('items').value = JSON.stringify(items);
+
+            document.getElementById('total_price').value = totalPrice.toFixed(2);
         }
+
+        document.getElementById('paid_amount').addEventListener('input', function() {
+            // Get the total price and paid amount inputs
+            const totalPrice = parseFloat(document.getElementById('total_price').value) || 0;
+            const paidAmount = parseFloat(this.value) || 0;
+
+            // Calculate the due amount
+            const dueAmount = Math.max(totalPrice - paidAmount, 0);
+
+            // Update the due amount input
+            document.getElementById('due_amount').value = dueAmount.toFixed(2);
+        });
     </script>
 
 

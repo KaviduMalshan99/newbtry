@@ -41,7 +41,11 @@ class BatteryPurchaseController extends Controller
         // Validate the incoming request
         $data = $request->validate([
             'supplier_id' => 'required|exists:suppliers,id',
+            'paid_amount' => 'numeric',
+            'due_amount' => 'numeric',
+            'payment_type' => 'string',
             'items' => 'required|json', // Items should be a JSON string
+
         ]);
 
         $items = json_decode($data['items'], true);
@@ -52,11 +56,17 @@ class BatteryPurchaseController extends Controller
 
         $totalPrice = 0;
         $supplierId = $data['supplier_id'];
+        $paid_amount = $data['paid_amount'];
+        $due_amount = $data['due_amount'];
+        $payment_type = $data['payment_type'];
 
         // Create the purchase
         $purchase = BatteryPurchase::create([
             'supplier_id' => $supplierId,
             'total_price' => $totalPrice,
+            'paid_amount' => $paid_amount,
+            'due_amount' => $due_amount,
+            'payment_type' => $payment_type,
         ]);
 
         // Process each item in the purchase
@@ -87,8 +97,19 @@ class BatteryPurchaseController extends Controller
             ]);
         }
 
+        $paymentStatus = 'Pending';
+        if ($paid_amount == $totalPrice) {
+            $paymentStatus = 'Completed';
+        } elseif ($paid_amount > 0 && $paid_amount < $totalPrice) {
+            $paymentStatus = 'Not Completed';
+        }
+
+
         // Update the total price of the purchase
-        $purchase->update(['total_price' => $totalPrice]);
+        $purchase->update([
+            'total_price' => $totalPrice,
+            'payment_status' => $paymentStatus,
+        ]);
         return redirect()->route('purchases.grn', $purchase->id)->with('success', 'Purchase created successfully!');
     }
 

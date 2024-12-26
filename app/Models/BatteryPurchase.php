@@ -12,6 +12,10 @@ class BatteryPurchase extends Model
     protected $fillable = [
         'supplier_id',
         'total_price',
+        'paid_amount',
+        'due_amount',
+        'payment_type',
+        'payment_status',
     ];
 
 
