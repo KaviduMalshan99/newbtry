@@ -5,6 +5,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BatteryController;
+use App\Http\Controllers\BatteryPurchaseController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LubricantController;
 use App\Http\Controllers\PurchaseController;
@@ -416,16 +417,18 @@ Route::prefix('purchases')->group(function () {
     Route::get('/products/{type}', [PurchaseController::class, 'getProducts']); //remove
     Route::get('/add', [PurchaseController::class, 'create'])->name('purchases.create'); //remove
     Route::post('/store', [PurchaseController::class, 'store'])->name('purchases.store'); // remove
-    Route::get('/battery/create', [PurchaseController::class, 'createBatteryPurchase'])->name('purchases.create_battery');
-    Route::post('/battery/store', [PurchaseController::class, 'storeBatteryPurchase'])->name('purchases.store_battery');
 
-    Route::get('/', [PurchaseController::class, 'index'])->name('purchases.index');
+    Route::get('/battery/create', [BatteryPurchaseController::class, 'createBatteryPurchase'])->name('purchases.create_battery');
+    Route::post('/battery/store', [BatteryPurchaseController::class, 'storeBatteryPurchase'])->name('purchases.store_battery');
+    Route::get('/{purchase}/grn', [BatteryPurchaseController::class, 'generateGrn'])->name('purchases.grn');
+    Route::get('/', [BatteryPurchaseController::class, 'index'])->name('purchases.index');
+    Route::delete('/{purchase}', [BatteryPurchaseController::class, 'destroy'])->name('purchases.destroy');
+    Route::get('/battery/{purchase}/edit', [BatteryPurchaseController::class, 'editBatteryPurchase'])->name('purchases.edit_battery');
+    Route::put('/battery/{purchase}', [BatteryPurchaseController::class, 'update_battery'])->name('purchases.update_battery');
+    Route::delete('/battery/{purchase}/battery-purchase-item/{item}', [BatteryPurchaseController::class, 'removeBatteryPurchaseItem'])->name('purchases.remove_battery_item');
+    Route::get('/battery/{purchase}/purchase-items', [BatteryPurchaseController::class, 'viewPurchaseItems'])->name('purchases.purchase-items');
+
     Route::get('/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchases.edit'); //remove
-    Route::get('/battery/{purchase}/edit', [PurchaseController::class, 'editBattery'])->name('purchases.edit_battery');
-    Route::get('/{purchase}/purchase-items', [PurchaseController::class, 'viewPurchaseItems'])->name('purchases.purchase-items');
-    Route::delete('/{purchase}', [PurchaseController::class, 'destroy'])->name('purchases.destroy');
-    Route::put('/{purchase}', [PurchaseController::class, 'update'])->name('purchases.update');
-    Route::get('/{purchase}/grn', [PurchaseController::class, 'generateGrn'])->name('purchases.grn');
 });
 
 

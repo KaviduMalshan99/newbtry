@@ -125,7 +125,7 @@
                             <li><a href="{{ route('purchases.create_battery') }}">Add New Battery Purchase</a></li>
                             <li><a
                                     href="{{ request()->query('ref') === 'view' ? route('purchases.show', $purchase->id) : route('purchases.index') }}">View
-                                    Purchase</a></li>
+                                    Battery Purchase</a></li>
 
                         </ul>
                     </li>

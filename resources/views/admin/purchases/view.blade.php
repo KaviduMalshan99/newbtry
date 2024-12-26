@@ -29,14 +29,8 @@
                     <div class="card-body">
 
                         <div class="row gx-3">
-                            <div class="col-md-8 mb-4">
+                            <div class="col-md-10 mb-4">
                                 <h3>Purchase List</h3>
-                            </div>
-                            <div class="col-md-2 mb-4">
-                                <div>
-                                    <a href="{{ route('purchases.create') }}" class="btn btn-primary btn-sm rounded">Create
-                                        Product New</a>
-                                </div>
                             </div>
                             <div class="col-md-2 mb-4">
                                 <div>
@@ -65,10 +59,10 @@
                                             <td>{{ $purchase->created_at->format('d.m.Y') }}</td>
                                             <td>
                                                 <ul class="action">
-                                                    {{-- <li class="edit btn btn-sm"> <a
-                                                            href="{{ route('purchases.edit', $purchase->id) }}"><i
+                                                    <li class="edit btn btn-sm"> <a
+                                                            href="{{ route('purchases.edit_battery', $purchase->id) }}"><i
                                                                 class="icon-pencil-alt"></i></a>
-                                                    </li> --}}
+                                                    </li>
                                                     <li class="btn btn-sm"><a
                                                             href="{{ route('purchases.purchase-items', $purchase->id) }}"><i
                                                                 class="icon-receipt"></i></a></li>
