@@ -79,7 +79,7 @@
                             </div>
 
                             <!-- Quantity & Price -->
-                            <div class="row gx-3">
+                            <div class="mt-4 row gx-3">
                                 <div class="col-md-6">
                                     <label for="quantity" class="form-label">Quantity</label>
                                     <input type="number" id="quantity" class="form-control"
@@ -113,46 +113,54 @@
                             </table>
 
                             <hr class="mt-4 form-horizontal">
-                            <br />
 
-                            <div class="row gx-3">
-                                <div class="col-md-11 mb-4">
-                                    <h2 class="content-title">Payment Section</h2>
-                                </div>
-                            </div>
+                    </div>
+                </div>
+            </div>
 
-                            <!--  Price -->
-                            <div class="row gx-3">
-                                <div class="col-md-6">
-                                    <label for="total_price" class="form-label">Total Price</label>
-                                    <input type="number" id="total_price" name="total_price" class="form-control"
-                                        placeholder="Total Price" readonly />
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="paid_amount" class="form-label">Paid Amount</label>
-                                    <input type="number" id="paid_amount" name="paid_amount" class="form-control"
-                                        step="0.01" placeholder="Enter price" />
-                                </div>
-                            </div>
+            <div class="col-lg-6">
+            </div>
 
-                            <!-- payment -->
-                            <div class="row gx-3">
-                                <div class="col-md-6">
-                                    <label for="due_amount" class="form-label">Due Amount</label>
-                                    <input type="number" id="due_amount" name="due_amount" class="form-control"
-                                        step="0.01" placeholder="Due Amount" readonly />
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="payment_type" class="form-label">Payment Type</label>
-                                    <input type="text" id="payment_type" name="payment_type" class="form-control"
-                                        step="0.01" placeholder="Enter Type" />
-                                </div>
-                            </div>
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body">
 
-                            <div class="mb-4">
-                                <br>
-                                <button type="submit" form="saveForm" class="btn btn-success col-md-3">Save</button>
+
+                        <div class="row gx-3">
+                            <div class="col-md-11 mb-4">
+                                <h2 class="content-title">Payment Section</h2>
                             </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="total_price" class="form-label">Total Price</label>
+                            <input type="number" id="total_price" name="total_price" class="form-control"
+                                placeholder="Total Price" readonly />
+                        </div>
+                        <div class="mb-4">
+                            <label for="paid_amount" class="form-label">Paid Amount</label>
+                            <input type="number" id="paid_amount" name="paid_amount" class="form-control" step="0.01"
+                                placeholder="Enter price" />
+                        </div>
+                        <div class="mb-4">
+                            <label for="due_amount" class="form-label">Due Amount</label>
+                            <input type="number" id="due_amount" name="due_amount" class="form-control" step="0.01"
+                                placeholder="Due Amount" readonly />
+                        </div>
+                        <div class="mb-4">
+                            <label for="payment_type" class="form-label">Payment Type</label>
+                            <select id="payment_type" name="payment_type" class="form-select" required>
+                                @foreach ($paymentTypes as $paymentType)
+                                    <option value="{{ $paymentType }}">{{ $paymentType }}</option>)
+                                @endforeach
+                            </select>
+                        </div>
+
+
+
+                        <div class="mb-4">
+                            <button type="submit" form="saveForm" class="btn btn-success col-md-6">Save</button>
+                        </div>
                         </form>
                     </div>
                 </div>

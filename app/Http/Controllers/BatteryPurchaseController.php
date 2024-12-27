@@ -33,7 +33,9 @@ class BatteryPurchaseController extends Controller
         // Fetch all batteries
         $batteries = Battery::all();
 
-        return view('admin.purchases.add_battery', compact('suppliers', 'batteries'));
+        $paymentTypes = ['Cash', 'Card', 'Bank Transfer'];
+
+        return view('admin.purchases.add_battery', compact('suppliers', 'batteries', 'paymentTypes'));
     }
 
     public function storeBatteryPurchase(Request $request)
@@ -43,7 +45,7 @@ class BatteryPurchaseController extends Controller
             'supplier_id' => 'required|exists:suppliers,id',
             'paid_amount' => 'numeric',
             'due_amount' => 'numeric',
-            'payment_type' => 'string',
+            'payment_type' => 'required|in:Cash,Card,Bank Transfer',
             'items' => 'required|json', // Items should be a JSON string
 
         ]);
@@ -143,12 +145,14 @@ class BatteryPurchaseController extends Controller
         // Fetch the required data for the dropdowns
         $suppliers = Supplier::all();
         $batteries = Battery::all();
+        $paymentTypes = ['Cash', 'Card', 'Bank Transfer'];
 
         // Pass the data to the edit view
         return view('admin.purchases.update_battery', [
             'purchase' => $purchase,
             'suppliers' => $suppliers,
             'batteries' => $batteries,
+            'paymentTypes' => $paymentTypes,
         ]);
     }
 
@@ -158,13 +162,15 @@ class BatteryPurchaseController extends Controller
         $items = json_decode($request->items, true);
 
         $paid_amount = $request->paid_amount;
+        $payable_amount = $request->payable_amount;
+        $totalPaid = $paid_amount + $payable_amount;
         $totalPrice = collect($items)->sum(function ($item) {
             return $item['quantity'] * $item['purchase_price'];
         });
         $paymentStatus = 'Pending';
-        if ($paid_amount == $totalPrice) {
+        if ($totalPaid == $totalPrice) {
             $paymentStatus = 'Completed';
-        } elseif ($paid_amount > 0 && $paid_amount < $totalPrice) {
+        } elseif ($totalPaid > 0 && $totalPaid < $totalPrice) {
             $paymentStatus = 'Not Completed';
         }
 
@@ -173,8 +179,8 @@ class BatteryPurchaseController extends Controller
             $purchase->update([
                 'supplier_id' => $request->supplier_id,
                 'total_price' => $totalPrice,
-                'paid_amount' => $paid_amount,
-                'due_amount' => $totalPrice - $paid_amount,
+                'paid_amount' => $totalPaid,
+                'due_amount' => $totalPrice - $totalPaid,
                 'payment_type' => $request->payment_type,
                 'payment_status' => $paymentStatus,
             ]);

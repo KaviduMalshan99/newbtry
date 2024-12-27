@@ -83,6 +83,7 @@
                                         <th>Order End Date</th>
                                         <th>Delivery Status</th>
                                         <th>Repair Status</th>
+                                        <th>Payment Status</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -94,8 +95,9 @@
                                                 {{ $repair->repairBattery->model_number }}</td>
                                             <td>{{ $repair->repair_order_start_date }}</td>
                                             <td>{{ $repair->repair_order_end_date }}</td>
-                                            <td>{{ $repair->repair_status }}</td>
                                             <td>{{ $repair->delivery_status }}</td>
+                                            <td>{{ $repair->repair_status }}</td>
+                                            <td>{{ $repair->payment_status }}</td>
                                             <td>
                                                 <ul
                                                     class="action d-flex justify-content-center align-items-center gap-1 p-0 m-0">

@@ -93,16 +93,23 @@
 
 
                             <div class="mb-4">
-                                <label for="repair_order_end_date" class="form-label">Repair Order End Date</label>
-                                <input type="date" name="repair_order_end_date" placeholder="Type here"
-                                    class="form-control" id="name"
-                                    value="{{ old('model_number', $repair->repair_order_end_date ?? '') }}" />
-                            </div>
-
-                            <div class="mb-4">
                                 <label for="diagnostic_report" class="form-label">Diagnostic Report</label>
                                 <textarea name="diagnostic_report" placeholder="Type here" class="form-control" id="diagnostic_report"> {{ old('diagnostic_report', $repair->diagnostic_report) }}</textarea>
 
+                            </div>
+                            <div class="row gx-3">
+                                <div class="col-md-6 mb-4">
+                                    <label for="repair_order_end_date" class="form-label">Repair Order End Date</label>
+                                    <input type="date" name="repair_order_end_date" placeholder="Type here"
+                                        class="form-control" id="name"
+                                        value="{{ old('model_number', $repair->repair_order_end_date ?? '') }}" />
+
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="advance_amount">Advance Amount</label>
+                                    <input type="number" name="advance_amount" class="form-control"
+                                        value="{{ old('advance_amount', $repair->advance_amount) }}">
+                                </div>
                             </div>
                             <div class="mb-4">
                                 <button type="submit" form="repairForm" class="btn btn-success col-md-3">Update</button>

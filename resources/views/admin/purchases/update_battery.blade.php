@@ -86,7 +86,7 @@
                             </div>
 
                             <!-- Quantity & Price -->
-                            <div class="row gx-3">
+                            <div class="mt-4 row gx-3">
                                 <div class="col-md-6">
                                     <label for="quantity" class="form-label">Quantity</label>
                                     <input type="number" id="quantity" class="form-control"
@@ -135,51 +135,67 @@
                                 </tbody>
                             </table>
 
-                            <hr class="mt-4 form-horizontal">
-                            <br />
 
-                            <div class="row gx-3">
-                                <div class="col-md-11 mb-4">
-                                    <h2 class="content-title">Payment Section</h2>
-                                </div>
-                            </div>
 
-                            <!--  Price -->
-                            <div class="row gx-3">
-                                <div class="col-md-6">
-                                    <label for="total_price" class="form-label">Total Price</label>
-                                    <input type="number" id="total_price" name="total_price" class="form-control"
-                                        placeholder="Total Price" value="{{ $purchase->total_price }}" readonly />
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="paid_amount" class="form-label">Paid Amount</label>
-                                    <input type="number" id="paid_amount" name="paid_amount"
-                                        value="{{ $purchase->paid_amount }}" class="form-control" step="0.01"
-                                        placeholder="Enter price" />
-                                </div>
-                            </div>
 
-                            <!-- payment -->
-                            <div class="row gx-3">
-                                <div class="col-md-6">
-                                    <label for="due_amount" class="form-label">Due Amount</label>
-                                    <input type="number" id="due_amount" name="due_amount" class="form-control"
-                                        step="0.01" placeholder="Due Amount" readonly
-                                        value="{{ $purchase->due_amount }}" />
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="payment_type" class="form-label">Payment Type</label>
-                                    <input type="text" id="payment_type" name="payment_type"
-                                        value="{{ $purchase->payment_type }}" class="form-control" step="0.01"
-                                        placeholder="Enter Type" />
-                                </div>
-                            </div>
 
-                            <div class="mb-4">
-                                <br>
-                                <button type="submit" form="updateForm" class="btn btn-success col-md-3">Update</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card mb-4">
+                    <div class="card-body">
+
+                        <div class="row gx-3">
+                            <div class="col-md-11 mb-4">
+                                <h2 class="content-title">Payment Section</h2>
                             </div>
+                        </div>
+
+                        <!--  Price -->
+                        <div class="mb-4">
+                            <label for="total_price" class="form-label">Total Price</label>
+                            <input type="number" id="total_price" name="total_price" class="form-control"
+                                placeholder="Total Price" value="{{ $purchase->total_price }}" readonly />
+                        </div>
+                        <div class="mb-4">
+                            <label for="paid_amount" class="form-label">Paid Amount</label>
+                            <input type="number" id="paid_amount" name="paid_amount"
+                                value="{{ $purchase->paid_amount }}" class="form-control" step="0.01"
+                                placeholder="Enter price" readonly />
+                        </div>
+
+                        <!-- payment -->
+                        <div class="mb-4">
+                            <label for="due_amount" class="form-label">Due Amount</label>
+                            <input type="number" id="due_amount" name="due_amount" class="form-control" step="0.01"
+                                placeholder="Due Amount" readonly value="{{ $purchase->due_amount }}" />
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="payable_amount" class="form-label">Payable Amount</label>
+                            <input type="number" id="payable_amount" name="payable_amount" class="form-control"
+                                step="0.01" placeholder="Enter price" />
+                        </div>
+                        <div class="mb-4">
+                            <label for="payment_type" class="form-label">Payment Type</label>
+                            <select id="payment_type" name="payment_type" class="form-select" required>
+                                @foreach ($paymentTypes as $paymentType)
+                                    <option value="{{ $paymentType }}">{{ $paymentType }}</option>)
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <br>
+                            <button type="submit" form="updateForm" class="btn btn-success col-md-6">Update</button>
+                        </div>
                         </form>
+
                     </div>
                 </div>
             </div>
@@ -244,6 +260,17 @@
             updateTotals();
         });
 
+        // Trigger updateTotals when payable_amount changes
+        document.getElementById('payable_amount').addEventListener('input', function() {
+            const payableAmount = parseFloat(this.value) || 0;
+            const totalPrice = parseFloat(document.getElementById('total_price').value) || 0;
+            const paidAmount = parseFloat(document.getElementById('paid_amount').value) || 0;
+            const newPaidAmount = payableAmount;
+            const dueAmount = Math.max(totalPrice - paidAmount - newPaidAmount, 0);
+
+            document.getElementById('due_amount').value = dueAmount.toFixed(2);
+        });
+
         function updateItems() {
             const rows = document.querySelectorAll('#productTable tbody tr');
             const items = Array.from(rows).map(row => {
@@ -293,7 +320,7 @@
             }
         }
 
-        // Update total_price and due_amount dynamically
+        // Update total_price, due_amount, and payable_amount dynamically
         function updateTotals() {
             const rows = document.querySelectorAll('#productTable tbody tr');
             let totalPrice = 0;
@@ -308,10 +335,13 @@
             // Update the total_price input
             document.getElementById('total_price').value = totalPrice.toFixed(2);
 
-            // Calculate and update due_amount
+            // Update payable_amount and recalculate due_amount
             const paidAmount = parseFloat(document.getElementById('paid_amount').value) || 0;
             const dueAmount = Math.max(totalPrice - paidAmount, 0);
+
             document.getElementById('due_amount').value = dueAmount.toFixed(2);
+            // document.getElementById('payable_amount').value = dueAmount.toFixed(
+            // 2); // Update payable_amount to match the new due_amount
         }
 
         // Initial calculation on page load

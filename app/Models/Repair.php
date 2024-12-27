@@ -21,7 +21,12 @@ class Repair extends Model
         'total_cost',
         'repair_status',
         'delivery_status',
-        'notes'
+        'notes',
+        'advance_amount',
+        'paid_amount',
+        'due_amount',
+        'payment_type',
+        'payment_status',
     ];
 
     protected $casts = [

@@ -191,6 +191,29 @@
             </table>
         </div>
 
+        <!-- Section 4: Payment Details -->
+        <div class="section">
+            <h2>Payment Details</h2>
+            <table>
+                <tr>
+                    <td class="label">Payment Type:</td>
+                    <td style="text-align: right;">{{ $purchase->payment_type }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Payment Date:</td>
+                    <td style="text-align: right;">{{ $purchase->updated_at }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Paid Amount (LKR):</td>
+                    <td style="text-align: right;">{{ $purchase->paid_amount ?? '0' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Due Amount (LKR):</td>
+                    <td style="text-align: right;">{{ $purchase->due_amount ?? '0' }}</td>
+                </tr>
+            </table>
+        </div>
+
         <!-- Footer Section -->
         <div class="footer">
             <p>Thank you for choosing New York Guest House & Restaurant. We hope you had a pleasant stay!</p>

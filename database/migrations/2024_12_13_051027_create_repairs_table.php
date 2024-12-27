@@ -25,6 +25,12 @@ return new class extends Migration
             $table->enum('repair_status', ['In Progress', 'Completed'])->default('In Progress');
             $table->enum('delivery_status', ['Not Delivered', 'Delivered'])->default('Not Delivered');
             $table->text('notes')->nullable();
+
+            $table->decimal('advance_amount', 10, 2)->default(0); // New column
+            $table->decimal('paid_amount', 10, 2)->default(0); // New column
+            $table->decimal('due_amount', 10, 2)->default(0);  // New column
+            $table->enum('payment_type', ['Cash', 'Card', 'Bank Transfer'])->default('Cash');
+            $table->enum('payment_status', ['Not Completed', 'Completed', 'Pending'])->default('Pending'); // New column
             $table->timestamps();
         });
     }

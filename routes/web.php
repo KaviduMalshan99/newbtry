@@ -453,14 +453,14 @@ Route::prefix('admin/old-battery')->group(function () {
     Route::post('/store', [OldBatteryController::class, 'store'])->name('oldBatteries.store');
     Route::get('', [OldBatteryController::class, 'index'])->name('oldBatteries.index');
     Route::get('/{oldBattery}/view-old-battery-details', [OldBatteryController::class, 'viewOldBatteryDetails'])->name('oldBatteries.view-old-battery-details');
-    Route::put('/{repair}/view-repair-details/update-status', [RepairController::class, 'changeStatus'])->name('repairs.updateStatus');
-    Route::put('/{repair}/view-repair-details/update-delivery-status', [RepairController::class, 'changeDeliveryStatus'])->name('repairs.updateDeliveryStatus');
+    // Route::put('/{repair}/view-repair-details/update-status', [RepairController::class, 'changeStatus'])->name('repairs.updateStatus');
+    // Route::put('/{repair}/view-repair-details/update-delivery-status', [RepairController::class, 'changeDeliveryStatus'])->name('repairs.updateDeliveryStatus');
     Route::get('/{oldBattery}/edit', [OldBatteryController::class, 'edit'])->name('oldBatteries.edit');
-    Route::get('/{repair}/completed-order', [RepairController::class, 'completedOrder'])->name('repairs.completedOrder');
+    // Route::get('/{repair}/completed-order', [RepairController::class, 'completedOrder'])->name('repairs.completedOrder');
     Route::put('/{oldBattery}', [OldBatteryController::class, 'update'])->name('oldBatteries.update');
-    Route::put('/{repair}/completed-order', [RepairController::class, 'updateCompletedRepair'])->name('repairs.updateCompletedRepair');
+    // Route::put('/{repair}/completed-order', [RepairController::class, 'updateCompletedRepair'])->name('repairs.updateCompletedRepair');
     Route::delete('/{oldBattery}', [OldBatteryController::class, 'destroy'])->name('oldBatteries.destroy');
-    Route::get('/{repair}/completed-order/bill', [RepairController::class, 'generateBill'])->name('repairs.bill');
+    // Route::get('/{repair}/completed-order/bill', [RepairController::class, 'generateBill'])->name('repairs.bill');
 });
 
 // Route::resource('admin/repairs', RepairController::class);

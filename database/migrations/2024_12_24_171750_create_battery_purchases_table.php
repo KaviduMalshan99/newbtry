@@ -17,7 +17,7 @@ return new class extends Migration
             $table->decimal('total_price', 10, 2);
             $table->decimal('paid_amount', 10, 2)->default(0); // New column
             $table->decimal('due_amount', 10, 2)->default(0);  // New column
-            $table->string('payment_type')->nullable();       // New column (e.g., Cash, Card, etc.)
+            $table->enum('payment_type', ['Cash', 'Card', 'Bank Transfer'])->default('Cash');
             $table->enum('payment_status', ['Not Completed', 'Completed', 'Pending'])->default('Pending'); // New column
             $table->timestamps();
         });

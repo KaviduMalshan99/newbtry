@@ -198,27 +198,31 @@
         </div>
 
         <!-- Section 4: Payment Details -->
-        {{-- <div class="section">
+        <div class="section">
             <h2>Payment Details</h2>
             <table>
                 <tr>
                     <td class="label">Payment Type:</td>
-                    <td style="text-align: right;">{{ $booking->payment->payment_type }}</td>
+                    <td style="text-align: right;">{{ $repair->payment_type }}</td>
                 </tr>
                 <tr>
                     <td class="label">Payment Date:</td>
-                    <td style="text-align: right;">{{ $booking->payment->payment_date }}</td>
+                    <td style="text-align: right;">{{ $repair->updated_at }}</td>
                 </tr>
                 <tr>
                     <td class="label">Paid Amount (LKR):</td>
-                    <td style="text-align: right;">{{ $booking->payment->paid_amount ?? '0' }}</td>
+                    <td style="text-align: right;">{{ $repair->paid_amount ?? '0' }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Advance Amount (LKR):</td>
+                    <td style="text-align: right;">{{ $repair->advance_amount ?? '0' }}</td>
                 </tr>
                 <tr>
                     <td class="label">Due Amount (LKR):</td>
-                    <td style="text-align: right;">{{ $booking->payment->due_amount ?? '0' }}</td>
+                    <td style="text-align: right;">{{ $repair->due_amount ?? '0' }}</td>
                 </tr>
             </table>
-        </div> --}}
+        </div>
 
         <!-- Footer Section -->
         <div class="footer">

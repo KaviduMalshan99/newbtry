@@ -47,6 +47,7 @@
                                     <tr>
                                         <th>Supplier Name</th>
                                         <th>Total Price</th>
+                                        <th>Payment Status</th>
                                         <th>Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -56,6 +57,7 @@
                                         <tr>
                                             <td>{{ $purchase->supplier->name }}</td>
                                             <td>{{ number_format($purchase->total_price, 2) }}</td>
+                                            <td>{{ $purchase->payment_status }}</td>
                                             <td>{{ $purchase->created_at->format('d.m.Y') }}</td>
                                             <td>
                                                 <ul class="action">
