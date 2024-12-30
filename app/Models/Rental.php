@@ -37,4 +37,22 @@ class Rental extends Model
     {
         return $this->belongsTo(OldBattery::class);
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($rental) {
+            $rental->public_id = self::generateUniquePublicId();
+        });
+    }
+
+    public static function generateUniquePublicId()
+    {
+        do {
+            $publicId = strtoupper(substr(bin2hex(random_bytes(3)), 0, 5)); // Generates a 5-character unique ID
+        } while (self::where('public_id', $publicId)->exists());
+
+        return $publicId;
+    }
 }

@@ -30,6 +30,7 @@ return new class extends Migration
 
             $table->decimal('total_cost', 10, 2)->nullable();
             $table->text('notes')->nullable(); // Optional Notes
+            $table->string('public_id', 5)->unique();
             $table->timestamps();
         });
     }

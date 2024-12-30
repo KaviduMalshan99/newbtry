@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\OldBattery;
 use App\Models\Rental;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class RentalController extends Controller
@@ -171,10 +172,7 @@ class RentalController extends Controller
         $oldBattery->save();
 
         // Redirect with success message
-        // return redirect()->route('rentals.show', $rental->id)
-        //     ->with('success', 'Rental completed and payment updated successfully!');
-
-        return redirect()->route('rentals.index')
+        return redirect()->route('rentals.bill', $rental->id)
             ->with('success', 'Rental completed and payment updated successfully!');
     }
 
@@ -182,5 +180,18 @@ class RentalController extends Controller
     {
         $rental = Rental::with(['customer', 'oldBattery'])->findOrFail($id);
         return view('admin.battery_rental_management.view-rental-details', compact('rental'));
+    }
+
+    public function generateBill($id)
+    {
+        $rental = Rental::with(['customer', 'oldBattery'])->findOrFail($id);
+        // Current date and time
+        $currentDateTime = Carbon::now()->format('d.m.Y H:i');
+
+        // Pass the data to the view
+        return view('admin.battery_rental_management.bill', [
+            'rental' => $rental,
+            'currentDateTime' => $currentDateTime,
+        ]);
     }
 }

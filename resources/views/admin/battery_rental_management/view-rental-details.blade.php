@@ -155,6 +155,19 @@
                                 </div>
                             </div>
                         @endif
+                        <div class="row gx-3">
+                            <div class="col-md-2 mb-4">
+                                <label class="form-label">Battery </label>
+                            </div>
+
+                            <div class="col-md-1 mb-4">
+                                <label class="form-label"> : </label>
+                            </div>
+                            <div class="col-md-9 mb-4">
+                                <label class="form-label">{{ $rental->oldBattery->isActive ? 'Received' : 'Not Received' }}
+                                </label>
+                            </div>
+                        </div>
                         @if (!empty($rental->rental_cost))
                             <div class="row gx-3">
                                 <div class="col-md-2 mb-4">
@@ -264,7 +277,7 @@
                         @if (!empty($rental->payment_status))
                             <div class="row gx-3">
                                 <div class="col-md-2 mb-4">
-                                    <label class="form-label">Payment Statu</label>
+                                    <label class="form-label">Payment Status</label>
                                 </div>
 
                                 <div class="col-md-1 mb-4">

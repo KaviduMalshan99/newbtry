@@ -82,6 +82,7 @@
                                         <th>Rental Start Date</th>
                                         <th>Rental End Date</th>
                                         <th>Payment Status</th>
+                                        <th>Battery</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -95,6 +96,8 @@
                                             <td>{{ $rental->rental_start_date }}</td>
                                             <td>{{ $rental->rental_end_date }}</td>
                                             <td>{{ $rental->payment_status }}</td>
+                                            <td>{{ $rental->oldBattery->isActive ? 'Received' : 'Not Received' }}
+                                            </td>
                                             <td>
                                                 <ul
                                                     class="action d-flex justify-content-center align-items-center gap-1 p-0 m-0">
@@ -105,7 +108,7 @@
                                                         </a>
                                                     </li>
                                                     <li class="btn btn-sm">
-                                                        <a href="{{ route('repairs.view-rental-details', $rental->id) }}"
+                                                        <a href="{{ route('rentals.view-rental-details', $rental->id) }}"
                                                             class="text-decoration-none">
                                                             <i class="icon-receipt"></i>
                                                         </a>

@@ -441,9 +441,8 @@ Route::prefix('admin/rentals')->group(function () {
     Route::delete('/{rental}', [RentalController::class, 'destroy'])->name('rentals.destroy');
     Route::get('/{rental}/completed-rental', [RentalController::class, 'completedRental'])->name('rentals.completedRental');
     Route::put('/{rental}/completed-rental', [RentalController::class, 'updateCompletedRental'])->name('rentals.updateCompletedRental');
-    Route::get('/{rental}/view-rental-details', [RentalController::class, 'viewRentalDetails'])->name('repairs.view-rental-details');
-
-    // Route::get('/{repair}/completed-rental/bill', [RepairController::class, 'generateBill'])->name('repairs.bill');
+    Route::get('/{rental}/view-rental-details', [RentalController::class, 'viewRentalDetails'])->name('rentals.view-rental-details');
+    Route::get('/{rental}/completed-rental/bill', [RentalController::class, 'generateBill'])->name('rentals.bill');
 });
 
 
