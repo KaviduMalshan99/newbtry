@@ -11,11 +11,20 @@ class Rental extends Model
 
     protected $fillable = [
         'customer_id',
-        'battery_id',
+        'old_battery_id',
         'rental_start_date',
         'rental_end_date',
+        'actual_return_date',
         'rental_cost',
-        'deposit_amount',
+        'late_return_fee',
+        'damage_fee',
+        'notes',
+        'total_cost',
+        'paid_amount',
+        'due_amount',
+        'payment_type',
+        'payment_status',
+        'advance_amount',
     ];
 
     // Relationships
@@ -24,8 +33,8 @@ class Rental extends Model
         return $this->belongsTo(Customer::class);
     }
 
-    public function battery()
+    public function oldBattery()
     {
-        return $this->belongsTo(Battery::class);
+        return $this->belongsTo(OldBattery::class);
     }
 }

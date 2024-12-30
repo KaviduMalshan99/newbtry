@@ -432,6 +432,20 @@ Route::prefix('purchases')->group(function () {
     Route::get('/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchases.edit'); //remove
 });
 
+Route::prefix('admin/rentals')->group(function () {
+    Route::get('/create', [RentalController::class, 'create'])->name('rentals.create');
+    Route::post('/store', [RentalController::class, 'store'])->name('rentals.store');
+    Route::get('', [RentalController::class, 'index'])->name('rentals.index');
+    Route::get('/{rental}/edit', [RentalController::class, 'edit'])->name('rentals.edit');
+    Route::put('/{rental}', [RentalController::class, 'update'])->name('rentals.update');
+    Route::delete('/{rental}', [RentalController::class, 'destroy'])->name('rentals.destroy');
+    Route::get('/{rental}/completed-rental', [RentalController::class, 'completedRental'])->name('rentals.completedRental');
+    Route::put('/{rental}/completed-rental', [RentalController::class, 'updateCompletedRental'])->name('rentals.updateCompletedRental');
+    Route::get('/{rental}/view-rental-details', [RentalController::class, 'viewRentalDetails'])->name('repairs.view-rental-details');
+
+    // Route::get('/{repair}/completed-rental/bill', [RepairController::class, 'generateBill'])->name('repairs.bill');
+});
+
 
 Route::prefix('admin/repairs')->group(function () {
     Route::get('/create', [RepairController::class, 'create'])->name('repairs.create');

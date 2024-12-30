@@ -16,6 +16,7 @@ class OldBattery extends Model
         'old_battery_condition',
         'old_battery_value',
         'battery_status',
+        'isActive',
         'notes',
     ];
 
@@ -27,5 +28,10 @@ class OldBattery extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function rentals()
+    {
+        return $this->hasMany(Rental::class);
     }
 }

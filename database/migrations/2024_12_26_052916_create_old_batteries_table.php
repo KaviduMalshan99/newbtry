@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('old_battery_condition', ['Good', 'Average', 'Poor']);
             $table->decimal('old_battery_value', 10, 2);
             $table->enum('battery_status', ['Direct', 'Replace']);
+            $table->boolean('isActive')->default(1);
             $table->text('notes')->nullable();
             $table->timestamps();
 
