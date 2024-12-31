@@ -135,7 +135,7 @@
         <!-- Date and Bill Number -->
         <div class="section" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
             <p><span class="label">Date:</span> {{ $currentDateTime }}</p>
-            <p><span class="label">Booking No:</span> IR{{ $repair->id }}</p>
+            <p><span class="label">Repair ID:</span> IR{{ $repair->id }}</p>
         </div>
 
         <!-- Section 1: Customer Details -->
@@ -158,21 +158,31 @@
                 <tr>
                     <td class="label">Battery Brand & Type:</td>
                     <td>{{ $repair->repairBattery->brand }} {{ $repair->repairBattery->type }}</td>
+                </tr>
+                <tr>
                     <td class="label">Model Number:</td>
                     <td>{{ $repair->repairBattery->model_number }}</td>
                 </tr>
                 <tr>
                     <td class="label">Repair Start Date:</td>
                     <td>{{ $repair->repair_order_start_date }}</td>
+                </tr>
+                <tr>
                     <td class="label">Repair Handover Date:</td>
                     <td>{{ $repair->repair_order_end_date }}</td>
                 </tr>
                 <tr>
                     <td class="label">Dianostic Report</td>
                     <td>{{ $repair->diagnostic_report }}</td>
+                </tr>
+                <tr>
+                    @if (!empty($repair->items_used))
+                <tr>
                     <td class="label">Item Used</td>
                     <td>{{ $repair->items_used }}</td>
                 </tr>
+                @endif
+
             </table>
         </div>
 
@@ -181,18 +191,24 @@
         <div class="section">
             <h2>Charges Summary</h2>
             <table>
-                <tr>
-                    <td class="label">Repair Cost (LKR):</td>
-                    <td style="text-align: right;">{{ $repair->repair_cost }}</td>
-                </tr>
-                <tr>
-                    <td class="label">Labor Cost (LKR):</td>
-                    <td style="text-align: right;">{{ $repair->labor_charges }}</td>
-                </tr>
-                <tr>
-                    <td class="label">Total Cost (LKR):</td>
-                    <td style="text-align: right;">{{ $repair->total_cost ?? '0' }}</td>
-                </tr>
+                @if (!empty($repair->repair_cost))
+                    <tr>
+                        <td class="label">Repair Cost (LKR):</td>
+                        <td style="text-align: right;">{{ $repair->repair_cost }}</td>
+                    </tr>
+                @endif
+                @if (!empty($repair->labor_charges))
+                    <tr>
+                        <td class="label">Labor Cost (LKR):</td>
+                        <td style="text-align: right;">{{ $repair->labor_charges }}</td>
+                    </tr>
+                @endif
+                @if (!empty($repair->total_cost))
+                    <tr>
+                        <td class="label">Total Cost (LKR):</td>
+                        <td style="text-align: right;">{{ $repair->total_cost ?? '0' }}</td>
+                    </tr>
+                @endif
 
             </table>
         </div>
@@ -209,18 +225,24 @@
                     <td class="label">Payment Date:</td>
                     <td style="text-align: right;">{{ $repair->updated_at }}</td>
                 </tr>
-                <tr>
-                    <td class="label">Paid Amount (LKR):</td>
-                    <td style="text-align: right;">{{ $repair->paid_amount ?? '0' }}</td>
-                </tr>
-                <tr>
-                    <td class="label">Advance Amount (LKR):</td>
-                    <td style="text-align: right;">{{ $repair->advance_amount ?? '0' }}</td>
-                </tr>
-                <tr>
-                    <td class="label">Due Amount (LKR):</td>
-                    <td style="text-align: right;">{{ $repair->due_amount ?? '0' }}</td>
-                </tr>
+                @if (!empty($repair->paid_amount) && $repair->paid_amount > 0)
+                    <tr>
+                        <td class="label">Paid Amount (LKR):</td>
+                        <td style="text-align: right;">{{ $repair->paid_amount ?? '0' }}</td>
+                    </tr>
+                @endif
+                @if (!empty($repair->advance_amount))
+                    <tr>
+                        <td class="label">Advance Amount (LKR):</td>
+                        <td style="text-align: right;">{{ $repair->advance_amount ?? '0' }}</td>
+                    </tr>
+                @endif
+                @if (!empty($repair->due_amount) && $repair->due_amount > 0)
+                    <tr>
+                        <td class="label">Due Amount (LKR):</td>
+                        <td style="text-align: right;">{{ $repair->due_amount ?? '0' }}</td>
+                    </tr>
+                @endif
             </table>
         </div>
 

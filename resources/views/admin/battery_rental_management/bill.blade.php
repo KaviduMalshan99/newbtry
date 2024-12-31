@@ -158,19 +158,26 @@
                 <tr>
                     <td class="label">Battery Type :</td>
                     <td>{{ $rental->oldBattery->old_battery_type }}</td>
-                    <td class="label">Condition:</td>
-                    <td>{{ $rental->oldBattery->old_battery_condition }}</td>
-                    <td class="label">Battery Value:</td>
-                    <td>{{ $rental->oldBattery->old_battery_value }}</td>
+                </tr>
+                <td class="label">Condition:</td>
+                <td>{{ $rental->oldBattery->old_battery_condition }}</td>
+                </tr>
+                <td class="label">Battery Value:</td>
+                <td>{{ $rental->oldBattery->old_battery_value }}</td>
                 </tr>
                 <tr>
                     <td class="label">Rental Start Date:</td>
                     <td>{{ $rental->rental_start_date }}</td>
-                    <td class="label">Rental End Date:</td>
-                    <td>{{ $rental->rental_end_date }}</td>
-                    <td class="label">Actual Return Date:</td>
-                    <td>{{ $rental->actual_return_date }}</td>
                 </tr>
+                <td class="label">Rental End Date:</td>
+                <td>{{ $rental->rental_end_date }}</td>
+                </tr>
+                @if (!empty($rental->actual_return_date))
+                    <tr>
+                        <td class="label">Actual Return Date:</td>
+                        <td>{{ $rental->actual_return_date }}</td>
+                    </tr>
+                @endif
             </table>
         </div>
 
@@ -183,14 +190,18 @@
                     <td class="label">Rental Cost (LKR):</td>
                     <td style="text-align: right;">{{ $rental->rental_cost }}</td>
                 </tr>
-                <tr>
-                    <td class="label">Late Return Fee (LKR):</td>
-                    <td style="text-align: right;">{{ $rental->late_return_fee }}</td>
-                </tr>
-                <tr>
-                    <td class="label">Damage Fee (LKR):</td>
-                    <td style="text-align: right;">{{ $rental->damage_fee }}</td>
-                </tr>
+                @if (!empty($rental->late_return_fee))
+                    <tr>
+                        <td class="label">Late Return Fee (LKR):</td>
+                        <td style="text-align: right;">{{ $rental->late_return_fee }}</td>
+                    </tr>
+                @endif
+                @if (!empty($rental->damage_fee))
+                    <tr>
+                        <td class="label">Damage Fee (LKR):</td>
+                        <td style="text-align: right;">{{ $rental->damage_fee }}</td>
+                    </tr>
+                @endif
                 <tr>
                     <td class="label">Total Cost (LKR):</td>
                     <td style="text-align: right;">{{ $rental->total_cost ?? '0' }}</td>

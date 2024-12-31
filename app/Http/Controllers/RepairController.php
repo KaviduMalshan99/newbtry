@@ -58,7 +58,8 @@ class RepairController extends Controller
         ]);
 
         // Redirect to a specific page with a success message
-        return redirect()->route('repairs.index')->with('success', 'Repair added successfully!');
+        // return redirect()->route('repairs.index')->with('success', 'Repair added successfully!');
+        return redirect()->route('repairs.bill', $repair->id)->with('success', 'Repair added successfully!');
     }
 
     public function edit($id)

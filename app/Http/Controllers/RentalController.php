@@ -56,7 +56,8 @@ class RentalController extends Controller
         $oldBattery->isActive = 0;
         $oldBattery->save();
 
-        return redirect()->route('rentals.index')->with('success', 'Rental added successfully.');
+        return redirect()->route('rentals.bill', $rental->id)->with('success', 'Rental added successfully.');
+        // return redirect()->route('rentals.index')->with('success', 'Rental added successfully.');
     }
 
     public function edit(Rental $rental)
