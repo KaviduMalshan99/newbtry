@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Battery;
 use App\Models\BatteryPurchase;
 use App\Models\BatteryPurchaseItem;
+use App\Models\Company;
 use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -122,12 +123,14 @@ class BatteryPurchaseController extends Controller
 
         // Current date and time
         $currentDateTime = Carbon::now()->format('d.m.Y H:i');
+        $companyDetails = Company::first();
 
         // Pass the data to the view
         return view('admin.purchases.grn', [
             'purchase' => $purchase,
             'purchaseItems' => $purchase->batteryPurchaseItems,
             'currentDateTime' => $currentDateTime,
+            'companyDetails' => $companyDetails,
         ]);
     }
 

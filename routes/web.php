@@ -478,7 +478,7 @@ Route::prefix('admin/company')->group(function () {
 });
 
 
-Route::resource('rentals', RentalController::class);
+// Route::resource('rentals', RentalController::class);
 
 Route::prefix('admin/batteries')->group(function () {
     Route::get('/', [BatteryController::class, 'index'])->name('batteries.index');

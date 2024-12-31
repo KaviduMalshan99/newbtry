@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Battery;
+use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Repair;
 use App\Models\RepairBattery;
@@ -214,11 +215,13 @@ class RepairController extends Controller
         $repair = Repair::with(['customer', 'repairBattery'])->findOrFail($id);
         // Current date and time
         $currentDateTime = Carbon::now()->format('d.m.Y H:i');
+        $companyDetails = Company::first();
 
         // Pass the data to the view
         return view('admin.repairs_management.bill', [
             'repair' => $repair,
             'currentDateTime' => $currentDateTime,
+            'companyDetails' => $companyDetails,
         ]);
     }
 }

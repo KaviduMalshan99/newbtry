@@ -110,13 +110,14 @@
         <!-- Header Section -->
         <div class="header">
             <div class="logo">
-                <img src="" alt="Hotel Logo" style="width: 100px; height: auto;">
+                <img src="{{ Storage::url($companyDetails->company_logo) }}" alt="Hotel Logo"
+                    style="width: 100px; height: auto;">
             </div>
             <div class="company-info">
-                <h1>New York Restaurant & Guest House (PVT) LTD</h1>
-                <p>12, first lane, first city, Colombo</p>
-                <p>abc@gmail.com</p>
-                <p>0771234567</p>
+                <h1>{{ $companyDetails->company_name ?? '' }}</h1>
+                <p>{{ $companyDetails->address ?? '' }}</p>
+                <p>{{ $companyDetails->email ?? '' }}</p>
+                <p>{{ $companyDetails->contact ?? '' }}</p>
 
             </div>
         </div>

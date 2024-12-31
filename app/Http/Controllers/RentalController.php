@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use App\Models\Customer;
 use App\Models\OldBattery;
 use App\Models\Rental;
@@ -188,11 +189,13 @@ class RentalController extends Controller
         $rental = Rental::with(['customer', 'oldBattery'])->findOrFail($id);
         // Current date and time
         $currentDateTime = Carbon::now()->format('d.m.Y H:i');
+        $companyDetails = Company::first();
 
         // Pass the data to the view
         return view('admin.battery_rental_management.bill', [
             'rental' => $rental,
             'currentDateTime' => $currentDateTime,
+            'companyDetails' => $companyDetails,
         ]);
     }
 }
