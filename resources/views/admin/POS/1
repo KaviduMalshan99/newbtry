@@ -485,9 +485,6 @@
 
 
 
-
-
-
                                 <h5 class="m-0 p-t-40">Payment Method</h5>
                                 <div class="payment-methods">
                                     <div>
@@ -507,7 +504,7 @@
                                     </div>
                                 </div>
                                 <div class="place-order">
-                                    <button  id="place-order-btn" class="btn btn-primary btn-hover-effect w-100 f-w-500" type="button">Place
+                                    <button class="btn btn-primary btn-hover-effect w-100 f-w-500" type="button">Place
                                         Order</button>
                                 </div>
                             </div>
@@ -516,44 +513,7 @@
                 </div>
             </div>
 
-             <script>
 
-document.addEventListener("DOMContentLoaded", function () {
-    const placeOrderBtn = document.getElementById("place-order-btn");
-
-    placeOrderBtn.addEventListener("click", function () {
-        const totalItems = parseInt(document.querySelector(".item-number:nth-child(1) .f-w-500").textContent);
-        const formattedSubtotal = document.querySelector(".item-number:nth-child(2) .f-w-500").textContent.replace("RS", "").trim();
-        const formattedTotal = document.querySelector(".item-number:nth-child(4) h6").textContent.replace("RS", "").trim();
-
-        // Sending data to the server using fetch
-        fetch("/submit-order", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content") // Ensure CSRF token is present
-            },
-            body: JSON.stringify({
-                totalItems: totalItems,
-                formattedSubtotal: formattedSubtotal,
-                formattedTotal: formattedTotal
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Redirect to summary.blade.php
-                window.location.href = "/admin/POS/summary";
-            } else {
-                alert("Failed to place the order. Please try again.");
-            }
-        })
-        .catch(error => console.error("Error:", error));
-    });
-});
-
-
-           </script>
 
 
         </div>

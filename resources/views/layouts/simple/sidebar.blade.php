@@ -238,6 +238,82 @@
 
                     <li class="sidebar-main-title">
                         <div>
+                            <h6>Battery & Lubricant</h6>
+                        </div>
+                    </li>
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
+                            href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-form') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-form') }}"> </use>
+                            </svg><span>Battery</span></a>
+                        <ul class="sidebar-submenu">
+                            <li><a class="submenu-title" href="{{ route('batteries.create') }}">Add Battery<span
+                                        class="sub-arrow"><i class="fa fa-angle-right"></i></span></a>
+
+                            </li>
+                            <li><a class="submenu-title" href="{{ route('batteries.index') }}">View Battery<span
+                                        class="sub-arrow"><i class="fa fa-angle-right"></i></span></a>
+
+                            </li>
+                            <li><a class="submenu-title" href="#">Brand<span class="sub-arrow"><i
+                                            class="fa fa-angle-right"></i></span></a>
+                                <ul class="nav-sub-childmenu submenu-content">
+                                    <li><a href="{{ route('brand.index') }}">View Brand</a></li>
+                                    <li><a href="{{ route('brand.create') }}">Add Brand </a></li>
+
+
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
+                            href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-table') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-table') }}"></use>
+                            </svg><span>Lubricant</span></a>
+                        <ul class="sidebar-submenu">
+                            <li><a class="submenu-title" href="{{ route('lubricants.create') }}">Add Lubricant<span
+                                        class="sub-arrow"><i class="fa fa-angle-right"></i></span></a>
+
+                            </li>
+                            <li><a class="submenu-title" href="{{ route('lubricants.index') }}"> View Lubricant<span
+                                        class="sub-arrow"><i class="fa fa-angle-right"></i></span></a>
+
+                            </li>
+
+                        </ul>
+                    </li>
+
+
+
+
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
+                            href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-table') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-table') }}"></use>
+                            </svg><span>Brand</span></a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('brand.index') }}">View Brand</a></li>
+                            <li><a href="{{ route('brand.create') }}">Add Brand </a></li>
+
+                        </ul>
+                    </li>
+
+
+
+                    <li class="sidebar-main-title">
+                        <div>
                             <h6>Forms & Table</h6>
                         </div>
                     </li>

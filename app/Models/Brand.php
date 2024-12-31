@@ -1,21 +1,19 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Lubricant extends Model
+class Brand extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name', 
-        'brand', 
-        'purchase_price', 
-        'sale_price', 
-        'stock_quantity', 
-        'unit', 
-        'type', 
+        'type',
+        'brand_id',
+        'brand_name',
         'image',
+        'date',
     ];
 }

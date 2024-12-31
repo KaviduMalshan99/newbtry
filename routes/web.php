@@ -6,10 +6,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BatteryController;
 use App\Http\Controllers\BatteryPurchaseController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\LubricantController;
+use App\Http\Controllers\LubricantPurchaseController;
 use App\Http\Controllers\OldBatteryController;
+use App\Http\Controllers\PosController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\RepairController;
@@ -480,6 +483,33 @@ Route::prefix('admin/company')->group(function () {
 
 // Route::resource('rentals', RentalController::class);
 
+// Route::prefix('admin/batteries')->group(function () {
+//     Route::get('/', [BatteryController::class, 'index'])->name('batteries.index');
+//     Route::get('/create', [BatteryController::class, 'create'])->name('batteries.create');
+//     Route::post('/store', [BatteryController::class, 'store'])->name('batteries.store');
+//     Route::get('/{id}', [BatteryController::class, 'show'])->name('batteries.show');
+//     Route::get('/{id}/edit', [BatteryController::class, 'edit'])->name('batteries.edit');
+//     Route::post('/{id}/update', [BatteryController::class, 'update'])->name('batteries.update');
+//     Route::delete('/{id}', [BatteryController::class, 'destroy'])->name('batteries.destroy');
+// });
+
+
+// // Lubricant Management
+
+
+// Route::prefix('admin/lubricants')->group(function () {
+//     Route::get('/', [LubricantController::class, 'index'])->name('lubricants.index');
+//     Route::get('/create', [LubricantController::class, 'create'])->name('lubricants.create');
+//     Route::post('/', [LubricantController::class, 'store'])->name('lubricants.store');
+//     Route::get('/{id}', [LubricantController::class, 'show'])->name('lubricants.show');
+//     Route::get('/{id}/edit', [LubricantController::class, 'edit'])->name('lubricants.edit');
+//     Route::put('/{id}', [LubricantController::class, 'update'])->name('lubricants.update');
+//     Route::delete('/{id}', [LubricantController::class, 'destroy'])->name('lubricants.destroy');
+// });
+
+//new
+
+
 Route::prefix('admin/batteries')->group(function () {
     Route::get('/', [BatteryController::class, 'index'])->name('batteries.index');
     Route::get('/create', [BatteryController::class, 'create'])->name('batteries.create');
@@ -489,6 +519,18 @@ Route::prefix('admin/batteries')->group(function () {
     Route::post('/{id}/update', [BatteryController::class, 'update'])->name('batteries.update');
     Route::delete('/{id}', [BatteryController::class, 'destroy'])->name('batteries.destroy');
 });
+
+
+// Route::prefix('admin/batteries')->name('admin.old-batteries.')->group(function () {
+//     Route::get('old-batteries/', [OldBatteryController::class, 'index'])->name('index');
+//     Route::get('old-batteries/create', [OldBatteryController::class, 'create'])->name('create');
+//     Route::post('old-batteries/', [OldBatteryController::class, 'store'])->name('store');
+//     Route::get('old-batteries/{id}', [OldBatteryController::class, 'show'])->name('show');
+//     Route::get('old-batteries/{id}/edit', [OldBatteryController::class, 'edit'])->name('edit');
+//     Route::put('old-batteries/{id}', [OldBatteryController::class, 'update'])->name('update');
+//     Route::delete('old-batteries/{id}', [OldBatteryController::class, 'destroy'])->name('destroy');
+// });
+
 
 
 // Lubricant Management
@@ -502,4 +544,79 @@ Route::prefix('admin/lubricants')->group(function () {
     Route::get('/{id}/edit', [LubricantController::class, 'edit'])->name('lubricants.edit');
     Route::put('/{id}', [LubricantController::class, 'update'])->name('lubricants.update');
     Route::delete('/{id}', [LubricantController::class, 'destroy'])->name('lubricants.destroy');
+});
+
+
+// pos
+
+// Define the route for accessing the POS interface
+Route::get('/admin/POS', [PosController::class, 'index'])->name('POS.index');
+
+Route::get('/admin/POS/lubricant', [PosController::class, 'lubricant'])->name('POS.index');
+
+// Define the route for placing an order via POST request
+// Route::post('/admin/POS/place-order', [PosController::class, 'placeOrder'])->name('POS.place');
+Route::post('/admin/POS/place-order', [PosController::class, 'storeBatteryOrder'])->name('order.place');
+
+
+Route::post('/admin/POS/place-order', [PosController::class, 'storeOrder'])->name('POS.placeOrder');
+
+Route::post('/store-battery-order', [PosController::class, 'storeBatteryOrder']);
+
+Route::post('/create-customer', [PosController::class, 'createCustomer'])->name('customer.create');
+Route::post('/show', [PosController::class, 'show'])->name('show');
+
+
+use App\Http\Controllers\OrderController;
+
+Route::post('/admin/submit-order', [OrderController::class, 'submitOrder'])->name('submit.order');
+Route::get('/admin/POS/summary', [OrderController::class, 'summary'])->name('POS.summary');
+
+
+// brand
+
+
+
+
+
+Route::prefix('admin/brand')->group(function () {
+    Route::get('/', [BrandController::class, 'index'])->name('brand.index');
+    Route::get('/create', [BrandController::class, 'create'])->name('brand.create');
+    Route::post('/', [BrandController::class, 'store'])->name('brand.store');
+    Route::get('/{brand}', [BrandController::class, 'show'])->name('brand.show');
+    Route::get('/{brand}/edit', [BrandController::class, 'edit'])->name('brand.edit');
+    Route::put('/{brand}', [BrandController::class, 'update'])->name('brand.update');
+    Route::delete('/{brand}', [BrandController::class, 'destroy'])->name('brand.destroy');
+});
+
+
+
+
+// Lubricant Purchase
+
+
+// Route::resource('lubricant_purchases', LubricantPurchaseController::class);
+
+Route::prefix('admin/lubricant_purchases')->group(function () {
+    Route::get('/', [LubricantPurchaseController::class, 'index'])->name('lubricant_purchases.index');
+    Route::get('/create', [LubricantPurchaseController::class, 'create'])->name('lubricant_purchases.create');
+    Route::post('/', [LubricantPurchaseController::class, 'store'])->name('lubricant_purchases.store');
+    Route::get('/{lubricant_purchase}', [LubricantPurchaseController::class, 'show'])->name('lubricant_purchases.show');
+    Route::get('/{lubricant_purchase}/edit', [LubricantPurchaseController::class, 'edit'])->name('lubricant_purchases.edit');
+    Route::put('/{lubricant_purchase}', [LubricantPurchaseController::class, 'update'])->name('lubricant_purchases.update');
+    Route::delete('/{lubricant_purchase}', [LubricantPurchaseController::class, 'destroy'])->name('lubricant_purchases.destroy');
+});
+
+
+
+// payment
+use App\Http\Controllers\LpaymentController;
+
+Route::prefix('admin/payment')->group(function () {
+    Route::get('/', [LpaymentController::class, 'index'])->name('l_payment.index');
+    Route::get('/create', [LpaymentController::class, 'create'])->name('l_payment.create');
+    Route::post('/', [LpaymentController::class, 'store'])->name('l_payment.store');
+    Route::get('/{l_payment}/edit', [LpaymentController::class, 'edit'])->name('l_payment.edit');
+    Route::put('/{l_payment}', [LpaymentController::class, 'update'])->name('l_payment.update');
+    Route::delete('/{l_payment}', [LpaymentController::class, 'destroy'])->name('l_payment.destroy');
 });

@@ -1,0 +1,52 @@
+@extends('layouts.simple.master')
+
+@section('title', 'Manage Brands')
+
+@section('content')
+<div class="container">
+    <h1>Brands</h1>
+    <a href="{{ route('brand.create') }}" class="btn btn-primary mb-3">Add New Brand</a>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th>Brand ID</th>
+                <th>Brand Name</th>
+                <th>Image</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($brands as $brand)
+            <tr>
+                <td>{{ $brand->id }}</td>
+                <td>{{ ucfirst($brand->type) }}</td>
+                <td>{{ $brand->brand_id }}</td>
+                <td>{{ $brand->brand_name }}</td>
+                <td>
+                    @if ($brand->image)
+                    <img src="{{ asset('storage/' . $brand->image) }}" alt="{{ $brand->brand_name }}" width="50">
+
+                    
+
+                    @else
+                    N/A
+                    @endif
+                </td>
+                <td>{{ $brand->date }}</td>
+                <td>
+                    <a href="{{ route('brand.edit', $brand->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <form action="{{ route('brand.destroy', $brand->id) }}" method="POST" style="display:inline-block;">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
+@endsection
