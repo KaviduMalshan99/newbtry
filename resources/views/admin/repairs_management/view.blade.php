@@ -77,6 +77,7 @@
                             <table class="display" id="keytable">
                                 <thead>
                                     <tr>
+                                        <th>Id</th>
                                         <th>Customer Name</th>
                                         <th>Battery Details</th>
                                         <th>Order Start Date</th>
@@ -90,6 +91,7 @@
                                 <tbody>
                                     @forelse ($repairs as $repair)
                                         <tr>
+                                            <td>RI{{ $repair->id }}</td>
                                             <td>{{ $repair->customer->first_name }} {{ $repair->customer->last_name }} </td>
                                             <td>{{ $repair->repairBattery->type }} | {{ $repair->repairBattery->brand }} |
                                                 {{ $repair->repairBattery->model_number }}</td>

@@ -77,6 +77,7 @@
                             <table class="display" id="keytable">
                                 <thead>
                                     <tr>
+                                        <th>Id</th>
                                         <th>Customer Name</th>
                                         <th>Old Battery Details</th>
                                         <th>Rental Start Date</th>
@@ -89,6 +90,7 @@
                                 <tbody>
                                     @forelse ($rentals as $rental)
                                         <tr>
+                                            <td>BR{{ $rental->public_id }}</td>
                                             <td>{{ $rental->customer->first_name }} {{ $rental->customer->last_name }} </td>
                                             <td>{{ $rental->oldBattery->old_battery_type }} |
                                                 {{ $rental->oldBattery->old_battery_condition }} |

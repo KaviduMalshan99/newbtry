@@ -516,7 +516,7 @@ Route::prefix('admin/batteries')->group(function () {
     Route::post('/store', [BatteryController::class, 'store'])->name('batteries.store');
     Route::get('/{id}', [BatteryController::class, 'show'])->name('batteries.show');
     Route::get('/{id}/edit', [BatteryController::class, 'edit'])->name('batteries.edit');
-    Route::post('/{id}/update', [BatteryController::class, 'update'])->name('batteries.update');
+    Route::put('/{id}/update', [BatteryController::class, 'update'])->name('batteries.update');
     Route::delete('/{id}', [BatteryController::class, 'destroy'])->name('batteries.destroy');
 });
 

@@ -77,6 +77,7 @@
                             <table class="display" id="keytable">
                                 <thead>
                                     <tr>
+                                        <th>Id</th>
                                         <th>Customer Name</th>
                                         <th>Phone Number</th>
                                         <th>Email</th>
@@ -88,6 +89,7 @@
                                 <tbody>
                                     @forelse ($customers as $customer)
                                         <tr>
+                                            <td>C{{ $customer->id }}</td>
                                             <td>{{ $customer->first_name }} {{ $customer->last_name }} </td>
                                             <td>{{ $customer->phone_number }}</td>
                                             <td>{{ $customer->email ?? 'N/A' }}</td>

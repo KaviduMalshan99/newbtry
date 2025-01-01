@@ -41,6 +41,7 @@
                             <table class="display" id="keytable">
                                 <thead>
                                     <tr>
+                                        <th>Id</th>
                                         <th>Supplier Name</th>
                                         <th>Phone Number</th>
                                         <th>Email</th>
@@ -53,6 +54,7 @@
                                 <tbody>
                                     @forelse ($suppliers as $supplier)
                                         <tr>
+                                            <td>S{{ $supplier->id }}</td>
                                             <td>{{ $supplier->name }}</td>
                                             <td>{{ $supplier->phone_number }}</td>
                                             <td>{{ $supplier->email ?? 'N/A' }}</td>

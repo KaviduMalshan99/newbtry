@@ -78,6 +78,7 @@
                             <table class="display" id="keytable">
                                 <thead>
                                     <tr>
+                                        <th>Id</th>
                                         <th>Customer Name</th>
                                         <th>Battery Type</th>
                                         <th>Battery Condition</th>
@@ -88,6 +89,7 @@
                                 <tbody>
                                     @forelse ($oldBatteries as $oldBattery)
                                         <tr>
+                                            <td>OB{{ $oldBattery->id }}</td>
                                             <td>{{ $oldBattery->customer->first_name }}
                                                 {{ $oldBattery->customer->last_name }} </td>
                                             <td>{{ $oldBattery->old_battery_type }}</td>

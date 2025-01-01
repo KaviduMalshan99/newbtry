@@ -45,6 +45,7 @@
                             <table class="display" id="keytable">
                                 <thead>
                                     <tr>
+                                        <th>Id</th>
                                         <th>Supplier Name</th>
                                         <th>Total Price</th>
                                         <th>Payment Status</th>
@@ -55,6 +56,7 @@
                                 <tbody>
                                     @forelse ($purchases as $purchase)
                                         <tr>
+                                            <td>IP{{ $purchase->id }}</td>
                                             <td>{{ $purchase->supplier->name }}</td>
                                             <td>{{ number_format($purchase->total_price, 2) }}</td>
                                             <td>{{ $purchase->payment_status }}</td>
