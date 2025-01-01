@@ -1,11 +1,39 @@
 @extends('layouts.simple.master')
 @section('title', 'Add Lubricant')
 
+@section('css')
+
+@endsection
+
+@section('style')
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/animate.css') }}">
+@endsection
+
+@section('breadcrumb-title')
+    <h3>Lubricant Management</h3>
+@endsection
+
+@section('breadcrumb-items')
+    <li class="breadcrumb-item"> <a class="breadcrumb-item"
+            href="{{ request()->query('ref') === 'view' ? route('lubricants.show', $lubricant->id) : route('lubricants.index') }}">
+            Lubricant
+        </a></li>
+    <li class="breadcrumb-item active">Add lubricant</li>
+@endsection
+
 @section('content')
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <h3 class="my-3 pb-3">Add New Lubricant</h3>
+                <div class="row gx-3">
+                    <div class="col-md-11 mb-4">
+                        <h2 class="content-title">Add New Lubricant</h2>
+                    </div>
+                    <div class="col-md-1 mb-4">
+                        <a href="{{ route('lubricants.index') }}"
+                            class="btn btn-light rounded font-sm mr-5 text-body hover-up">Back</a>
+                    </div>
+                </div>
                 <form action="{{ route('lubricants.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group my-3 ">

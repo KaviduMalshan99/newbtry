@@ -1,12 +1,41 @@
 @extends('layouts.simple.master')
 @section('title', 'Edit Lubricant')
 
+@section('css')
+
+@endsection
+
+@section('style')
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/animate.css') }}">
+@endsection
+
+@section('breadcrumb-title')
+    <h3>Lubricant Management</h3>
+@endsection
+
+@section('breadcrumb-items')
+    <li class="breadcrumb-item"> <a class="breadcrumb-item"
+            href="{{ request()->query('ref') === 'view' ? route('lubricants.show', $lubricant->id) : route('lubricants.index') }}">
+            Lubricant
+        </a></li>
+    <li class="breadcrumb-item active">Edit lubricant</li>
+@endsection
+
 @section('content')
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <h3>Edit Lubricant</h3>
-                <form action="{{ route('lubricants.update', $lubricant->id) }}" method="POST" enctype="multipart/form-data">
+                <div class="row gx-3">
+                    <div class="col-md-11 mb-4">
+                        <h2 class="content-title">Edit Lubricant</h2>
+                    </div>
+                    <div class="col-md-1 mb-4">
+                        <a href="{{ route('lubricants.index') }}"
+                            class="btn btn-light rounded font-sm mr-5 text-body hover-up">Back</a>
+                    </div>
+                </div>
+                <form action="{{ route('lubricants.update', $lubricant->id) }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <div class="row">

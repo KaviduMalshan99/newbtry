@@ -1,11 +1,37 @@
 @extends('layouts.simple.master')
 @section('title', 'Edit Brand')
+@section('css')
 
+@endsection
+
+@section('style')
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/animate.css') }}">
+@endsection
+
+@section('breadcrumb-title')
+    <h3>Brand Management</h3>
+@endsection
+
+@section('breadcrumb-items')
+    <li class="breadcrumb-item"> <a class="breadcrumb-item"
+            href="{{ request()->query('ref') === 'view' ? route('brand.show', $brand->id) : route('brand.index') }}">
+            Brand
+        </a></li>
+    <li class="breadcrumb-item active">Edit Brand</li>
+@endsection
 @section('content')
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <h1>Edit Brand</h1>
+                <div class="row gx-3">
+                    <div class="col-md-11 mb-4">
+                        <h2 class="content-title">Edit Brand</h2>
+                    </div>
+                    <div class="col-md-1 mb-4">
+                        <a href="{{ route('brand.index') }}"
+                            class="btn btn-light rounded font-sm mr-5 text-body hover-up">Back</a>
+                    </div>
+                </div>
                 <form action="{{ route('brand.update', $brand->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')

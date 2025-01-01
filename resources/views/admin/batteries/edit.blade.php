@@ -2,15 +2,39 @@
 
 @section('title', 'Update Battery')
 
+@section('css')
+
+@endsection
+
 @section('style')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/animate.css') }}">
+@endsection
+
+@section('breadcrumb-title')
+    <h3>Battery Management</h3>
+@endsection
+
+@section('breadcrumb-items')
+    <li class="breadcrumb-item"> <a class="breadcrumb-item"
+            href="{{ request()->query('ref') === 'view' ? route('batteries.show', $battery->id) : route('batteries.index') }}">
+            Battery
+        </a></li>
+    <li class="breadcrumb-item active">Edit Battery</li>
 @endsection
 
 @section('content')
     <div class="container">
         <div class="card">
             <div class="card-body">
-                <h2 class="my-3">Edit Battery</h2>
+                <div class="row gx-3">
+                    <div class="col-md-11 mb-4">
+                        <h2 class="content-title">Edit Battery</h2>
+                    </div>
+                    <div class="col-md-1 mb-4">
+                        <a href="{{ route('batteries.index') }}"
+                            class="btn btn-light rounded font-sm mr-5 text-body hover-up">Back</a>
+                    </div>
+                </div>
 
                 <!-- Form to update an existing battery -->
                 <form action="{{ route('batteries.update', $battery->id) }}" method="POST">
