@@ -110,7 +110,7 @@
         <!-- Header Section -->
         <div class="header">
             <div class="logo">
-                <img src="{{ Storage::url($companyDetails->company_logo) }}" alt="Hotel Logo"
+                <img src="{{ Storage::url($companyDetails->company_logo ?? '') }}" alt="Hotel Logo"
                     style="width: 100px; height: auto;">
             </div>
             <div class="company-info">
