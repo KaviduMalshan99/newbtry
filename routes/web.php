@@ -16,6 +16,7 @@ use App\Http\Controllers\PosController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\RepairController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
@@ -478,6 +479,18 @@ Route::prefix('admin/old-battery')->group(function () {
 Route::prefix('admin/company')->group(function () {
     Route::get('/', [CompanyController::class, 'create'])->name('company.create');
     Route::put('/', [CompanyController::class, 'storeOrUpdate'])->name('company.storeOrUpdate');
+});
+
+Route::prefix('admin/reports')->group(function () {
+    Route::get('/customer-report', [ReportController::class, 'customerIndex'])->name('reports.customerIndex');
+    Route::get('/supplier-report', [ReportController::class, 'supplierIndex'])->name('reports.supplierIndex');
+    Route::get('/battery-purchase-report', [ReportController::class, 'batteryPurchaseIndex'])->name('reports.batteryPurchaseIndex');
+    Route::get('/battery-report', [ReportController::class, 'batteryIndex'])->name('reports.batteryIndex');
+    Route::get('/lubricant-report', [ReportController::class, 'LubricantIndex'])->name('reports.LubricantIndex');
+    Route::get('/complete-rental-report', [ReportController::class, 'completeRentalIndex'])->name('reports.completeRentalIndex');
+    Route::get('/rental-report', [ReportController::class, 'RentalIndex'])->name('reports.RentalIndex');
+    Route::get('/complete-repair-report', [ReportController::class, 'repairCompleteIndex'])->name('reports.repairCompleteIndex');
+    Route::get('/repair-report', [ReportController::class, 'repairIndex'])->name('reports.repairIndex');
 });
 
 
