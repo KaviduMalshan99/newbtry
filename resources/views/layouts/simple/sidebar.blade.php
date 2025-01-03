@@ -40,7 +40,7 @@
                             </svg><span class="lan-3">Dashboard</span></a>
 
                     </li>
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
+                    {{-- <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-widget') }}"></use>
@@ -52,7 +52,7 @@
                             <li><a href="{{ route('general-widget') }}">General</a></li>
                             <li><a href="{{ route('chart-widget') }}">Chart</a></li>
                         </ul>
-                    </li>
+                    </li> --}}
 
                     <li class="sidebar-main-title">
                         <div>
