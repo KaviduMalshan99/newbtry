@@ -9,6 +9,7 @@ use App\Http\Controllers\BatteryPurchaseController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LubricantController;
 use App\Http\Controllers\LubricantPurchaseController;
 use App\Http\Controllers\OldBatteryController;
@@ -73,10 +74,10 @@ Route::get('lang/{locale}', function ($locale) {
     return redirect()->back();
 })->name('lang');
 
-Route::prefix('dashboard')->group(function () {
-    Route::view('index', 'dashboard.index')->name('index');
-    Route::view('dashboard-02', 'dashboard.dashboard-02')->name('dashboard-02');
-});
+// Route::prefix('dashboard')->group(function () {
+//     Route::view('index', 'dashboard.index')->name('index');
+//     Route::view('dashboard-02', 'dashboard.dashboard-02')->name('dashboard-02');
+// });
 
 Route::prefix('widgets')->group(function () {
     Route::view('general-widget', 'widgets.general-widget')->name('general-widget');
@@ -491,6 +492,11 @@ Route::prefix('admin/reports')->group(function () {
     Route::get('/rental-report', [ReportController::class, 'RentalIndex'])->name('reports.RentalIndex');
     Route::get('/complete-repair-report', [ReportController::class, 'repairCompleteIndex'])->name('reports.repairCompleteIndex');
     Route::get('/repair-report', [ReportController::class, 'repairIndex'])->name('reports.repairIndex');
+});
+
+Route::prefix('dashboard')->group(function () {
+    Route::get('/index', [DashboardController::class, 'index'])->name('index');
+    Route::view('dashboard-02', 'dashboard.dashboard-02')->name('dashboard-02');
 });
 
 

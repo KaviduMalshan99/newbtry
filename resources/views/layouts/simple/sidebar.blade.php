@@ -179,6 +179,30 @@
                     </li>
 
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
+                            href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
+                            </svg><span>Reports</span></a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('reports.customerIndex') }}">Customer Report</a></li>
+                            <li><a href="{{ route('reports.supplierIndex') }}">Supplier Report</a></li>
+                            <li><a href="{{ route('reports.batteryPurchaseIndex') }}">Battery Purchase Report</a></li>
+                            <li><a href="{{ route('reports.repairIndex') }}">Repair Report</a></li>
+                            <li><a href="{{ route('reports.repairCompleteIndex') }}">Complete Repair Report</a></li>
+                            <li><a href="{{ route('reports.RentalIndex') }}">Rental Report</a></li>
+                            <li><a href="{{ route('reports.completeRentalIndex') }}">Complete Rental Report</a></li>
+                            <li><a href="{{ route('reports.batteryIndex') }}">Battery Report</a></li>
+                            <li><a href="{{ route('reports.LubricantIndex') }}">Lubricant Report</a></li>
+
+
+
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="{{ route('company.create') }}">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
