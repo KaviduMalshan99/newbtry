@@ -6,6 +6,7 @@
 @endsection
 
 @section('style')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/pos/css/swiper/swiper-bundle.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/pos/css/swiper/swiper.min.css') }}">
@@ -287,12 +288,13 @@
                                 </div>
                             </div>
                             <div class="card-body pt-0 order-details">
-                                <select class="form-select f-w-400 f-14 text-gray py-2" aria-label="Select Customer">
+                                <select class="form-select f-w-400 f-14 text-gray py-2" aria-label="Select Customer"
+                                    id="customer-select">
                                     <option selected="" disabled="">Select Customer</option>
                                     @foreach ($customers as $customer)
                                         <option value="{{ $customer->id }}">
-                                            {{ $customer->first_name }} {{ $customer->last_name }} -
-                                            {{ $customer->phone_number }}
+                                            {{ $customer->phone_number }} - {{ $customer->first_name }}
+                                            {{ $customer->last_name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -593,8 +595,21 @@
 
 @section('script')
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+
     <script src="{{ asset('assets/pos/js/custom_touchspin.js') }}"></script>
     <script src="{{ asset('assets/pos/js/swiper-bundle.min.js') }}"></script>
     <script src="{{ asset('assets/pos/js/dashboard_8.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#customer-select').select2({
+                placeholder: "Select Customer",
+                allowClear: true,
+                width: '100%'
+            });
+        });
+    </script>
 
 @endsection
