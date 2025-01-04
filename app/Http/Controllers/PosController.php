@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Battery;
+use App\Models\Brand;
+use App\Models\Lubricant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -86,5 +89,23 @@ class PosController extends Controller
         } catch (\Exception $e) {
             return response()->json(['success' => false, 'message' => 'Failed to place order: ' . $e->getMessage()], 500);
         }
+    }
+
+    public function loadProductsByBrand($brandId)
+    {
+        // Fetch the brand by its ID
+        $brand = Brand::findOrFail($brandId);
+
+        // Get products based on brand type
+        if ($brand->type == 'battery') {
+            $products = Battery::where('brand_id', $brandId)->get();
+        } elseif ($brand->type == 'lubricant') {
+            $products = Lubricant::where('brand_id', $brandId)->get();
+        } else {
+            $products = collect(); // Return empty collection for unknown types
+        }
+
+        // Return the partial view with the fetched products
+        return view('admin.POS.partials.product-list', compact('products'));
     }
 }

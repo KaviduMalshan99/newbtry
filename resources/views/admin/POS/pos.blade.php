@@ -52,7 +52,7 @@
                                             @foreach ($brands as $brand)
                                                 <div class="swiper-slide">
                                                     <div class="shop-box">
-                                                        <a class="" href="#">
+                                                        <a class="" data-brand-id="{{ $brand->id }} href="#">
 
                                                             <img src="{{ asset('storage/' . $brand->image) }}"
                                                                 alt="{{ $brand->brand_name }}" style="width:100px;">
@@ -325,65 +325,66 @@
                                     }
                                 </style>
 
-<div class="order-quantity p-b-20 border-bottom">
+                                <div class="order-quantity p-b-20 border-bottom">
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const orderCardContainer = document.querySelector(".order-quantity");
-            const totalItemElement = document.querySelector(".total-item");
+                                    <script>
+                                        document.addEventListener("DOMContentLoaded", function() {
+                                            const orderCardContainer = document.querySelector(".order-quantity");
+                                            const totalItemElement = document.querySelector(".total-item");
 
-            // Function to format price based on conditions
-            function formatPrice(price) {
-    // Ensure price is a number and format with commas at every thousand
-    if (typeof price === "number") {
-        return new Intl.NumberFormat('en-US').format(price);
-    } else {
-        throw new Error("Input must be a number");
-    }
-}
+                                            // Function to format price based on conditions
+                                            function formatPrice(price) {
+                                                // Ensure price is a number and format with commas at every thousand
+                                                if (typeof price === "number") {
+                                                    return new Intl.NumberFormat('en-US').format(price);
+                                                } else {
+                                                    throw new Error("Input must be a number");
+                                                }
+                                            }
 
-            // Function to calculate totals
-            function calculateTotals() {
-                let totalItems = 0;
-                let subtotal = 0;
-                const fee = 0; // Example fixed fee
+                                            // Function to calculate totals
+                                            function calculateTotals() {
+                                                let totalItems = 0;
+                                                let subtotal = 0;
+                                                const fee = 0; // Example fixed fee
 
-                document.querySelectorAll(".order-details-wrapper").forEach(orderItem => {
-                    const quantity = parseInt(orderItem.querySelector(".input-touchspin").value);
-                    const priceText = orderItem.querySelector(".txt-primary").textContent.replace("RS", "").replace(",", "").trim();
-                    const price = parseFloat(priceText); // Ensure proper parsing of price
+                                                document.querySelectorAll(".order-details-wrapper").forEach(orderItem => {
+                                                    const quantity = parseInt(orderItem.querySelector(".input-touchspin").value);
+                                                    const priceText = orderItem.querySelector(".txt-primary").textContent.replace("RS", "")
+                                                        .replace(",", "").trim();
+                                                    const price = parseFloat(priceText); // Ensure proper parsing of price
 
-                    totalItems += quantity;
-                    subtotal += quantity * price;
-                });
+                                                    totalItems += quantity;
+                                                    subtotal += quantity * price;
+                                                });
 
-                const formattedSubtotal = formatPrice(subtotal);
-                const formattedFee = formatPrice(fee);
-                const formattedTotal = formatPrice(subtotal + fee);
+                                                const formattedSubtotal = formatPrice(subtotal);
+                                                const formattedFee = formatPrice(fee);
+                                                const formattedTotal = formatPrice(subtotal + fee);
 
-                // Update totals in the DOM
-                totalItemElement.querySelector(".item-number:nth-child(1) .f-w-500").textContent =
-                    `${totalItems} (Items)`;
-                totalItemElement.querySelector(".item-number:nth-child(2) .f-w-500").textContent =
-                    `RS${formattedSubtotal}`;
-                totalItemElement.querySelector(".item-number:nth-child(3) .f-w-500").textContent =
-                    `RS${formattedFee}`;
-                totalItemElement.querySelector(".item-number:nth-child(4) h6").textContent = `RS${formattedTotal}`;
-            }
+                                                // Update totals in the DOM
+                                                totalItemElement.querySelector(".item-number:nth-child(1) .f-w-500").textContent =
+                                                    `${totalItems} (Items)`;
+                                                totalItemElement.querySelector(".item-number:nth-child(2) .f-w-500").textContent =
+                                                    `RS${formattedSubtotal}`;
+                                                totalItemElement.querySelector(".item-number:nth-child(3) .f-w-500").textContent =
+                                                    `RS${formattedFee}`;
+                                                totalItemElement.querySelector(".item-number:nth-child(4) h6").textContent = `RS${formattedTotal}`;
+                                            }
 
-            // Listen for click events on all "Add" buttons
-            document.querySelectorAll(".add-btn").forEach(button => {
-                button.addEventListener("click", function () {
-                    const productWrapper = this.closest(".our-product-wrapper");
+                                            // Listen for click events on all "Add" buttons
+                                            document.querySelectorAll(".add-btn").forEach(button => {
+                                                button.addEventListener("click", function() {
+                                                    const productWrapper = this.closest(".our-product-wrapper");
 
-                    // Extract product details from data attributes
-                    const name = productWrapper.getAttribute("data-name");
-                    const price = parseFloat(productWrapper.getAttribute("data-price"));
-                    const formattedPrice = formatPrice(price); // Format price based on conditions
-                    const image = productWrapper.getAttribute("data-image");
+                                                    // Extract product details from data attributes
+                                                    const name = productWrapper.getAttribute("data-name");
+                                                    const price = parseFloat(productWrapper.getAttribute("data-price"));
+                                                    const formattedPrice = formatPrice(price); // Format price based on conditions
+                                                    const image = productWrapper.getAttribute("data-image");
 
-                    // Create an order card item
-                    const orderItem = `
+                                                    // Create an order card item
+                                                    const orderItem = `
                         <div class="order-details-wrapper">
                             <div class="left-details">
                                 <div class="order-img widget-hover">
@@ -410,59 +411,59 @@
                         </div>
                     `;
 
-                    // Append the order item to the order card
-                    orderCardContainer.insertAdjacentHTML("beforeend", orderItem);
+                                                    // Append the order item to the order card
+                                                    orderCardContainer.insertAdjacentHTML("beforeend", orderItem);
 
-                    // Hide "Your cart is empty" message
-                    document.querySelector(".empty-card").style.display = "none";
+                                                    // Hide "Your cart is empty" message
+                                                    document.querySelector(".empty-card").style.display = "none";
 
-                    // Recalculate totals
-                    calculateTotals();
-                });
-            });
+                                                    // Recalculate totals
+                                                    calculateTotals();
+                                                });
+                                            });
 
-            // Event delegation for increment, decrement, and remove buttons
-            orderCardContainer.addEventListener("click", function (event) {
-                const target = event.target;
+                                            // Event delegation for increment, decrement, and remove buttons
+                                            orderCardContainer.addEventListener("click", function(event) {
+                                                const target = event.target;
 
-                if (target.closest(".increment-touchspin")) {
-                    // Increment quantity
-                    const input = target.closest(".touchspin-wrapper").querySelector(".input-touchspin");
-                    input.value = parseInt(input.value) + 1;
+                                                if (target.closest(".increment-touchspin")) {
+                                                    // Increment quantity
+                                                    const input = target.closest(".touchspin-wrapper").querySelector(".input-touchspin");
+                                                    input.value = parseInt(input.value) + 1;
 
-                    // Recalculate totals
-                    calculateTotals();
-                }
+                                                    // Recalculate totals
+                                                    calculateTotals();
+                                                }
 
-                if (target.closest(".decrement-touchspin")) {
-                    // Decrement quantity
-                    const input = target.closest(".touchspin-wrapper").querySelector(".input-touchspin");
-                    if (parseInt(input.value) > 1) {
-                        input.value = parseInt(input.value) - 1;
+                                                if (target.closest(".decrement-touchspin")) {
+                                                    // Decrement quantity
+                                                    const input = target.closest(".touchspin-wrapper").querySelector(".input-touchspin");
+                                                    if (parseInt(input.value) > 1) {
+                                                        input.value = parseInt(input.value) - 1;
 
-                        // Recalculate totals
-                        calculateTotals();
-                    }
-                }
+                                                        // Recalculate totals
+                                                        calculateTotals();
+                                                    }
+                                                }
 
-                if (target.closest(".trash-remove")) {
-                    // Remove item
-                    const orderItem = target.closest(".order-details-wrapper");
-                    orderItem.remove();
+                                                if (target.closest(".trash-remove")) {
+                                                    // Remove item
+                                                    const orderItem = target.closest(".order-details-wrapper");
+                                                    orderItem.remove();
 
-                    // Show empty cart message if no items are left
-                    if (!document.querySelectorAll(".order-details-wrapper").length) {
-                        document.querySelector(".empty-card").style.display = "block";
-                    }
+                                                    // Show empty cart message if no items are left
+                                                    if (!document.querySelectorAll(".order-details-wrapper").length) {
+                                                        document.querySelector(".empty-card").style.display = "block";
+                                                    }
 
-                    // Recalculate totals
-                    calculateTotals();
-                }
-            });
-        });
-    </script>
+                                                    // Recalculate totals
+                                                    calculateTotals();
+                                                }
+                                            });
+                                        });
+                                    </script>
 
-</div>
+                                </div>
 
 
 
@@ -507,7 +508,8 @@
                                     </div>
                                 </div>
                                 <div class="place-order">
-                                    <button  id="place-order-btn" class="btn btn-primary btn-hover-effect w-100 f-w-500" type="button">Place
+                                    <button id="place-order-btn" class="btn btn-primary btn-hover-effect w-100 f-w-500"
+                                        type="button">Place
                                         Order</button>
                                 </div>
                             </div>
@@ -516,44 +518,65 @@
                 </div>
             </div>
 
-             <script>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    const placeOrderBtn = document.getElementById("place-order-btn");
 
-document.addEventListener("DOMContentLoaded", function () {
-    const placeOrderBtn = document.getElementById("place-order-btn");
+                    placeOrderBtn.addEventListener("click", function() {
+                        const totalItems = parseInt(document.querySelector(".item-number:nth-child(1) .f-w-500")
+                            .textContent);
+                        const formattedSubtotal = document.querySelector(".item-number:nth-child(2) .f-w-500")
+                            .textContent.replace("RS", "").trim();
+                        const formattedTotal = document.querySelector(".item-number:nth-child(4) h6").textContent
+                            .replace("RS", "").trim();
 
-    placeOrderBtn.addEventListener("click", function () {
-        const totalItems = parseInt(document.querySelector(".item-number:nth-child(1) .f-w-500").textContent);
-        const formattedSubtotal = document.querySelector(".item-number:nth-child(2) .f-w-500").textContent.replace("RS", "").trim();
-        const formattedTotal = document.querySelector(".item-number:nth-child(4) h6").textContent.replace("RS", "").trim();
+                        // Sending data to the server using fetch
+                        fetch("/submit-order", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')
+                                        .getAttribute("content") // Ensure CSRF token is present
+                                },
+                                body: JSON.stringify({
+                                    totalItems: totalItems,
+                                    formattedSubtotal: formattedSubtotal,
+                                    formattedTotal: formattedTotal
+                                })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // Redirect to summary.blade.php
+                                    window.location.href = "/admin/POS/summary";
+                                } else {
+                                    alert("Failed to place the order. Please try again.");
+                                }
+                            })
+                            .catch(error => console.error("Error:", error));
+                    });
 
-        // Sending data to the server using fetch
-        fetch("/submit-order", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content") // Ensure CSRF token is present
-            },
-            body: JSON.stringify({
-                totalItems: totalItems,
-                formattedSubtotal: formattedSubtotal,
-                formattedTotal: formattedTotal
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Redirect to summary.blade.php
-                window.location.href = "/admin/POS/summary";
-            } else {
-                alert("Failed to place the order. Please try again.");
-            }
-        })
-        .catch(error => console.error("Error:", error));
-    });
-});
+                    const brandLinks = document.querySelectorAll('.swiper-slide');
 
+                    brandLinks.forEach(link => {
+                        link.addEventListener('click', function(e) {
+                            e.preventDefault();
 
-           </script>
+                            // Get the brand ID from the clicked element
+                            const brandId = this.querySelector('a').getAttribute('data-brand-id');
+
+                            // Send an AJAX request to fetch products by brand
+                            fetch(`/products-by-brand/${brandId}`)
+                                .then(response => response.text())
+                                .then(html => {
+                                    // Update the product list container with the new products
+                                    document.querySelector('.scroll-product').innerHTML = html;
+                                })
+                                .catch(error => console.error('Error fetching products:', error));
+                        });
+                    });
+                });
+            </script>
 
 
         </div>

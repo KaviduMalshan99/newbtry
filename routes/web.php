@@ -570,6 +570,9 @@ Route::prefix('admin/lubricants')->group(function () {
 
 // Define the route for accessing the POS interface
 Route::get('/admin/POS', [PosController::class, 'index'])->name('POS.index');
+Route::get('/products-by-brand/{brandId}', [PosController::class, 'loadProductsByBrand'])->name('POS.loadProductsByBrand');
+
+
 
 Route::get('/admin/POS/lubricant', [PosController::class, 'lubricant'])->name('POS.index');
 
