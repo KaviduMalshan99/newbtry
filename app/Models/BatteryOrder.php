@@ -9,10 +9,22 @@ class BatteryOrder extends Model
 {
     use HasFactory;
 
-    protected $table = 'battery_order';
+    protected $table = 'battery_orders';
 
     protected $fillable = [
-        'order_id', 'payment_method', 'items', 'subtotal', 'total'
+        'order_id',
+        'customer_id',
+        'order_type',
+        'order_date',
+        'items',
+        'battery_discount',
+        'subtotal',
+        'total_price',
+        'paid_amount',
+        'due_amount',
+        'payment_type',
+        'payment_status'
+
     ];
 
     public static function boot()
@@ -25,5 +37,15 @@ class BatteryOrder extends Model
             $nextId = $latestOrder ? $latestOrder->id + 1 : 1;
             $order->order_id = 'B-Order' . str_pad($nextId, 4, '0', STR_PAD_LEFT);
         });
+    }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function battery()
+    {
+        return $this->belongsTo(Battery::class);
     }
 }

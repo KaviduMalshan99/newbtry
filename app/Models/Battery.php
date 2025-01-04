@@ -16,14 +16,14 @@ class Battery extends Model
      */
     protected $fillable = [
         'model_name',        // Name of the battery model
-        'brand',             // Battery brand
+        'brand_id',             // Battery brand
         'capacity',          // Capacity in Ah
         'voltage',           // Voltage in V
         'type',              // Type of battery (e.g., Lead-Acid, Lithium-ion)
         'warranty_period',   // Warranty period in months
         'purchase_price',    // Price at which the battery was purchased
         'selling_price',     // Price at which the battery is sold
-        'manufacturing_date',// Date of manufacturing
+        'manufacturing_date', // Date of manufacturing
         'expiry_date',       // Expiry date, if applicable
         'stock_quantity',    // Current stock quantity
         'added_date',        // Date the battery was added to the system
@@ -37,5 +37,10 @@ class Battery extends Model
     public function supplier()
     {
         return $this->belongsTo(Supplier::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
     }
 }

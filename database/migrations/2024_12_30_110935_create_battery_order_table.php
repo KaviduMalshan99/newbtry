@@ -11,19 +11,28 @@ class CreateBatteryOrderTable extends Migration
      *
      * @return void
      */
-  // In create_battery_orders_table.php (Migration)
-public function up()
-{
-    Schema::create('battery_orders', function (Blueprint $table) {
-        $table->id();
-        $table->string('order_id')->unique();
-        $table->string('payment_method');
-        $table->text('items'); // Store items as JSON or serialize them
-        $table->decimal('subtotal', 10, 2);
-        $table->decimal('total', 10, 2);
-        $table->timestamps();
-    });
-}
+    // In create_battery_orders_table.php (Migration)
+    public function up()
+    {
+        Schema::create('battery_orders', function (Blueprint $table) {
+            $table->id();
+            $table->string('order_id')->unique();
+            $table->unsignedBigInteger('customer_id');
+            $table->enum('order_type', ['New Order', 'Old Battery', 'Repair'])->default('New Order');
+            $table->date('order_date');
+            $table->json('items'); // battery_id, quantity, price
+            $table->decimal('battery_discount', 10, 2)->nullable();
+            $table->decimal('subtotal', 10, 2);
+            $table->decimal('total_price', 10, 2);
+            $table->decimal('paid_amount', 10, 2)->default(0); // New column
+            $table->decimal('due_amount', 10, 2)->default(0);  // New column
+            $table->enum('payment_type', ['Cash', 'Card', 'Bank Transfer'])->default('Cash');
+            $table->enum('payment_status', ['Not Completed', 'Completed', 'Pending'])->default('Pending'); // New column
+            $table->timestamps();
+
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
+        });
+    }
 
 
     /**

@@ -573,17 +573,12 @@ Route::get('/admin/POS', [PosController::class, 'index'])->name('POS.index');
 Route::get('/products-by-brand/{brandId}', [PosController::class, 'loadProductsByBrand'])->name('POS.loadProductsByBrand');
 
 
-
-Route::get('/admin/POS/lubricant', [PosController::class, 'lubricant'])->name('POS.index');
-
 // Define the route for placing an order via POST request
 // Route::post('/admin/POS/place-order', [PosController::class, 'placeOrder'])->name('POS.place');
-Route::post('/admin/POS/place-order', [PosController::class, 'storeBatteryOrder'])->name('order.place');
-
 
 Route::post('/admin/POS/place-order', [PosController::class, 'storeOrder'])->name('POS.placeOrder');
 
-Route::post('/store-battery-order', [PosController::class, 'storeBatteryOrder']);
+Route::post('/store-battery-order', [PosController::class, 'storeBatteryOrder'])->name('POS.storeBatteryOrder');
 
 Route::post('/create-customer', [PosController::class, 'createCustomer'])->name('customer.create');
 Route::post('/show', [PosController::class, 'show'])->name('show');
