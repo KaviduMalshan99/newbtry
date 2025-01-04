@@ -499,7 +499,8 @@
 
                             // Extract product details from data attributes
                             const name = productWrapper.getAttribute("data-name");
-                            const price = parseFloat(productWrapper.getAttribute("data-price"));
+                            const priceString = productWrapper.getAttribute("data-price");
+                            const price = parseFloat(priceString.replace(/,/g, '')); // Remove commas before parsing
                             const formattedPrice = formatPrice(price); // Format price based on conditions
                             const image = productWrapper.getAttribute("data-image");
 
