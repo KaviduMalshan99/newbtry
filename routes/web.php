@@ -475,6 +475,7 @@ Route::prefix('admin/old-battery')->group(function () {
     Route::get('/{oldBattery}/edit', [OldBatteryController::class, 'edit'])->name('oldBatteries.edit');
     Route::put('/{oldBattery}', [OldBatteryController::class, 'update'])->name('oldBatteries.update');
     Route::delete('/{oldBattery}', [OldBatteryController::class, 'destroy'])->name('oldBatteries.destroy');
+    Route::get('/{oldBattery}/bill', [OldBatteryController::class, 'generateBill'])->name('oldBatteries.bill');
 });
 
 Route::prefix('admin/company')->group(function () {

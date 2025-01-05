@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\Customer;
 use App\Models\OldBattery;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class OldBatteryController extends Controller
@@ -38,7 +40,8 @@ class OldBatteryController extends Controller
         ]);
 
         // Redirect back with a success message
-        return redirect()->route('oldBatteries.index')->with('success', 'Old battery added successfully.');
+        // return redirect()->route('oldBatteries.index')->with('success', 'Old battery added successfully.');
+        return redirect()->route('oldBatteries.bill', $oldBattery->id)->with('success', 'Old battery added successfully.');
     }
 
     public function index()
@@ -104,5 +107,20 @@ class OldBatteryController extends Controller
 
         // Redirect back with a success message
         return redirect()->route('oldBatteries.index')->with('success', 'Old battery deleted successfully.');
+    }
+
+    public function generateBill($id)
+    {
+        $oldBattery = OldBattery::with(['customer'])->findOrFail($id);
+        // Current date and time
+        $currentDateTime = Carbon::now()->format('d.m.Y H:i');
+        $companyDetails = Company::first();
+
+        // Pass the data to the view
+        return view('admin.old_batteries_management.bill', [
+            'oldBattery' => $oldBattery,
+            'currentDateTime' => $currentDateTime,
+            'companyDetails' => $companyDetails,
+        ]);
     }
 }
