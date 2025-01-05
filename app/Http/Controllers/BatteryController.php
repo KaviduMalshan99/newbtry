@@ -1,8 +1,10 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Battery;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class BatteryController extends Controller
@@ -17,7 +19,8 @@ class BatteryController extends Controller
     // Show the form for creating a new battery
     public function create()
     {
-        return view('admin.batteries.create');
+        $brands = DB::table('brands')->where('type', 'battery')->get();
+        return view('admin.batteries.create', compact('brands'));
     }
 
     // Store a newly created battery in the database
@@ -25,7 +28,7 @@ class BatteryController extends Controller
     {
         $validatedData = $request->validate([
             'type' => 'required|string|max:255',
-            'brand' => 'required|string|max:255',
+            'brand_id' => 'required|string|max:255',
             'capacity' => 'required|numeric',
             'voltage' => 'required|string|max:10', // Voltage can be a string (e.g., "12V")
             'purchase_price' => 'required|numeric',
@@ -51,8 +54,9 @@ class BatteryController extends Controller
     // Show the form for editing a specific battery
     public function edit($id)
     {
+        $brands = DB::table('brands')->where('type', 'battery')->get();
         $battery = Battery::findOrFail($id); // Use findOrFail for better error handling
-        return view('admin.batteries.edit', compact('battery'));
+        return view('admin.batteries.edit', compact('battery', 'brands'));
     }
 
     // Update the specified battery in the database
@@ -62,7 +66,7 @@ class BatteryController extends Controller
 
         $validatedData = $request->validate([
             'type' => 'required|string|max:255',
-            'brand' => 'required|string|max:255',
+            'brand_id' => 'required|string|max:255',
             'capacity' => 'required|numeric',
             'voltage' => 'required|string|max:10',
             'purchase_price' => 'required|numeric',

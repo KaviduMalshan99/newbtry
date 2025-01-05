@@ -60,12 +60,16 @@
                                 <div class="col-sm-6">
                                     <!-- Brand -->
                                     <div class="form-group   my-3">
-                                        <label for="brand" class="pb-3">Brand</label>
-                                        <input type="text" name="brand" class="form-control"
-                                            value="{{ old('brand', $battery->brand ?? '') }}" required>
-                                        @error('brand')
-                                            <small class="text-danger">{{ $message }}</small>
-                                        @enderror
+                                        <label for="brand_id" class="pb-3">Brand</label>
+                                        <select id="brand_id" name="brand_id" class="form-select">
+                                            <option value="" disabled>Select brand</option>
+                                            @foreach ($brands as $brand)
+                                                <option value="{{ $brand->id }}"
+                                                    {{ $brand->id == $battery->brand_id ? 'selected' : '' }}>
+                                                    {{ $brand->type }} | {{ $brand->brand_name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
                             </div>

@@ -71,7 +71,7 @@
                                         <option value="" disabled>Select Battery</option>
                                         @foreach ($batteries as $battery)
                                             <option value="{{ $battery->id }}">
-                                                {{ $battery->type }} | {{ $battery->brand }} |
+                                                {{ $battery->type }} | {{ $battery->brand->brand_name }} |
                                                 {{ $battery->model_number }}
                                             </option>
                                         @endforeach
@@ -122,7 +122,7 @@
                                             data-quantity="{{ $item->quantity }}"
                                             data-price="{{ $item->purchase_price }}">
                                             <td>{{ $purchase->supplier->name }}</td>
-                                            <td>{{ $item->battery->type }} | {{ $item->battery->brand }} |
+                                            <td>{{ $item->battery->type }} | {{ $item->battery->brand->brand_name }} |
                                                 {{ $item->battery->model_number }}</td>
                                             <td>{{ $item->quantity }}</td>
                                             <td>{{ $item->purchase_price }}</td>

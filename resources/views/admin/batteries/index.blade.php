@@ -60,44 +60,46 @@
                                 </thead>
                                 <tbody>
                                     @forelse ($batteries as $battery)
-                                    <tr>
-                                        <td>{{ $battery->id }}</td>
-                                        <td>{{ $battery->model_name }}</td>
-                                        <td>{{ $battery->brand }}</td>
-                                        <td>{{ $battery->capacity }}</td>
-                                        <td>{{ $battery->voltage }}</td>
-                                        <td>{{ $battery->type }}</td>
-                                        <td>{{ $battery->purchase_price }}</td>
-                                        <td>{{ $battery->selling_price }}</td>
-                                        <td>{{ $battery->warranty_period }}</td>
-                                        <td>
-                                            @if($battery->image)
-                                            <img src="{{ asset('storage/' . $battery->image) }}" alt="Battery Image" width="50" height="50">
+                                        <tr>
+                                            <td>{{ $battery->id }}</td>
+                                            <td>{{ $battery->model_name }}</td>
+                                            <td>{{ $battery->brand->brand_name }}</td>
+                                            <td>{{ $battery->capacity }}</td>
+                                            <td>{{ $battery->voltage }}</td>
+                                            <td>{{ $battery->type }}</td>
+                                            <td>{{ $battery->purchase_price }}</td>
+                                            <td>{{ $battery->selling_price }}</td>
+                                            <td>{{ $battery->warranty_period }}</td>
+                                            <td>
+                                                @if ($battery->image)
+                                                    <img src="{{ asset('storage/' . $battery->image) }}"
+                                                        alt="Battery Image" width="50" height="50">
+                                                @else
+                                                    <span>No Image</span>
+                                                @endif
+                                            </td>
+                                            <td>{{ $battery->manufacturing_date }}</td>
+                                            <td>{{ $battery->expiry_date }}</td>
+                                            <td>{{ $battery->stock_quantity }}</td>
+                                            <td>{{ $battery->added_date }}</td>
+                                            <td>{{ $battery->status }}</td>
 
-    
-                                            @else
-                                                <span>No Image</span>
-                                            @endif
-                                        </td>
-                                        <td>{{ $battery->manufacturing_date }}</td>
-                                        <td>{{ $battery->expiry_date }}</td>
-                                        <td>{{ $battery->stock_quantity }}</td>
-                                        <td>{{ $battery->added_date }}</td>
-                                        <td>{{ $battery->status }}</td>
-               
-                                        <td>
-                                            <a href="{{ route('batteries.edit', $battery->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                                            <form action="{{ route('batteries.destroy', $battery->id) }}" method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this battery?')">Delete</button>
-                                            </form>
-                                        </td>
-                                    </tr>
+                                            <td>
+                                                <a href="{{ route('batteries.edit', $battery->id) }}"
+                                                    class="btn btn-warning btn-sm">Edit</a>
+                                                <form action="{{ route('batteries.destroy', $battery->id) }}"
+                                                    method="POST" style="display:inline-block;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger btn-sm"
+                                                        onclick="return confirm('Are you sure you want to delete this battery?')">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
                                     @empty
-                                    <tr>
-                                        <td colspan="15" class="text-center">No batteries available.</td>
-                                    </tr>
+                                        <tr>
+                                            <td colspan="15" class="text-center">No batteries available.</td>
+                                        </tr>
                                     @endforelse
                                 </tbody>
                             </table>
@@ -116,7 +118,7 @@
     <script src="{{ asset('assets/js/datatable/datatable-extension/dataTables.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('assets/js/datatable/datatable-extension/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('assets/js/datatable/datatable-extension/responsive.bootstrap4.min.js') }}"></script>
-    
+
     <!-- Initialize the DataTable -->
     <script>
         $(document).ready(function() {

@@ -65,7 +65,7 @@
                                         @foreach ($batteries as $battery)
                                             <option value="{{ $battery->id }}">{{ $battery->type }} | {{ $battery->type }}
                                                 |
-                                                {{ $battery->brand }} | {{ $battery->model_number }} |
+                                                {{ $battery->brand->brand_name }} | {{ $battery->model_number }} |
                                                 RS :{{ $battery->purchase_price }}</option>
                                         @endforeach
                                     </select>
