@@ -88,17 +88,15 @@ class PosController extends Controller
         }
 
         // Generate unique order_id
-        $orderId = 'BO-' . strtoupper(uniqid());
 
         DB::beginTransaction();
 
         try {
             // Prepare the BatteryOrder data
             $batteryOrder = new BatteryOrder();
-            $batteryOrder->order_id = $orderId;
             $batteryOrder->customer_id = $validatedData['customer_id'];
             $batteryOrder->order_type = $request->input('order_type', 'New Order');
-            $batteryOrder->items = json_encode($request->items); // Encode items to JSON format
+            $batteryOrder->items = json_encode($request->items, true); // Encode items to JSON format
             $batteryOrder->battery_discount = $validatedData['battery_discount'] ?? 0;
             $batteryOrder->subtotal = $validatedData['subtotal'];
             $batteryOrder->total_price = $validatedData['total_price'];
@@ -118,7 +116,7 @@ class PosController extends Controller
             $currentHistory = json_decode($customer->purchase_history, true) ?? [];
 
             // Add the new BatteryOrder ID to the history
-            $currentHistory[] = ['battery_order_id' => $orderId];
+            $currentHistory[] = ['battery_order_id' => $batteryOrder->order_id];
 
             // Update the customer's purchase_history
             $customer->purchase_history = json_encode($currentHistory);
