@@ -25,11 +25,11 @@ class CustomerController extends Controller
         ]);
 
         // Add purchase history to the data
-        $validated['purchase_history'] = json_encode([
-            ['item' => 'Laptop', 'amount' => 1200, 'date' => '2024-12-01'],
-            ['item' => 'Laptop', 'amount' => 1200, 'date' => '2024-12-01'],
-            ['item' => 'Laptop', 'amount' => 1200, 'date' => '2024-12-01'],
-        ]);
+        // $validated['purchase_history'] = json_encode([
+        //     ['item' => 'Laptop', 'amount' => 1200, 'date' => '2024-12-01'],
+        //     ['item' => 'Laptop', 'amount' => 1200, 'date' => '2024-12-01'],
+        //     ['item' => 'Laptop', 'amount' => 1200, 'date' => '2024-12-01'],
+        // ]);
 
         Customer::create($validated);
 

@@ -289,8 +289,8 @@
                             </div>
                             <div class="card-body pt-0 order-details">
                                 <select class="form-select f-w-400 f-14 text-gray py-2" aria-label="Select Customer"
-                                    id="customer-select">
-                                    <option selected="" disabled="">Select Customer</option>
+                                    id="customer-select" required>
+                                    <option selected disabled>Select Customer</option>
                                     @foreach ($customers as $customer)
                                         <option value="{{ $customer->id }}">
                                             {{ $customer->phone_number }} - {{ $customer->first_name }}
@@ -403,7 +403,7 @@
         <script>
             const csrfToken = "{{ csrf_token() }}";
             const placeOrderBtn = document.getElementById("place-order-btn");
-            console.log(placeOrderBtn); // Check if this logs the button element
+            // console.log(placeOrderBtn); // Check if this logs the button element
 
             document.getElementById("place-order-btn").addEventListener("click", function(e) {
                 e.preventDefault(); // Prevent form submission until fields are populated
@@ -413,7 +413,7 @@
                 const totalItems = document.querySelector(".item-number:nth-child(1) .f-w-500")?.textContent.trim() ||
                     "0";
                 const subtotal = document.querySelector(".item-number:nth-child(2) .f-w-500")?.textContent.trim() ||
-                "0";
+                    "0";
                 const totalPrice = document.querySelector(".item-number:nth-child(4) h6")?.textContent.trim() || "0";
                 const paidAmount = document.querySelector("#paid_amount").value || 0;
                 const paymentType = document.querySelector("#payment_type").value;
@@ -433,9 +433,9 @@
                 // Prepare the items array
                 const items = [];
                 const itemRows = document.querySelectorAll(
-                ".item-row"); // Replace with actual class or selector for item rows
+                    ".item-row"); // Replace with actual class or selector for item rows
                 itemRows.forEach(row => {
-                    const batteryId = row.querySelector(".battery-id")?.getAttribute("data-id");
+                    const batteryId = row.querySelector(".battery-id").getAttribute("data-id");
                     const quantity = row.querySelector(".item-quantity")?.value || 0;
                     const price = row.querySelector(".item-price")?.textContent.trim().replace("RS", "")
                         .replace(",", "").trim() || "0";

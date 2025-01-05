@@ -1,6 +1,7 @@
 @foreach ($products as $product)
     <div class="col-xxl-3 col-sm-4">
-        <div class="our-product-wrapper h-100 widget-hover" data-name="{{ $product->model_name ?? $product->name }}"
+        <div class="our-product-wrapper h-100 widget-hover"
+            dataId="{{ $product->id }} data-name="{{ $product->model_name ?? $product->name }}"
             data-price="{{ number_format($product->selling_price ?? $product->sale_price, 2) }}"
             data-image="{{ asset('storage/' . $product->image) }}">
             <div class="our-product-img">

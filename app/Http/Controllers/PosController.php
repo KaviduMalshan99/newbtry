@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Battery;
 use App\Models\BatteryOrder;
 use App\Models\Brand;
+use App\Models\Customer;
 use App\Models\Lubricant;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
@@ -20,7 +21,9 @@ class PosController extends Controller
     public function index()
     {
         $brands = DB::table('brands')->where('type', 'battery')->get();
-        $batteries = DB::table('batteries')->orderBy('id', 'asc')->get();
+        $batteries = DB::table('batteries')->orderBy('id', 'asc')
+            ->where('stock_quantity', '>', 0)
+            ->get();
         $lubricants = DB::table('lubricants')->orderBy('id', 'asc')->get();
         $customers = DB::table('customers')
             ->select('id', 'first_name', 'last_name', 'phone_number')
@@ -55,47 +58,6 @@ class PosController extends Controller
     /**
      * Store a new battery order.
      */
-    // public function storeBatteryOrder(Request $request)
-    // {
-    //     $validatedData = $request->validate([
-    //         'c_phone_number' => 'required|string|max:15',
-    //         'payment_method' => 'required|in:Card,Full_Payment,Half_Payment',
-    //         'items' => 'required|integer|min:1',
-    //         'subtotal' => 'required|numeric|min:0',
-    //         'total' => 'required|numeric|min:0',
-    //         'order_items' => 'required|array|min:1',
-    //         'order_items.*.name' => 'required|string|max:255',
-    //         'order_items.*.quantity' => 'required|integer|min:1',
-    //         'order_items.*.price' => 'required|numeric|min:0',
-    //     ]);
-
-    //     try {
-    //         // Insert the order
-    //         $orderId = DB::table('battery_order')->insertGetId([
-    //             'c_phone_number' => $validatedData['c_phone_number'],
-    //             'payment_method' => $validatedData['payment_method'],
-    //             'items' => $validatedData['items'],
-    //             'subtotal' => $validatedData['subtotal'],
-    //             'total' => $validatedData['total'],
-    //         ]);
-
-    //         // Insert order items
-    //         $orderItems = array_map(function ($item) use ($orderId) {
-    //             return [
-    //                 'order_id' => $orderId,
-    //                 'name' => $item['name'],
-    //                 'quantity' => $item['quantity'],
-    //                 'price' => $item['price'],
-    //             ];
-    //         }, $validatedData['order_items']);
-
-    //         DB::table('order_items')->insert($orderItems);
-
-    //         return response()->json(['success' => true, 'message' => 'Order placed successfully!']);
-    //     } catch (\Exception $e) {
-    //         return response()->json(['success' => false, 'message' => 'Failed to place order: ' . $e->getMessage()], 500);
-    //     }
-    // }
 
     public function storeBatteryOrder(Request $request)
     {
@@ -117,28 +79,87 @@ class PosController extends Controller
             'items' => 'required',
         ]);
 
-
+        // Calculate payment_status based on business logic
+        $paymentStatus = 'Pending';
+        if ($validatedData['due_amount'] > 0) {
+            $paymentStatus = 'Not Completed';
+        } elseif ($validatedData['paid_amount'] >= $validatedData['total_price']) {
+            $paymentStatus = 'Completed';
+        }
 
         // Generate unique order_id
         $orderId = 'BO-' . strtoupper(uniqid());
 
-        // Prepare the BatteryOrder data
-        $batteryOrder = new BatteryOrder();
-        $batteryOrder->order_id = $orderId;
-        $batteryOrder->customer_id = $validatedData['customer_id'];
-        $batteryOrder->items = json_encode($request->items); // Encode items to JSON format
-        $batteryOrder->battery_discount = $validatedData['battery_discount'] ?? 0;
-        $batteryOrder->subtotal = $validatedData['subtotal'];
-        $batteryOrder->total_price = $validatedData['total_price'];
-        $batteryOrder->paid_amount = $validatedData['paid_amount'];
-        $batteryOrder->due_amount = $validatedData['due_amount'];
-        $batteryOrder->payment_type = $validatedData['payment_type'];
-        $batteryOrder->order_date = $request->input('order_date', now());
+        DB::beginTransaction();
 
-        // Save the order
-        $batteryOrder->save();
+        try {
+            // Prepare the BatteryOrder data
+            $batteryOrder = new BatteryOrder();
+            $batteryOrder->order_id = $orderId;
+            $batteryOrder->customer_id = $validatedData['customer_id'];
+            $batteryOrder->order_type = $request->input('order_type', 'New Order');
+            $batteryOrder->items = json_encode($request->items); // Encode items to JSON format
+            $batteryOrder->battery_discount = $validatedData['battery_discount'] ?? 0;
+            $batteryOrder->subtotal = $validatedData['subtotal'];
+            $batteryOrder->total_price = $validatedData['total_price'];
+            $batteryOrder->paid_amount = $validatedData['paid_amount'];
+            $batteryOrder->due_amount = $validatedData['due_amount'];
+            $batteryOrder->payment_type = $validatedData['payment_type'];
+            $batteryOrder->order_date = $request->input('order_date', now());
+            $batteryOrder->payment_status = $paymentStatus;
 
-        return redirect()->route('POS.index')->with('success', 'Purchase Saved successfully!');
+            // Save the order
+            $batteryOrder->save();
+
+            // Retrieve the customer record
+            $customer = Customer::findOrFail($validatedData['customer_id']);
+
+            // Decode the current purchase_history
+            $currentHistory = json_decode($customer->purchase_history, true) ?? [];
+
+            // Add the new BatteryOrder ID to the history
+            $currentHistory[] = ['battery_order_id' => $orderId];
+
+            // Update the customer's purchase_history
+            $customer->purchase_history = json_encode($currentHistory);
+            $customer->save();
+
+            // Update stock_quantity for each battery
+            foreach ($items as $item) {
+                $battery = Battery::find($item['battery_id']);
+                if (!$battery) {
+                    // Rollback transaction and return error if battery is not found
+                    DB::rollBack();
+                    // return redirect()->route('POS.index')->with('success', 'Battery with ID not found.');
+                    return response()->json(['error' => "Battery with ID {$item['battery_id']} not found."], 404);
+                }
+
+                // Check if stock is sufficient
+                if ($battery->stock_quantity < $item['quantity']) {
+                    // Rollback transaction and return error if stock is insufficient
+                    DB::rollBack();
+                    // return redirect()->route('POS.index')->with('success', 'Insufficient stock for Battery ID.');
+                    return response()->json(['error' => "Insufficient stock for Battery ID {$item['battery_id']}."], 400);
+                }
+
+                // Decrease stock quantity
+                $battery->stock_quantity -= $item['quantity'];
+                $battery->save();
+            }
+
+            // Commit the transaction
+            DB::commit();
+
+            return redirect()->route('POS.index')->with('success', 'Purchase Saved successfully!');
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+
+            return response()->json([
+                'error' => 'An error occurred while placing the order.',
+                'details' => $e->getMessage(),
+            ], 500);
+        }
     }
 
     public function loadProductsByBrand($brandId)
@@ -148,7 +169,9 @@ class PosController extends Controller
 
         // Get products based on brand type
         if ($brand->type == 'battery') {
-            $products = Battery::where('brand_id', $brandId)->get();
+            $products = Battery::where('brand_id', $brandId)
+                ->where('stock_quantity', '>', 0)
+                ->get();
         } elseif ($brand->type == 'lubricant') {
             $products = Lubricant::where('brand_id', $brandId)->get();
         } else {
