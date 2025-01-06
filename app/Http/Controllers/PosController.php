@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Battery;
 use App\Models\BatteryOrder;
+use App\Models\LubricantOrder;
 use App\Models\Brand;
 use App\Models\Customer;
 use App\Models\Lubricant;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 use function Laravel\Prompts\alert;
 
@@ -54,6 +56,23 @@ class PosController extends Controller
             return redirect()->back()->with('error', 'Failed to create customer: ' . $e->getMessage());
         }
     }
+
+
+
+    
+    public function lubricant()
+    {
+        $brands = DB::table('brands')->where('type', 'lubricant')->get();
+        $batteries = DB::table('batteries')->orderBy('id', 'asc')->get();
+        $lubricants = DB::table('lubricants')->orderBy('id', 'asc')->get();
+        $customers = DB::table('customers')
+            ->select('id', 'first_name', 'last_name', 'phone_number')
+            ->get();
+
+        return view('admin.POS.lubricant', compact('brands', 'batteries', 'lubricants', 'customers'));
+    }
+
+
 
     /**
      * Store a new battery order.
@@ -159,6 +178,110 @@ class PosController extends Controller
             ], 500);
         }
     }
+
+
+
+
+
+    
+    /**
+ * Store a new lubricant order.
+ */
+public function storeLubricantOrder(Request $request)
+{
+    $items = json_decode($request->input('items'), true);
+
+    // Validate the incoming request
+    $validatedData = $request->validate([
+        'customer_id' => 'required|exists:customers,id',
+        'subtotal' => 'required|numeric|min:0',
+        'total_price' => 'required|numeric|min:0',
+        'paid_amount' => 'required|numeric|min:0',
+        'due_amount' => 'required|numeric|min:0',
+        'payment_type' => 'required|in:Cash,Card,Bank Transfer',
+        'order_type' => 'required|in:New Order,Old Battery,Repair',
+        'items' => 'required|json',
+    ]);
+
+    // Generate unique order ID
+    $latestOrder = DB::table('lubricant_orders')->latest('id')->first();
+    $orderNumber = $latestOrder ? (int)Str::substr($latestOrder->order_id, 2) + 1 : 1;
+    $orderId = 'LO' . str_pad($orderNumber, 4, '0', STR_PAD_LEFT);
+
+    // Calculate payment_status based on amounts
+    $paymentStatus = $validatedData['due_amount'] > 0 ? 'Not Completed' : 'Completed';
+    
+    DB::beginTransaction();
+
+    try {
+        // Create new order
+        $LubricantOrder = new LubricantOrder();
+        $LubricantOrder->order_id = $orderId;
+        $LubricantOrder->customer_id = $validatedData['customer_id'];
+        $LubricantOrder->order_type = $validatedData['order_type'];
+        $LubricantOrder->items = json_encode($items);
+        $LubricantOrder->subtotal = $validatedData['subtotal'];
+        $LubricantOrder->total_price = $validatedData['total_price'];
+        $LubricantOrder->paid_amount = $validatedData['paid_amount'];
+        $LubricantOrder->due_amount = $validatedData['due_amount'];
+        $LubricantOrder->payment_type = $validatedData['payment_type'];
+        $LubricantOrder->payment_status = $paymentStatus;
+        $LubricantOrder->created_at = now();
+        $LubricantOrder->updated_at = now();
+        $LubricantOrder->save();
+
+        // Update customer's purchase history
+        $customer = Customer::find($validatedData['customer_id']);
+        $purchaseHistory = json_decode($customer->purchase_history, true) ?? [];
+        $purchaseHistory[] = ['lubricant_order_id' => $LubricantOrder->order_id];
+        $customer->purchase_history = json_encode($purchaseHistory);
+        $customer->save();
+
+        // Update stock for each lubricant item
+        foreach ($items as $item) {
+            $lubricant = Lubricant::find($item['lubricant_id']);
+            if (!$lubricant) {
+                DB::rollBack();
+                return response()->json(['error' => "Lubricant ID {$item['lubricant_id']} not found."], 404);
+            }
+
+            // Check stock availability
+            if ($lubricant->stock_quantity < $item['quantity']) {
+                DB::rollBack();
+                return response()->json(['error' => "Insufficient stock for Lubricant ID {$item['lubricant_id']}."], 400);
+            }
+
+            $lubricant->stock_quantity -= $item['quantity'];
+            $lubricant->save();
+        }
+
+        DB::commit();
+        return redirect()->route('admin.POS.lubricant')->with('success', 'Order placed successfully!');
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return response()->json([
+            'error' => 'An error occurred while placing the order.',
+            'details' => $e->getMessage(),
+        ], 500);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function loadProductsByBrand($brandId)
     {
