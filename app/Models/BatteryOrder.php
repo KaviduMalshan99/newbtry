@@ -18,6 +18,7 @@ class BatteryOrder extends Model
         'order_date',
         'items',
         'battery_discount',
+        'old_battery_discount_value',
         'subtotal',
         'total_price',
         'paid_amount',

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('old_batteries', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_id')->nullable();
+            $table->unsignedBigInteger('battery_order_id')->nullable();
             $table->unsignedBigInteger('customer_id');
             $table->string('old_battery_type');
             $table->enum('old_battery_condition', ['Good', 'Average', 'Poor']);
@@ -23,7 +23,7 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->timestamps();
 
-            $table->foreign('order_id')->references('id')->on('orders')->onDelete('set null');
+            $table->foreign('battery_order_id')->references('id')->on('battery_orders')->onDelete('set null');
             $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade');
         });
     }

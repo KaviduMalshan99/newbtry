@@ -22,6 +22,7 @@ class CreateBatteryOrderTable extends Migration
             $table->date('order_date');
             $table->json('items'); // battery_id, quantity, price
             $table->decimal('battery_discount', 10, 2)->nullable();
+            $table->decimal('old_battery_discount_value', 10, 2)->nullable;
             $table->decimal('subtotal', 10, 2);
             $table->decimal('total_price', 10, 2);
             $table->decimal('paid_amount', 10, 2)->default(0); // New column

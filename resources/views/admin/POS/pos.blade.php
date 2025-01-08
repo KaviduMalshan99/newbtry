@@ -126,7 +126,7 @@
 
                                     <!-- Displaying Lubricants -->
 
-                                    @foreach ($lubricants as $lubricant)
+                                    {{-- @foreach ($lubricants as $lubricant)
                                         <div class="col-xxl-3 col-sm-4">
                                             <div class="our-product-wrapper h-100 widget-hover"
                                                 dataId="{{ $lubricant->id }}" data-name="{{ $lubricant->name }}"
@@ -151,7 +151,7 @@
                                             </div>
 
                                         </div>
-                                    @endforeach
+                                    @endforeach --}}
 
 
                                     <!-- Displaying Lubricants  end -->
@@ -227,9 +227,8 @@
                                                                 novalidate>
                                                                 @csrf
                                                                 <div class="col-md-6">
-                                                                    <label class="form-label"
-                                                                        for="validationCustom-8">First Name<span
-                                                                            class="txt-danger">*</span></label>
+                                                                    <label class="form-label" for="validationCustom-8">First
+                                                                        Name<span class="txt-danger">*</span></label>
                                                                     <input class="form-control" id="validationCustom-8"
                                                                         name="first_name" type="text"
                                                                         placeholder="Enter your first name" required>
@@ -290,7 +289,7 @@
                             <div class="card-body pt-0 order-details">
                                 <select class="form-select f-w-400 f-14 text-gray py-2" aria-label="Select Customer"
                                     id="customer-select" required>
-                                    <option selected disabled>Select Customer</option>
+                                    <option value="" selected disabled>Select Customer</option>
                                     @foreach ($customers as $customer)
                                         <option value="{{ $customer->id }}">
                                             {{ $customer->phone_number }} - {{ $customer->first_name }}
@@ -350,7 +349,88 @@
                                     </div>
                                 </div>
 
+                                <!-- Old Battery Discount Section -->
+                                <div class="widget-hover">
+                                    <h5 class="m-0 p-t-40">Old Battery Discount</h5>
+                                    <div class="header-top pb-3">
+                                        <div class="mb-4 card-header-right-icon create-right-btn">
+                                            <a class="btn btn-light-primary f-w-500 f-12" href="javascript:void(0)"
+                                                data-bs-toggle="modal" data-bs-target="#dashboard82">
+                                                Add Old Battery
+                                            </a>
+                                        </div>
+                                    </div>
 
+                                    <div class="mb-4">
+                                        <label for="old_battery_discount" class="form-label">Old Battery Discount</label>
+                                        <input type="number" id="old_battery_discount" name="old_battery_discount"
+                                            class="form-control" placeholder="Old Battery Discount" value="0"
+                                            readonly />
+                                    </div>
+                                </div>
+
+                                <!-- Modal for Adding Old Battery -->
+                                <div class="modal fade" id="dashboard82" tabindex="-1" aria-labelledby="dashboard82"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="modaldashboard2">Add Old Battery</h5>
+                                                <button class="btn-close" type="button" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body p-0">
+                                                <div class="text-start dark-sign-up">
+                                                    <div class="modal-body">
+                                                        <form class="row g-3 needs-validation" id="oldBatteryForm"
+                                                            novalidate>
+                                                            @csrf
+                                                            <div class="col-md-6">
+                                                                <label class="form-label" for="old_battery_type">Old
+                                                                    Battery Type<span class="txt-danger">*</span></label>
+                                                                <input class="form-control" id="old_battery_type"
+                                                                    name="old_battery_type" type="text"
+                                                                    placeholder="Enter old Battery Type" required>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <label class="form-label" for="old_battery_condition">Old
+                                                                    Battery Condition<span
+                                                                        class="txt-danger">*</span></label>
+                                                                <select name="old_battery_condition"
+                                                                    id="old_battery_condition" class="form-select"
+                                                                    required>
+                                                                    <option value="" disabled selected>Select
+                                                                        Condition</option>
+                                                                    @foreach ($old_battery_conditions as $condition)
+                                                                        <option value="{{ $condition }}">
+                                                                            {{ $condition }}</option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <label class="form-label" for="old_battery_value">Old
+                                                                    Battery Value<span class="txt-danger">*</span></label>
+                                                                <input class="form-control old_battery_value"
+                                                                    id="old_battery_value" name="old_battery_value"
+                                                                    type="number" placeholder="Value" required>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <label class="form-label" for="notes">Notes<span
+                                                                        class="txt-danger"></span></label>
+                                                                <textarea name="notes" placeholder="Type here" class="form-control" id="notes" required></textarea>
+                                                            </div>
+                                                            <div class="col-md-12 d-flex justify-content-end">
+                                                                <button class="btn btn-primary" type="button"
+                                                                    id="submitOldBatteryForm">Add</button>
+                                                            </div>
+                                                        </form>
+                                                        <div id="formMessage" class="mt-3"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
                                 <form id="order-form" method="POST" action="{{ route('POS.storeBatteryOrder') }}">
                                     @csrf
@@ -361,6 +441,11 @@
                                             <label for="total_price" class="form-label">Total Price</label>
                                             <input type="number" id="total_price" name="total_price"
                                                 class="form-control" placeholder="Total Price" readonly />
+                                        </div>
+                                        <div class="mb-4">
+                                            <label for="discount" class="form-label">Discount</label>
+                                            <input type="number" id="discount" name="discount" class="form-control"
+                                                step="0.01" placeholder="Enter discount" />
                                         </div>
                                         <div class="mb-4">
                                             <label for="paid_amount" class="form-label">Paid Amount</label>
@@ -389,6 +474,9 @@
                                         <input type="hidden" name="customer_id" id="customer_id">
                                         <input type="hidden" name="total_items" id="total_items">
                                         <input type="hidden" name="subtotal" id="subtotal">
+                                        <input type="hidden" name="battery_discount" id="battery_discount">
+                                        <input type="hidden" name="old_battery_discount_value"
+                                            id="old_battery_discount_value">
                                         <button id="place-order-btn"
                                             class="btn btn-primary btn-hover-effect w-100 f-w-500" type="submit">Place
                                             Order</button>
@@ -400,6 +488,64 @@
             </div>
         </div>
 
+        <!-- JavaScript for Fetch -->
+        <script>
+            let oldBatteryBackendData = null;
+
+            document.getElementById("submitOldBatteryForm").addEventListener("click", async function(e) {
+                e.preventDefault();
+
+                // Get the form and its data
+                const form = document.getElementById("oldBatteryForm");
+                const formData = new FormData(form);
+
+                // Get selected customer ID from the dropdown
+                const customerSelect = document.getElementById("customer-select");
+                const customerId = customerSelect.value;
+
+                if (customerId == "") {
+                    const messageContainer = document.getElementById("formMessage");
+                    messageContainer.innerHTML =
+                        `<div class="alert alert-danger">Please select a customer.</div>`;
+                    return;
+                }
+
+                // Append customer ID to the form data
+                formData.append("customer_id", customerId);
+
+                try {
+                    // Send data to the server using fetch
+                    const response = await fetch("{{ route('pos.oldBatteryCreate') }}", {
+                        method: "POST",
+                        headers: {
+                            "X-CSRF-TOKEN": "{{ csrf_token() }}",
+                        },
+                        body: formData,
+                    });
+
+                    const result = await response.json();
+
+                    // Handle success or error messages
+                    const messageContainer = document.getElementById("formMessage");
+                    if (response.ok) {
+                        oldBatteryBackendData = result.data;
+                        document.getElementById("old_battery_discount").value = result.data.old_battery_value;
+                        messageContainer.innerHTML =
+                            `<div class="alert alert-success">Old battery added successfully!</div>`;
+                        form.reset(); // Reset the form
+                    } else {
+                        messageContainer.innerHTML =
+                            `<div class="alert alert-danger">${result.message || "Something went wrong!"}</div>`;
+                    }
+                } catch (error) {
+                    console.error("Error:", error);
+                    const messageContainer = document.getElementById("formMessage");
+                    messageContainer.innerHTML =
+                        `<div class="alert alert-danger">An error occurred. Please try again.</div>`;
+                }
+            });
+        </script>
+
         <script>
             const csrfToken = "{{ csrf_token() }}";
             const placeOrderBtn = document.getElementById("place-order-btn");
@@ -410,6 +556,10 @@
 
                 // Get the values from the DOM
                 const customerId = document.querySelector("#customer-select").value;
+                if (customerId == "") {
+                    alert("Please select a customer.");
+                    return;
+                }
                 const totalItems = document.querySelector(".item-number:nth-child(1) .f-w-500")?.textContent.trim() ||
                     "0";
                 const subtotal = document.querySelector(".item-number:nth-child(2) .f-w-500")?.textContent.trim() ||
@@ -417,6 +567,8 @@
                 const totalPrice = document.querySelector(".item-number:nth-child(4) h6")?.textContent.trim() || "0";
                 const paidAmount = document.querySelector("#paid_amount").value || 0;
                 const paymentType = document.querySelector("#payment_type").value;
+                const discount = document.querySelector("#discount").value || 0;
+                const oldBatteryDiscount = document.querySelector("#old_battery_discount").value || 0;
 
                 // Ensure proper formatting and parsing of values
                 const subtotalValue = parseFloat(subtotal.replace("RS", "").replace(",", "").trim()) || 0;
@@ -449,6 +601,14 @@
                     }
                 });
 
+                // Get old battery details
+                const oldBattery = {
+                    type: document.getElementById("old_battery_type")?.value || null,
+                    condition: document.getElementById("old_battery_condition")?.value || null,
+                    value: document.getElementById("old_battery_value")?.value || null,
+                    notes: document.getElementById("notes")?.value || null,
+                };
+
                 // Populate hidden fields in the form
                 document.getElementById("customer_id").value = customerId;
                 document.getElementById("total_items").value = totalItems.replace(" (Items)", "").trim();
@@ -457,6 +617,8 @@
                 document.getElementById("paid_amount").value = paidAmountValue;
                 document.getElementById("due_amount").value = dueAmountValue;
                 document.getElementById("payment_type").value = paymentType;
+                document.getElementById("battery_discount").value = discount;
+                document.getElementById("old_battery_discount_value").value = oldBatteryDiscount;
 
                 // Add the items details to the form as a hidden input
                 const itemsInput = document.createElement("input");
@@ -464,6 +626,14 @@
                 itemsInput.name = "items";
                 itemsInput.value = JSON.stringify(items); // Convert items array to JSON string
                 document.getElementById("order-form").appendChild(itemsInput);
+
+
+                // Include old battery data as hidden input
+                const oldBatteryInput = document.createElement("input");
+                oldBatteryInput.type = "hidden";
+                oldBatteryInput.name = "old_battery";
+                oldBatteryInput.value = JSON.stringify(oldBatteryBackendData);
+                document.getElementById("order-form").appendChild(oldBatteryInput);
 
                 // Submit the form after populating the hidden fields
                 document.getElementById("order-form").submit();
@@ -478,104 +648,8 @@
                 const totalPriceField = document.getElementById("total_price");
                 const paidAmountField = document.getElementById("paid_amount");
                 const dueAmountField = document.getElementById("due_amount");
-
-                // placeOrderBtn.addEventListener("click", function() {
-                //     // Extract values from the DOM
-                //     const totalItems = parseInt(
-                //         document.querySelector(".item-number:nth-child(1) .f-w-500").textContent
-                //     );
-                //     const formattedSubtotal = parseFloat(
-                //         document
-                //         .querySelector(".item-number:nth-child(2) .f-w-500")
-                //         .textContent.replace("RS", "")
-                //         .trim()
-                //         .replace(",", "")
-                //     );
-                //     const formattedTotal = parseFloat(
-                //         document
-                //         .querySelector(".item-number:nth-child(4) h6")
-                //         .textContent.replace("RS", "")
-                //         .trim()
-                //         .replace(",", "")
-                //     );
-                //     const paidAmount = parseFloat(
-                //         document.getElementById("paid_amount").value || 0
-                //     );
-                //     const dueAmount = formattedTotal - paidAmount;
-                //     const paymentType = document.getElementById("payment_type").value;
-                //     const orderDate = new Date().toISOString().split("T")[0]; // Format order date as YYYY-MM-DD
-
-                //     const customerSelect = document.getElementById("customer-select");
-
-                //     if (!customerSelect || !customerSelect.value) {
-                //         alert("Please select a customer before placing the order.");
-                //         return;
-                //     }
-
-                //     const customerId = customerSelect.value;
-
-                //     // Extract items data from the order card
-                //     const items = Array.from(
-                //         document.querySelectorAll(".order-details-wrapper")
-                //     ).map((item) => {
-                //         return {
-                //             battery_id: parseInt(item.getAttribute(
-                //                 "data-battery-id")), // Assuming `data-battery-id` exists
-                //             quantity: parseInt(
-                //                 item.querySelector(".input-touchspin").value || 0
-                //             ),
-                //             price: parseFloat(
-                //                 item
-                //                 .querySelector(".txt-primary")
-                //                 .textContent.replace("RS", "")
-                //                 .trim()
-                //                 .replace(",", "")
-                //             ),
-                //         };
-                //     });
-
-                //     // Prepare data to send to the server
-                //     const orderData = {
-                //         customer_id: customerId,
-                //         order_type: "New Order", // Default order type
-                //         order_date: orderDate,
-                //         items: items,
-                //         battery_discount: 0, // Update if needed
-                //         subtotal: formattedSubtotal,
-                //         total_price: formattedTotal,
-                //         paid_amount: paidAmount,
-                //         due_amount: dueAmount,
-                //         payment_type: paymentType,
-                //         payment_status: dueAmount === 0 ? "Completed" :
-                //         "Pending", // Auto-set payment status
-                //     };
-
-                //     // Send data to the server using fetch
-                //     fetch("/store-battery-order", {
-                //             method: "POST",
-                //             headers: {
-                //                 "Content-Type": "application/json",
-                //                 "X-CSRF-TOKEN": csrfToken, // Ensure CSRF token is present
-                //             },
-                //             body: JSON.stringify(orderData),
-                //         })
-                //         .then((response) => {
-                //             if (!response.ok) {
-                //                 throw new Error(`HTTP error! Status: ${response.status}`);
-                //             }
-                //             return response.json();
-                //         })
-                //         .then((data) => {
-                //             if (data.success) {
-                //                 window.location.href = "/admin/POS/summary";
-                //             } else {
-                //                 alert("Failed to place the order. Please try again.");
-                //             }
-                //         })
-                //         .catch((error) => {
-                //             console.error("Error:", error);
-                //         });
-                // });
+                const oldBatteryDiscountValue = document.getElementById("old_battery_discount");
+                const discountField = document.getElementById("discount");
 
 
                 const orderCardContainer = document.querySelector(".order-quantity");
@@ -593,6 +667,8 @@
 
                 // Function to calculate totals
                 function calculateTotals() {
+                    const oldBatteryDiscount = parseFloat(oldBatteryDiscountValue.value || 0);
+                    const discount = parseFloat(discountField.value || 0);
                     let totalItems = 0;
                     let subtotal = 0;
                     const fee = 0; // Example fixed fee
@@ -604,12 +680,12 @@
                         const price = parseFloat(priceText); // Ensure proper parsing of price
 
                         totalItems += quantity;
-                        subtotal += quantity * price;
+                        subtotal = (quantity * price) - discount - oldBatteryDiscount;
                     });
 
                     const formattedSubtotal = formatPrice(subtotal);
                     const formattedFee = formatPrice(fee);
-                    const formattedTotal = formatPrice(subtotal + fee);
+                    const formattedTotal = formatPrice(subtotal + fee + discount + oldBatteryDiscount);
 
                     // Update totals in the DOM
                     totalItemElement.querySelector(".item-number:nth-child(1) .f-w-500").textContent =
@@ -620,7 +696,7 @@
                         `RS${formattedFee}`;
                     totalItemElement.querySelector(".item-number:nth-child(4) h6").textContent = `RS${formattedTotal}`;
 
-                    totalPriceField.value = subtotal + fee;
+                    totalPriceField.value = subtotal + fee + oldBatteryDiscount + discount;
                     calculateDueAmount();
                 }
 
@@ -631,14 +707,26 @@
                 function calculateDueAmount() {
                     const totalPrice = parseFloat(totalPriceField.value || 0);
                     const paidAmount = parseFloat(paidAmountField.value || 0);
-                    const dueAmount = totalPrice - paidAmount;
+                    const oldBatteryDiscount = parseFloat(oldBatteryDiscountValue.value || 0);
+                    const discount = parseFloat(discountField.value || 0);
+                    const dueAmount = totalPrice - (paidAmount + oldBatteryDiscount + discount);
+
 
                     dueAmountField.value = dueAmount > 0 ? dueAmount.toFixed(2) : "0.00";
                 }
 
                 // Event listener for Paid Amount input field
                 paidAmountField.addEventListener("input", calculateTotals);
-                paidAmountField.addEventListener("input", calculateDueAmount);
+                paidAmountField.addEventListener("input",
+                    calculateDueAmount);
+                document.getElementById("discount").addEventListener("input",
+                    calculateTotals);
+                document.getElementById("discount").addEventListener("input",
+                    calculateDueAmount);
+                document.getElementById("old_battery_discount").addEventListener("input",
+                    calculateTotals);
+                document.getElementById("old_battery_discount").addEventListener("input",
+                    calculateDueAmount);
 
                 // Event delegation for the Add button (works for dynamically added products too)
                 document.querySelector('.scroll-product').addEventListener("click", function(event) {

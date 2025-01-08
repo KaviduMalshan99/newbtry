@@ -578,6 +578,7 @@ Route::get('/products-by-brand/{brandId}', [PosController::class, 'loadProductsB
 // Route::post('/admin/POS/place-order', [PosController::class, 'placeOrder'])->name('POS.place');
 
 Route::post('/admin/POS/place-order', [PosController::class, 'storeOrder'])->name('POS.placeOrder');
+Route::post('/admin/POS/add-old-battery', [PosController::class, 'storeOldBattery'])->name('pos.oldBatteryCreate');
 
 Route::post('/store-battery-order', [PosController::class, 'storeBatteryOrder'])->name('POS.storeBatteryOrder');
 

@@ -7,6 +7,7 @@ use App\Models\BatteryOrder;
 use App\Models\Brand;
 use App\Models\Customer;
 use App\Models\Lubricant;
+use App\Models\OldBattery;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\DB;
@@ -30,8 +31,9 @@ class PosController extends Controller
             ->get();
 
         $paymentTypes = ['Cash', 'Card', 'Bank Transfer'];
+        $old_battery_conditions = ['Good', 'Average', 'Poor'];
 
-        return view('admin.POS.pos', compact('brands', 'batteries', 'lubricants', 'customers', 'paymentTypes'));
+        return view('admin.POS.pos', compact('brands', 'batteries', 'lubricants', 'customers', 'paymentTypes', 'old_battery_conditions'));
     }
 
     /**
@@ -48,7 +50,7 @@ class PosController extends Controller
         ]);
 
         try {
-            DB::table('customers')->insert($validated);
+            Customer::create($validated);
             return redirect()->back()->with('success', 'Customer created successfully!');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to create customer: ' . $e->getMessage());
@@ -75,6 +77,8 @@ class PosController extends Controller
             'total_price' => 'required|numeric|min:0', // Ensure total_price is a valid numeric value
             'paid_amount' => 'required|numeric|min:0', // Ensure paid_amount is a valid numeric value
             'due_amount' => 'required|numeric|min:0', // Ensure due_amount is a valid numeric value
+            'battery_discount' => 'nullable|numeric|min:0',
+            'old_battery_discount_value' => 'nullable|numeric|min:0',
             'payment_type' => 'required|in:Cash,Card,Bank Transfer', // Ensure the payment type is one of the valid options
             'items' => 'required',
         ]);
@@ -92,12 +96,14 @@ class PosController extends Controller
         DB::beginTransaction();
 
         try {
+            $oldBattery = json_decode($request->input('old_battery'), true);
             // Prepare the BatteryOrder data
             $batteryOrder = new BatteryOrder();
             $batteryOrder->customer_id = $validatedData['customer_id'];
             $batteryOrder->order_type = $request->input('order_type', 'New Order');
             $batteryOrder->items = json_encode($request->items, true); // Encode items to JSON format
             $batteryOrder->battery_discount = $validatedData['battery_discount'] ?? 0;
+            $batteryOrder->old_battery_discount_value = $validatedData['old_battery_discount_value'] ?? 0;
             $batteryOrder->subtotal = $validatedData['subtotal'];
             $batteryOrder->total_price = $validatedData['total_price'];
             $batteryOrder->paid_amount = $validatedData['paid_amount'];
@@ -108,6 +114,20 @@ class PosController extends Controller
 
             // Save the order
             $batteryOrder->save();
+
+            if ($oldBattery) {
+                // Find the existing OldBattery record based on its unique identifier
+                $existingOldBattery = OldBattery::find($oldBattery['id']);
+
+                if ($existingOldBattery) {
+                    // Update the record with the battery_order_id
+                    $existingOldBattery->update(['battery_order_id' => $batteryOrder->id]);
+                } else {
+                    // If no existing record is found, create a new one
+                    OldBattery::create(array_merge($oldBattery, ['battery_order_id' => $batteryOrder->id]));
+                }
+            }
+
 
             // Retrieve the customer record
             $customer = Customer::findOrFail($validatedData['customer_id']);
@@ -178,5 +198,43 @@ class PosController extends Controller
 
         // Return the partial view with the fetched products
         return view('admin.POS.partials.product-list', compact('products'));
+    }
+
+    public function storeOldBattery(Request $request)
+    {
+        // Validate the request data
+        $validated = $request->validate([
+            'customer_id' => 'required|exists:customers,id',
+            'old_battery_type' => 'required|string|max:255',
+            'old_battery_condition' => 'required|in:Good,Average,Poor',
+            'old_battery_value' => 'required|numeric|min:0',
+            'notes' => 'nullable|string',
+        ]);
+
+        try {
+            // Insert the data into the old_batteries table
+            $oldBattery = OldBattery::create([
+                'order_id' => $request->order_id, // Nullable
+                'customer_id' => $validated['customer_id'],
+                'old_battery_type' => $validated['old_battery_type'],
+                'old_battery_condition' => $validated['old_battery_condition'],
+                'old_battery_value' => $validated['old_battery_value'],
+                'battery_status' => $request->battery_status ?? 'Replace', // Default to Direct if not provided
+                'notes' => $validated['notes'],
+            ]);
+
+            // Return a JSON response for success
+            return response()->json([
+                'success' => true,
+                'message' => 'Old Battery added successfully.',
+                'data' => $oldBattery,
+            ], 201);
+        } catch (\Exception $e) {
+            // Handle any errors
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to add Old Battery. ' . $e->getMessage(),
+            ], 500);
+        }
     }
 }

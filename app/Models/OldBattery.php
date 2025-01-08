@@ -10,7 +10,7 @@ class OldBattery extends Model
     use HasFactory;
 
     protected $fillable = [
-        'order_id',
+        'battery_order_id',
         'customer_id',
         'old_battery_type',
         'old_battery_condition',
