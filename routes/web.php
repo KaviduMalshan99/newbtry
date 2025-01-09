@@ -17,6 +17,7 @@ use App\Http\Controllers\PosController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RentalController;
 use App\Http\Controllers\RepairController;
+use App\Http\Controllers\ReplacementController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
@@ -566,6 +567,20 @@ Route::prefix('admin/lubricants')->group(function () {
     Route::delete('/{id}', [LubricantController::class, 'destroy'])->name('lubricants.destroy');
 });
 
+
+// replacement
+
+Route::prefix('admin/replacement')->group(function () {
+    Route::get('/', [ReplacementController::class, 'index'])->name('replacements.index');
+    Route::get('/get-customer-orders/{customerId}', [ReplacementController::class, 'getCustomerOrders']);
+    Route::get('/get-order-items/{orderId}', [ReplacementController::class, 'getOrderItems']);
+    // Route::get('/create', [LubricantPurchaseController::class, 'create'])->name('lubricant_purchases.create');
+    // Route::post('/', [LubricantPurchaseController::class, 'store'])->name('lubricant_purchases.store');
+    // Route::get('/{lubricant_purchase}', [LubricantPurchaseController::class, 'show'])->name('lubricant_purchases.show');
+    // Route::get('/{lubricant_purchase}/edit', [LubricantPurchaseController::class, 'edit'])->name('lubricant_purchases.edit');
+    // Route::put('/{lubricant_purchase}', [LubricantPurchaseController::class, 'update'])->name('lubricant_purchases.update');
+    // Route::delete('/{lubricant_purchase}', [LubricantPurchaseController::class, 'destroy'])->name('lubricant_purchases.destroy');
+});
 
 // pos
 
