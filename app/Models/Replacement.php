@@ -11,13 +11,16 @@ class Replacement extends Model
 
     protected $fillable = [
         'order_id',
+        'bought_old_battery_id',
         'old_battery_id',
         'replacement_reason',
         'replacement_date',
-        'old_battery_price',
+        'bought_old_battery_price',
         'new_battery_id',
         'new_battery_price',
         'price_adjustment',
+        'payment_type',
+        'payment_status',
         'refund_payment_status',
         'notes',
     ];

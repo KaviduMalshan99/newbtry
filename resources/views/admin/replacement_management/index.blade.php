@@ -232,6 +232,13 @@
                                     <option value="" selected disabled>Select Order Id</option>
                                 </select>
 
+                                <h5 class="m-0">Order Items</h5>
+
+                                <select class=" form-select f-w-400 f-14 text-gray py-2" aria-label="Select Order Item"
+                                    id="order-item-select" required>
+                                    <option value="" selected disabled>Select Order Item</option>
+                                </select>
+
                                 <style>
                                     .order-quantity {
                                         max-height: 400px;
@@ -397,8 +404,30 @@
                                     </div>
                                 </div>
 
-                                <form id="order-form" method="POST" action="{{ route('POS.storeBatteryOrder') }}">
+                                <form id="order-form" method="POST"
+                                    action="{{ route('replacements.storeReplacement') }}">
                                     @csrf
+
+                                    <div class="widget-hover">
+                                        <h5 class="m-0 p-t-40">Replace Details</h5>
+                                        <div class="mb-4">
+                                            <label for="price_adjustment" class="form-label">Replace Battery Price</label>
+                                            <input type="number" id="price_adjustment" name="price_adjustment"
+                                                class="form-control" placeholder="" readonly />
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label for="replacement_reason" class="form-label">Payment Type</label>
+                                            <select id="replacement_reason" name="replacement_reason" class="form-select"
+                                                required>
+                                                @foreach ($replacementReasons as $replacementReason)
+                                                    <option value="{{ $replacementReason }}">{{ $replacementReason }}
+                                                    </option>)
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+
                                     <div class="widget-hover">
                                         <h5 class="m-0 p-t-40">Payment Section</h5>
 
@@ -407,11 +436,7 @@
                                             <input type="number" id="total_price" name="total_price"
                                                 class="form-control" placeholder="Total Price" readonly />
                                         </div>
-                                        <div class="mb-4">
-                                            <label for="price_adjustment" class="form-label">Adjestment</label>
-                                            <input type="number" id="price_adjustment" name="price_adjustment"
-                                                class="form-control" placeholder="" readonly />
-                                        </div>
+
                                         <div class="mb-4">
                                             <label for="discount" class="form-label">Discount</label>
                                             <input type="number" id="discount" name="discount" class="form-control"
@@ -493,6 +518,211 @@
                     });
             }
 
+            // Function to load order items into the dropdown
+            function loadOrderItemsIntoDropdown(orderId) {
+                const orderItemSelect = document.getElementById("order-item-select");
+
+                // Reset the dropdown
+                orderItemSelect.innerHTML = '<option value="" selected disabled>Select Order Item</option>';
+
+                // Fetch order items
+                fetch(`/admin/replacement/get-order-items/${orderId}`)
+                    .then(response => response.json())
+                    .then(order => {
+                        if (order && order.items && order.items.length > 0) {
+                            // Populate dropdown with items
+                            order.items.forEach(item => {
+                                const option = document.createElement('option');
+                                option.value = JSON.stringify({
+                                    battery_id: item.battery_id,
+                                    quantity: item.quantity,
+                                    price: item.price,
+                                    image: item.image,
+                                    name: item.name
+                                });
+                                option.textContent = `${item.name} (Qty: ${item.quantity})`;
+                                orderItemSelect.appendChild(option);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error loading order items:", error);
+                        orderItemSelect.innerHTML = '<option value="" disabled>Error loading items</option>';
+                    });
+            }
+
+            // Function to display selected item details
+            function displaySelectedItemDetails(itemData) {
+                const orderHistory = document.getElementById("order-history");
+                const item = JSON.parse(itemData);
+                const imageUrl = `/storage/${item.image}`;
+                const formattedPrice = parseFloat(item.price).toFixed(2);
+
+                const customerOrderItem = `
+
+                        <style>
+                                    .customer-order-wrapper {
+                                        display: flex;
+                                        flex-wrap: wrap;
+                                        justify-content: space-between;
+                                        padding: 10px;
+                                        border: 1px solid #ddd;
+                                        margin-bottom: 15px;
+                                        background-color: #fff;
+                                        border-radius: 8px;
+                                    }
+
+                                    .left-details1 {
+                                        flex: 1;
+                                        padding-right: 10px;
+                                    }
+
+                                    .order-img1 img {
+                                        width: 59px;
+                                        height: 49px;
+                                        object-fit: cover;
+                                        border-radius: 5px;
+                                    }
+
+                                    .category-details1 {
+                                        flex: 2;
+                                        display: flex;
+                                        justify-content: space-between;
+                                        align-items: center;
+                                    }
+
+                                    .order-details-right1 {
+                                        flex: 1;
+                                        padding-left: 10px;
+                                    }
+
+                                    .f-141 {
+                                        font-size: 14px;
+                                    }
+
+                                    .f-w-5001 {
+                                        font-weight: 500;
+                                    }
+
+                                    .mb-31 {
+                                        margin-bottom: 10px;
+                                    }
+
+                                    .battery-id1 {
+                                        color: #333;
+                                    }
+
+                                    .last-order-detail1 {
+                                        display: flex;
+                                        justify-content: space-between;
+                                        align-items: center;
+                                    }
+
+                                    .txt-primary1 {
+                                        color: #007bff;
+                                    }
+
+                                    .item-price1 {
+                                        font-size: 16px;
+                                        font-weight: 600;
+                                    }
+
+                                    .trash-remove1 i {
+                                        color: #ff4d4f;
+                                        font-size: 18px;
+                                        cursor: pointer;
+                                    }
+
+                                    .right-details1 {
+                                        display: flex;
+                                        align-items: center;
+                                    }
+
+
+                                    .btn-touchspin1 {
+                                        background-color: #f0f0f0;
+                                        border: 1px solid #ddd;
+                                        padding: 5px 10px;
+                                        cursor: pointer;
+                                        font-size: 16px;
+                                    }
+
+
+                                    .decrement-touchspin1, .increment-touchspin1 {
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                    }
+
+                                    /* Hover effects */
+                                    .trash-remove1:hover i {
+                                        color: #d9534f;
+                                    }
+
+                                    .btn-touchspin1:hover {
+                                        background-color: #e0e0e0;
+                                    }
+
+                                    .customer-order-wrapper:hover {
+                                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                                    }
+
+                                    .touchspin-wrapper1 {
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        width: 100%; /* Ensure the parent container has full width */
+                                        overflow: hidden; /* Prevent the input from overflowing */
+                                    }
+
+                                    .input-touchspin1 {
+                                        width: 100%; /* Make the input take up the full width of its parent */
+                                        max-width: 100px; /* Limit the max width of the input */
+                                        text-align: center;
+                                        border: 1px solid #ddd;
+                                        padding: 5px;
+                                        font-size: 14px;
+                                        border-radius: 4px;
+                                        box-sizing: border-box; /* Ensure padding is included in the element's total width */
+                                        margin: 0;
+                                    }
+
+                                    /* Optional: Make the input field more responsive on small screens */
+                                    @media (max-width: 576px) {
+                                        .input-touchspin1 {
+                                            max-width: 80px;
+                                        }
+                                    }
+                                </style>
+
+                    <div class="customer-order-wrapper">
+                        <div class="left-details1">
+                            <div class="order-img1 widget-hover">
+                                <img src="${imageUrl}" alt="${item.name}" width="59" height="49">
+                            </div>
+                        </div>
+                        <div class="category-details1 item-row">
+                            <div class="order-details-right1">
+                                <span class="text-gray mb-1">Category: <span class="font-dark">Product</span></span>
+                                <h6 class="f-141 f-w-5001 mb-31 battery-id1" data-order-id="${item.battery_id}">${item.name}</h6>
+                                <div class="last-order-detail1">
+                                    <h6 class="txt-primary1 item-price1">RS${formattedPrice}</h6>
+                                    <a href="javascript:void(0)" class="trash-remove1 trash-remove-product" data-order-id="${item.battery_id}">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </div>
+                                <div class="right-details1">
+                                    <div class="touchspin-wrapper1">
+                                        <input class="input-touchspin1 item-quantity1" type="number" value="${item.quantity}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+
+                orderHistory.innerHTML = customerOrderItem;
+            }
 
             let oldBatteryBackendData = null;
 
@@ -558,12 +788,57 @@
             document.getElementById("place-order-btn").addEventListener("click", function(e) {
                 e.preventDefault(); // Prevent form submission until fields are populated
 
+                const orderId = document.querySelector("#order-select").value;
+
                 // Get the values from the DOM
                 const customerId = document.querySelector("#customer-select").value;
                 if (customerId == "") {
                     alert("Please select a customer.");
                     return;
                 }
+
+                if (!orderId) {
+                    alert("Please select an order.");
+                    return;
+                }
+
+                // Prepare the items array for current order items
+                const items = [];
+                const orderDetailsWrappers = document.querySelectorAll(".order-details-wrapper");
+                orderDetailsWrappers.forEach(wrapper => {
+                    const batteryId = wrapper.querySelector(".battery-id")?.getAttribute("data-id");
+                    const quantity = wrapper.querySelector(".input-touchspin")?.value || 0;
+                    const priceText = wrapper.querySelector(".txt-primary")?.textContent || "0";
+                    const price = priceText.replace("RS", "").replace(/,/g, "").trim();
+
+                    if (batteryId && quantity > 0 && price) {
+                        items.push({
+                            battery_id: batteryId,
+                            quantity: parseInt(quantity, 10),
+                            price: parseFloat(price)
+                        });
+                    }
+                });
+
+                // Get customer's order history items
+                const customerOrderItems = [];
+                const orderHistoryWrappers = document.querySelectorAll(".customer-order-wrapper");
+
+                orderHistoryWrappers.forEach(wrapper => {
+                    const batteryId = wrapper.querySelector(".battery-id1")?.getAttribute("data-order-id");
+                    const quantity = wrapper.querySelector(".input-touchspin1")?.value || 0;
+                    const priceText = wrapper.querySelector(".txt-primary1")?.textContent || "0";
+                    const price = priceText.replace("RS", "").replace(/,/g, "").trim();
+
+                    if (batteryId && quantity > 0 && price) {
+                        customerOrderItems.push({
+                            battery_id: batteryId,
+                            quantity: parseInt(quantity, 10),
+                            price: parseFloat(price)
+                        });
+                    }
+                });
+
                 const totalItems = document.querySelector(".item-number:nth-child(1) .f-w-500")?.textContent.trim() ||
                     "0";
                 const subtotal = document.querySelector(".item-number:nth-child(2) .f-w-500")?.textContent.trim() ||
@@ -581,29 +856,10 @@
                 const dueAmountValue = totalPriceValue - paidAmountValue;
 
                 // Check if totalPrice is correctly calculated
-                if (isNaN(totalPriceValue) || totalPriceValue === 0) {
+                if (isNaN(totalPriceValue)) {
                     alert("Total price is not calculated correctly. Please check the totals.");
                     return; // Stop form submission if total price is invalid
                 }
-
-                // Prepare the items array
-                const items = [];
-                const itemRows = document.querySelectorAll(
-                    ".item-row"); // Replace with actual class or selector for item rows
-                itemRows.forEach(row => {
-                    const batteryId = row.querySelector(".battery-id").getAttribute("data-id");
-                    const quantity = row.querySelector(".item-quantity")?.value || 0;
-                    const price = row.querySelector(".item-price")?.textContent.trim().replace("RS", "")
-                        .replace(",", "").trim() || "0";
-
-                    if (batteryId && quantity > 0 && price) {
-                        items.push({
-                            battery_id: batteryId,
-                            quantity: parseInt(quantity, 10),
-                            price: parseFloat(price)
-                        });
-                    }
-                });
 
                 // Get old battery details
                 const oldBattery = {
@@ -624,6 +880,12 @@
                 document.getElementById("battery_discount").value = discount;
                 document.getElementById("old_battery_discount_value").value = oldBatteryDiscount;
 
+                const orderIdInput = document.createElement("input");
+                orderIdInput.type = "hidden";
+                orderIdInput.name = "order_id";
+                orderIdInput.value = orderId;
+                document.getElementById("order-form").appendChild(orderIdInput);
+
                 // Add the items details to the form as a hidden input
                 const itemsInput = document.createElement("input");
                 itemsInput.type = "hidden";
@@ -639,232 +901,16 @@
                 oldBatteryInput.value = JSON.stringify(oldBatteryBackendData);
                 document.getElementById("order-form").appendChild(oldBatteryInput);
 
+                // Add customer order items to the form as hidden input
+                const customerOrderInput = document.createElement("input");
+                customerOrderInput.type = "hidden";
+                customerOrderInput.name = "customer_order_items";
+                customerOrderInput.value = JSON.stringify(customerOrderItems);
+                document.getElementById("order-form").appendChild(customerOrderInput);
+
                 // Submit the form after populating the hidden fields
                 document.getElementById("order-form").submit();
             });
-
-
-
-            function loadOrderItems(orderId) {
-                console.log("Loading order items for order ID:", orderId);
-                const orderHistory = document.getElementById("order-history");
-
-                if (!orderHistory) {
-                    console.error("Order history container not found.");
-                    return;
-                }
-
-                // Clear the previous content to prevent duplication
-                orderHistory.innerHTML = '<p>Loading items...</p>';
-
-                // Fetch the order's items dynamically using AJAX
-                fetch(`/admin/replacement/get-order-items/${orderId}`)
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then((order) => {
-                        console.log("Order Data:", order);
-
-                        orderHistory.innerHTML = ''; // Clear the loading message
-
-                        if (order && order.items && order.items.length > 0) {
-                            order.items.forEach((item) => {
-                                // Extract item details
-                                const {
-                                    battery_id,
-                                    quantity,
-                                    price,
-                                    image,
-                                    name
-                                } = item;
-
-                                // Construct the image URL using Laravel's asset path
-                                const imageUrl = `/storage/${image}`;
-                                const formattedPrice = price.toFixed(2);
-
-                                // Create the order item HTML
-                                const customerOrderItem = `
-                                <style>
-    .customer-order-wrapper {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        padding: 10px;
-        border: 1px solid #ddd;
-        margin-bottom: 15px;
-        background-color: #fff;
-        border-radius: 8px;
-    }
-
-    .left-details1 {
-        flex: 1;
-        padding-right: 10px;
-    }
-
-    .order-img1 img {
-        width: 59px;
-        height: 49px;
-        object-fit: cover;
-        border-radius: 5px;
-    }
-
-    .category-details1 {
-        flex: 2;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .order-details-right1 {
-        flex: 1;
-        padding-left: 10px;
-    }
-
-    .f-141 {
-        font-size: 14px;
-    }
-
-    .f-w-5001 {
-        font-weight: 500;
-    }
-
-    .mb-31 {
-        margin-bottom: 10px;
-    }
-
-    .battery-id1 {
-        color: #333;
-    }
-
-    .last-order-detail1 {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .txt-primary1 {
-        color: #007bff;
-    }
-
-    .item-price1 {
-        font-size: 16px;
-        font-weight: 600;
-    }
-
-    .trash-remove1 i {
-        color: #ff4d4f;
-        font-size: 18px;
-        cursor: pointer;
-    }
-
-    .right-details1 {
-        display: flex;
-        align-items: center;
-    }
-
-
-    .btn-touchspin1 {
-        background-color: #f0f0f0;
-        border: 1px solid #ddd;
-        padding: 5px 10px;
-        cursor: pointer;
-        font-size: 16px;
-    }
-
-
-    .decrement-touchspin1, .increment-touchspin1 {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    /* Hover effects */
-    .trash-remove1:hover i {
-        color: #d9534f;
-    }
-
-    .btn-touchspin1:hover {
-        background-color: #e0e0e0;
-    }
-
-    .customer-order-wrapper:hover {
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .touchspin-wrapper1 {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%; /* Ensure the parent container has full width */
-        overflow: hidden; /* Prevent the input from overflowing */
-    }
-
-    .input-touchspin1 {
-        width: 100%; /* Make the input take up the full width of its parent */
-        max-width: 100px; /* Limit the max width of the input */
-        text-align: center;
-        border: 1px solid #ddd;
-        padding: 5px;
-        font-size: 14px;
-        border-radius: 4px;
-        box-sizing: border-box; /* Ensure padding is included in the element's total width */
-        margin: 0;
-    }
-
-    /* Optional: Make the input field more responsive on small screens */
-    @media (max-width: 576px) {
-        .input-touchspin1 {
-            max-width: 80px;
-        }
-    }
-</style>
-
-                        <div class="customer-order-wrapper">
-                            <div class="left-details1">
-                                 <div class="order-img1 widget-hover">
-                                     <img src="${imageUrl}" alt="${ name }" width="59" height="49">
-                                 </div>
-                        </div>
-                         <div class="category-details1 item-row">
-                            <div class="order-details-right1">
-                                <span class="text-gray mb-1">Category: <span class="font-dark">Product</span></span>
-                                <h6 class="f-141 f-w-5001 mb-31 battery-id1" data-order-id="${battery_id }">${ name }</h6>
-                                <div class="last-order-detail1">
-                                <h6 class="txt-primary1 item-price1">RS${formattedPrice}</h6>
-                                <a href="javascript:void(0)" class="trash-remove1 trash-remove-product" data-order-id="${battery_id}">
-                                    <i class="fa fa-trash"></i>
-                                </a>
-
-                                </div>
-                                <div class="right-details1">
-                                 <div class="touchspin-wrapper1">
-                                <input class="input-touchspin1 item-quantity1" type="number" value="${quantity}" readonly>
-                                </div>
-                            </div>
-                            </div>
-
-
-                            </div>
-                        </div>
-
-                    `;
-
-                                // Append the order item to the history
-                                orderHistory.innerHTML += customerOrderItem;
-                            });
-                        } else {
-                            orderHistory.innerHTML = '<p>No items found for this order.</p>';
-                        }
-                    })
-                    .catch((error) => {
-                        console.error("Error fetching order items:", error);
-                        orderHistory.innerHTML = '<p>Error loading items. Please try again.</p>';
-                    });
-            }
-
 
             document.addEventListener("DOMContentLoaded", function() {
                 const placeOrderBtn = document.getElementById("place-order-btn");
@@ -883,12 +929,21 @@
 
                 document.getElementById("order-select").addEventListener("change", function() {
                     const orderId = this.value;
-                    console.log("Selected Order ID:", orderId);
-                    loadOrderItems(orderId); // Now accessible here.
+                    if (orderId) {
+                        loadOrderItemsIntoDropdown(orderId);
+                        // Clear the order history when a new order is selected
+                        document.getElementById("order-history").innerHTML = '';
+                    }
+                });
 
-                    setTimeout(() => {
+                // Event listener for order item selection
+                document.getElementById("order-item-select").addEventListener("change", function() {
+                    const selectedItem = this.value;
+                    if (selectedItem) {
+                        displaySelectedItemDetails(selectedItem);
                         calculateAdjestment();
-                    }, 4000);
+                        calculateTotals();
+                    }
                 });
 
                 calculateTotals();
@@ -903,13 +958,13 @@
                         const customerOrderItem = target.closest(".customer-order-wrapper");
                         customerOrderItem.remove();
                         calculateAdjestment();
-
+                        calculateTotals();
                         // Show empty cart message if no items are left
                         if (!document.querySelectorAll(".customer-order-wrapper").length) {
                             document.querySelector(".empty-card").style.display = "block";
                         }
                         // Recalculate totals
-                        calculateTotals();
+
                     }
                 });
 
@@ -988,8 +1043,11 @@
                         }
                     });
 
+                    const total = subtotal + fee;
+
+                    subtotal += fee - discount - oldBatteryDiscount;
+
                     // Calculate final totals
-                    const total = subtotal + fee - discount - oldBatteryDiscount;
 
                     // Format numbers for display
                     const formattedSubtotal = formatPrice(subtotal);
@@ -1070,6 +1128,7 @@
 
                     // Check if the clicked target is an "Add" button
                     if (target.classList.contains("add-btn")) {
+
                         const productWrapper = target.closest(".our-product-wrapper");
 
                         // Extract product details from data attributes
@@ -1082,43 +1141,71 @@
 
                         // Create an order card item
                         const orderItem = `
-                <div class="order-details-wrapper">
-                    <div class="left-details">
-                        <div class="order-img widget-hover">
-                            <img src="${image}" alt="${name}">
-                        </div>
-                    </div>
-                    <div class="category-details item-row">
-                        <div class="order-details-right">
-                            <span class="text-gray mb-1">Category: <span class="font-dark">Product</span></span>
-                            <h6 class="f-14 f-w-500 mb-3 battery-id" data-id="${id}">${name}</h6>
-                            <div class="last-order-detail">
-                                <h6 class="txt-primary item-price">RS${formattedPrice}</h6>
-                                <a href="javascript:void(0)" class="trash-remove"><i class="fa fa-trash"></i></a>
-                            </div>
-                        </div>
-                        <div class="right-details">
-                            <div class="touchspin-wrapper">
-                                <button class="decrement-touchspin btn-touchspin"><i class="fa fa-minus text-gray"></i></button>
-                                <input class="input-touchspin item-quantity" type="number" value="1" readonly>
-                                <button class="increment-touchspin btn-touchspin"><i class="fa fa-plus text-gray"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
+                                <div class="order-details-wrapper">
+                                    <div class="left-details">
+                                        <div class="order-img widget-hover">
+                                            <img src="${image}" alt="${name}">
+                                        </div>
+                                    </div>
+                                    <div class="category-details item-row">
+                                        <div class="order-details-right">
+                                            <span class="text-gray mb-1">Category: <span class="font-dark">Product</span></span>
+                                            <h6 class="f-14 f-w-500 mb-3 battery-id" data-id="${id}">${name}</h6>
+                                            <div class="last-order-detail">
+                                                <h6 class="txt-primary item-price">RS${formattedPrice}</h6>
+                                                <a href="javascript:void(0)" class="trash-remove"><i class="fa fa-trash"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="right-details">
+                                            <div class="touchspin-wrapper">
+                                                <button class="decrement-touchspin btn-touchspin"><i class="fa fa-minus text-gray"></i></button>
+                                                <input class="input-touchspin item-quantity" type="number" value="1" readonly>
+                                                <button class="increment-touchspin btn-touchspin"><i class="fa fa-plus text-gray"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
 
                         // Append the order item to the order card
                         orderCardContainer.insertAdjacentHTML("beforeend", orderItem);
+                        // Recalculate totals
+                        calculateTotals();
+                        checkAndDisableAddButton();
+
 
                         // Hide "Your cart is empty" message
                         document.querySelector(".empty-card").style.display = "none";
 
-                        // Recalculate totals
-                        calculateTotals();
+
                     }
-                    calculateTotals();
                 });
+
+                // Function to check and disable Add button
+                function checkAndDisableAddButton() {
+                    console.log("Checking and disabling Add button...");
+                    const totalItemElement = document.querySelector(".total-item");
+                    const itemText = totalItemElement.querySelector(".item-number:nth-child(1) .f-w-500").textContent;
+
+                    // Extract number from "X (Items)" format
+                    const totalItems = parseInt(itemText.split('(')[0].trim());
+
+                    // Get all add buttons
+                    const addButtons = document.querySelectorAll('.add-btn');
+
+                    // Disable/enable based on total items
+                    if (totalItems === 1) {
+                        addButtons.forEach(button => {
+                            button.disabled = true;
+                            button.classList.add('disabled'); // Optional: add a disabled class for styling
+                        });
+                    } else {
+                        addButtons.forEach(button => {
+                            button.disabled = false;
+                            button.classList.remove('disabled');
+                        });
+                    }
+                }
 
                 // Event delegation for increment, decrement, and remove buttons in the order details
                 orderCardContainer.addEventListener("click", function(event) {
@@ -1149,16 +1236,17 @@
                         const orderItem = target.closest(".order-details-wrapper");
                         orderItem.remove();
 
+                        // Recalculate totals
+                        calculateTotals();
+                        checkAndDisableAddButton();
+
                         // Show empty cart message if no items are left
                         if (!document.querySelectorAll(".order-details-wrapper").length) {
                             document.querySelector(".empty-card").style.display = "block";
                         }
 
-                        // Recalculate totals
-                        calculateTotals();
-                    }
 
-                    calculateTotals();
+                    }
                 });
 
                 const brandLinks = document.querySelectorAll('.swiper-slide');

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Battery;
 use App\Models\BatteryOrder;
+use App\Models\OldBattery;
+use App\Models\Replacement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -27,8 +29,9 @@ class ReplacementController extends Controller
 
         $paymentTypes = ['Cash', 'Card', 'Bank Transfer'];
         $old_battery_conditions = ['Good', 'Average', 'Poor'];
+        $replacementReasons = ['Defective', 'Mismatch', 'Warranty Claim'];
 
-        return view('admin.replacement_management.index', compact('brands', 'batteries', 'lubricants', 'customers', 'paymentTypes', 'old_battery_conditions'));
+        return view('admin.replacement_management.index', compact('brands', 'batteries', 'lubricants', 'customers', 'paymentTypes', 'old_battery_conditions', 'replacementReasons'));
     }
 
     public function getCustomerOrders($customerId)
@@ -139,6 +142,138 @@ class ReplacementController extends Controller
                 'trace' => $e->getTraceAsString()
             ]);
             return response()->json(['error' => 'Unable to fetch order items'], 500);
+        }
+    }
+
+    public function storeReplacement(Request $request)
+    {
+        // Manually decode the 'items' field to ensure it's an array
+        $items = json_decode($request->input('items'), true);
+
+        // Check if items is a valid array and has at least one item
+        if (!is_array($items) || count($items) < 1) {
+            return response()->json(['error' => 'Items are required.'], 400);
+        }
+
+        // Manually decode the 'items' field to ensure it's an array
+        $customerOrderItems = json_decode($request->input('customer_order_items'), true);
+
+        // Check if items is a valid array and has at least one item
+        if (!is_array($customerOrderItems) || count($customerOrderItems) < 1) {
+            return response()->json(['error' => 'Items are required.'], 400);
+        }
+
+        $validatedData = $request->validate([
+            'customer_id' => 'required|exists:customers,id', // Validate that customer_id is a valid existing customer
+
+            'subtotal' => 'required|numeric|min:0', // Ensure subtotal is a valid numeric value
+            'total_price' => 'required|numeric|min:0', // Ensure total_price is a valid numeric value
+            'paid_amount' => 'required|numeric|min:0', // Ensure paid_amount is a valid numeric value
+            'due_amount' => 'required|numeric|min:0', // Ensure due_amount is a valid numeric value
+            'battery_discount' => 'nullable|numeric|min:0',
+            'old_battery_discount_value' => 'nullable|numeric|min:0',
+            'payment_type' => 'required|in:Cash,Card,Bank Transfer', // Ensure the payment type is one of the valid options
+            'items' => 'required',
+
+            'replacement_reason' => 'required|in:Defective,Mismatch,Warranty Claim',
+            'order_id' => 'required|exists:battery_orders,id',
+            'customer_order_items' => 'required',
+
+
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $oldBattery = json_decode($request->input('old_battery'), true);
+            // Insert a new replacement record
+            $customerOrderItems = json_decode($validatedData['customer_order_items'], true);
+            $items = json_decode($validatedData['items'], true);
+
+            // Insert a new replacement record
+            $replacement = Replacement::create([
+                'order_id' => $validatedData['order_id'],
+                'bought_old_battery_id' => $customerOrderItems[0]['battery_id'],
+                'old_battery_id' => $oldBattery['id'] ?? null,
+                'replacement_reason' => $validatedData['replacement_reason'],
+                'replacement_date' => now(),
+                'bought_old_battery_price' => $customerOrderItems[0]['price'],
+                'new_battery_id' => $items[0]['battery_id'],
+                'new_battery_price' => $items[0]['price'],
+                'price_adjustment' => $validatedData['total_price'],
+                'payment_type' => $validatedData['payment_type'],
+            ]);
+
+            // Fetch and update the battery order
+            $batteryOrder = BatteryOrder::findOrFail($validatedData['order_id']);
+
+            // Get the current items and the items to be replaced/added
+            $currentItems = json_decode($batteryOrder->items, true) ?: [];
+            $customerOrderItems = json_decode($validatedData['customer_order_items'], true);
+            $newItems = json_decode($validatedData['items'], true);
+
+            // Get the specific battery to replace
+            $batteryToReplace = $customerOrderItems[0];
+
+            // Find the index of the item to replace
+            $indexToReplace = array_search($batteryToReplace['battery_id'], array_column($currentItems, 'battery_id'));
+
+            // If found, replace it; if not, just add the new item
+            if ($indexToReplace !== false) {
+                $currentItems[$indexToReplace] = $newItems[0];
+            } else {
+                $currentItems[] = $newItems[0];
+            }
+
+            // Save the updated items back to the order
+            $batteryOrder->items = json_encode(array_values($currentItems));
+
+            $batteryOrder->subtotal += $validatedData['subtotal'];
+            $batteryOrder->total_price += $validatedData['total_price'];
+            $batteryOrder->battery_discount += $validatedData['battery_discount'];
+            $batteryOrder->old_battery_discount_value += $validatedData['old_battery_discount_value'];
+            $batteryOrder->paid_amount += $validatedData['paid_amount'];
+            $batteryOrder->due_amount += $validatedData['due_amount'];
+            $batteryOrder->save();
+
+            // Update stock for each battery
+            foreach ($items as $item) {
+                $battery = Battery::find($item['battery_id']);
+                if (!$battery || $battery->stock_quantity < $item['quantity']) {
+                    DB::rollBack();
+                    return response()->json(['error' => "Insufficient stock for Battery ID {$item['battery_id']}."], 400);
+                }
+                $battery->stock_quantity -= $item['quantity'];
+                $battery->save();
+            }
+
+            if ($oldBattery) {
+                // Find the existing OldBattery record based on its unique identifier
+                $existingOldBattery = OldBattery::find($oldBattery['id']);
+
+                if ($existingOldBattery) {
+                    // Update the record with the battery_order_id
+                    $existingOldBattery->update(['battery_order_id' => $batteryOrder->id]);
+                } else {
+                    // If no existing record is found, create a new one
+                    OldBattery::create(array_merge($oldBattery, ['battery_order_id' => $batteryOrder->id]));
+                }
+            }
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'Replacement processed successfully.',
+                'replacement' => $replacement,
+                'updated_order' => $batteryOrder,
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'error' => 'An error occurred while processing the replacement.',
+                'details' => $e->getMessage(),
+            ], 500);
         }
     }
 }
