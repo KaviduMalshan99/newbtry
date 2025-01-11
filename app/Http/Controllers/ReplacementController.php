@@ -204,29 +204,40 @@ class ReplacementController extends Controller
                 'payment_type' => $validatedData['payment_type'],
             ]);
 
-            // Fetch and update the battery order
+            // Fetch the order
             $batteryOrder = BatteryOrder::findOrFail($validatedData['order_id']);
 
-            // Get the current items and the items to be replaced/added
-            $currentItems = json_decode($batteryOrder->items, true) ?: [];
-            $customerOrderItems = json_decode($validatedData['customer_order_items'], true);
-            $newItems = json_decode($validatedData['items'], true);
+            // Get items to remove from payload
+            $itemsToRemove = json_decode($validatedData['customer_order_items'], true);
 
-            // Get the specific battery to replace
-            $batteryToReplace = $customerOrderItems[0];
+            // Decode existing items from DB
+            $existingItems = json_decode(stripslashes(trim($batteryOrder->items, '"')), true);
 
-            // Find the index of the item to replace
-            $indexToReplace = array_search($batteryToReplace['battery_id'], array_column($currentItems, 'battery_id'));
+            // Filter out the matching item
+            $updatedItems = array_filter($existingItems, function ($item) use ($itemsToRemove) {
+                return !(
+                    $item['battery_id'] === $itemsToRemove[0]['battery_id'] &&
+                    $item['quantity'] === $itemsToRemove[0]['quantity'] &&
+                    $item['price'] === $itemsToRemove[0]['price']
+                );
+            });
 
-            // If found, replace it; if not, just add the new item
-            if ($indexToReplace !== false) {
-                $currentItems[$indexToReplace] = $newItems[0];
-            } else {
-                $currentItems[] = $newItems[0];
-            }
+            // Reindex array to ensure sequential keys
+            $updatedItems = array_values($updatedItems);
 
-            // Save the updated items back to the order
-            $batteryOrder->items = json_encode(array_values($currentItems));
+            // Add the new item
+            $updatedItems[] = [
+                'battery_id' => $items[0]['battery_id'],
+                'quantity' => $items[0]['quantity'],
+                'price' => $items[0]['price']
+            ];
+
+            // Single database update
+            DB::table('battery_orders')
+                ->where('id', $validatedData['order_id'])
+                ->update([
+                    'items' => '"' . addslashes(json_encode($updatedItems)) . '"'
+                ]);
 
             $batteryOrder->subtotal += $validatedData['subtotal'];
             $batteryOrder->total_price += $validatedData['total_price'];
@@ -235,6 +246,10 @@ class ReplacementController extends Controller
             $batteryOrder->paid_amount += $validatedData['paid_amount'];
             $batteryOrder->due_amount += $validatedData['due_amount'];
             $batteryOrder->save();
+
+            var_dump($batteryOrder->items);
+
+            $items = json_decode($validatedData['items'], true);
 
             // Update stock for each battery
             foreach ($items as $item) {
