@@ -615,7 +615,7 @@
                 document.getElementById("subtotal").value = subtotalValue;
                 document.getElementById("total_price").value = totalPriceValue;
                 document.getElementById("paid_amount").value = paidAmountValue;
-                document.getElementById("due_amount").value = dueAmountValue;
+                // document.getElementById("due_amount").value = dueAmountValue;
                 document.getElementById("payment_type").value = paymentType;
                 document.getElementById("battery_discount").value = discount;
                 document.getElementById("old_battery_discount_value").value = oldBatteryDiscount;
@@ -680,8 +680,10 @@
                         const price = parseFloat(priceText); // Ensure proper parsing of price
 
                         totalItems += quantity;
-                        subtotal = (quantity * price) - discount - oldBatteryDiscount;
+                        subtotal += quantity * price
                     });
+
+                    subtotal -= discount - oldBatteryDiscount;
 
                     const formattedSubtotal = formatPrice(subtotal);
                     const formattedFee = formatPrice(fee);
@@ -775,13 +777,13 @@
                         // Append the order item to the order card
                         orderCardContainer.insertAdjacentHTML("beforeend", orderItem);
 
+                        // Recalculate totals
+                        calculateTotals();
                         // Hide "Your cart is empty" message
                         document.querySelector(".empty-card").style.display = "none";
 
-                        // Recalculate totals
-                        calculateTotals();
+
                     }
-                    calculateTotals();
                 });
 
                 // Event delegation for increment, decrement, and remove buttons in the order details
@@ -813,13 +815,15 @@
                         const orderItem = target.closest(".order-details-wrapper");
                         orderItem.remove();
 
+                        // Recalculate totals
+                        calculateTotals();
+
                         // Show empty cart message if no items are left
                         if (!document.querySelectorAll(".order-details-wrapper").length) {
                             document.querySelector(".empty-card").style.display = "block";
                         }
 
-                        // Recalculate totals
-                        calculateTotals();
+
                     }
 
                     calculateTotals();

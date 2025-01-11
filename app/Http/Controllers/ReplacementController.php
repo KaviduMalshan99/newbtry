@@ -247,8 +247,6 @@ class ReplacementController extends Controller
             $batteryOrder->due_amount += $validatedData['due_amount'];
             $batteryOrder->save();
 
-            var_dump($batteryOrder->items);
-
             $items = json_decode($validatedData['items'], true);
 
             // Update stock for each battery
@@ -277,11 +275,13 @@ class ReplacementController extends Controller
 
             DB::commit();
 
-            return response()->json([
-                'message' => 'Replacement processed successfully.',
-                'replacement' => $replacement,
-                'updated_order' => $batteryOrder,
-            ]);
+            // return response()->json([
+            //     'message' => 'Replacement processed successfully.',
+            //     'replacement' => $replacement,
+            //     'updated_order' => $batteryOrder,
+            // ]);
+
+            return redirect()->route('replacements.index')->with('success', 'Replacement processed successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
 

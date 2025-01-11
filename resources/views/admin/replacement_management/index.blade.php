@@ -875,7 +875,7 @@
                 document.getElementById("subtotal").value = subtotalValue;
                 document.getElementById("total_price").value = totalPriceValue;
                 document.getElementById("paid_amount").value = paidAmountValue;
-                document.getElementById("due_amount").value = dueAmountValue;
+                // document.getElementById("due_amount").value = dueAmountValue;
                 document.getElementById("payment_type").value = paymentType;
                 document.getElementById("battery_discount").value = discount;
                 document.getElementById("old_battery_discount_value").value = oldBatteryDiscount;
