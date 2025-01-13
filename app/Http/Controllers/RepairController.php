@@ -9,6 +9,7 @@ use App\Models\Repair;
 use App\Models\RepairBattery;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RepairController extends Controller
 {
@@ -23,8 +24,9 @@ class RepairController extends Controller
 
     public function create()
     {
+        $brands = DB::table('brands')->where('type', 'battery')->get();
         $customers = Customer::all();
-        return view('admin.repairs_management.create', compact('customers'));
+        return view('admin.repairs_management.create', compact('customers', 'brands'));
     }
 
     public function store(Request $request)
@@ -33,18 +35,27 @@ class RepairController extends Controller
         $validatedData = $request->validate([
             'customer_id' => 'required|exists:customers,id',
             'type' => 'required|string|max:255',
-            'brand' => 'required|string|max:255',
+            'brand_id' => 'required|exists:brands,id',
             'model_number' => 'required|string|max:255',
             'diagnostic_report' => 'required|string',
             'repair_order_end_date' => 'nullable|date',
             'advance_amount' => 'nullable|numeric',
+            'isForSelling' => 'nullable|boolean',
+            'stock_quantity' => 'nullable|integer',
+            'selling_price' => 'nullable|numeric',
+            'purchase_price' => 'nullable|numeric',
         ]);
 
         // Create or find the battery
         $battery = RepairBattery::firstOrCreate([
             'type' => $validatedData['type'],
-            'brand' => $validatedData['brand'],
+            'brand_id' => $validatedData['brand_id'],
             'model_number' => $validatedData['model_number'],
+            'isForSelling' => $validatedData['isForSelling'] ?? false,
+            'stock_quantity' => $validatedData['stock_quantity'] ?? null,
+            'selling_price' => $validatedData['selling_price'] ?? null,
+            'purchase_price' => $validatedData['purchase_price'] ?? null,
+            'isActive' => true,
         ]);
 
         // Insert the repair record
@@ -65,9 +76,10 @@ class RepairController extends Controller
 
     public function edit($id)
     {
+        $brands = DB::table('brands')->where('type', 'battery')->get();
         $repair = Repair::with(['customer', 'repairBattery'])->findOrFail($id);
         $customers = Customer::all();
-        return view('admin.repairs_management.update', compact('repair', 'customers'));
+        return view('admin.repairs_management.update', compact('repair', 'customers', 'brands'));
     }
 
     public function completedOrder($id)
@@ -86,11 +98,15 @@ class RepairController extends Controller
         $validatedData = $request->validate([
             'customer_id' => 'required|exists:customers,id',
             'type' => 'required|string|max:255',
-            'brand' => 'required|string|max:255',
+            'brand_id' => 'required|exists:brands,id',
             'model_number' => 'required|string|max:255',
             'repair_order_end_date' => 'nullable|date',
             'diagnostic_report' => 'nullable|string',
             'advance_amount' => 'nullable|numeric',
+            'isForSelling' => 'nullable|boolean',
+            'stock_quantity' => 'nullable|integer',
+            'selling_price' => 'nullable|numeric',
+            'purchase_price' => 'nullable|numeric',
         ]);
 
         // Update or create the associated battery
@@ -100,8 +116,12 @@ class RepairController extends Controller
             ],
             [
                 'type' => $validatedData['type'],
-                'brand' => $validatedData['brand'],
+                'brand_id' => $validatedData['brand_id'],
                 'model_number' => $validatedData['model_number'],
+                'isForSelling' => $validatedData['isForSelling'] ?? false,
+                'stock_quantity' => $validatedData['stock_quantity'] ?? 0,
+                'selling_price' => $validatedData['selling_price'] ?? 0,
+                'purchase_price' => $validatedData['purchase_price'] ?? 0,
             ]
         );
 

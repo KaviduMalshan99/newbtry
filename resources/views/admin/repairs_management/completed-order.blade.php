@@ -79,7 +79,8 @@
                                 <div class="col-md-6 mb-4">
                                     <label for="brand">Brand</label>
                                     <input type="text" name="brand" class="form-control"
-                                        value="{{ old('brand', $repair->repairBattery->brand ?? '') }}" disabled>
+                                        value="{{ old('brand', $repair->repairBattery->brand->brand_name ?? '') }}"
+                                        disabled>
                                 </div>
                             </div>
 

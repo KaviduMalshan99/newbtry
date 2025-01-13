@@ -53,7 +53,7 @@
                             <div class="form-group my-2">
                                 <label for="brand_id" class="mb-2">Brand</label>
 
-                                <select id="brand_id" name="brand_id" class="form-select" required>
+                                <select name="brand_id" class="form-select" required>
                                     <option value="" disabled>Select brand</option>
                                     @foreach ($brands as $brand)
                                         <option value="{{ $brand->id }}"

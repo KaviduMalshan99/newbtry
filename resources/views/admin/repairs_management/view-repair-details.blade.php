@@ -158,7 +158,7 @@
                                 </div>
                             </div>
                         @endif
-                        @if (!empty($repair->repairBattery->brand))
+                        @if (!empty($repair->repairBattery->brand_id))
                             <div class="row gx-3">
                                 <div class="col-md-2 mb-4">
                                     <label class="form-label">Battery Brand</label>
@@ -168,7 +168,7 @@
                                     <label class="form-label"> : </label>
                                 </div>
                                 <div class="col-md-9 mb-4">
-                                    <label class="form-label">{{ $repair->repairBattery->brand }}</label>
+                                    <label class="form-label">{{ $repair->repairBattery->brand->brand_name }}</label>
                                     </label>
                                 </div>
                             </div>

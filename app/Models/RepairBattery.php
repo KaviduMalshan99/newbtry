@@ -9,10 +9,24 @@ class RepairBattery extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['type', 'brand', 'model_number'];
+    protected $fillable = [
+        'type',
+        'brand_id',
+        'model_number',
+        'purchase_price',
+        'selling_price',
+        'isForSelling',
+        'added_date',
+        'stock_quantity'
+    ];
 
     public function repairs()
     {
         return $this->hasMany(Repair::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
     }
 }

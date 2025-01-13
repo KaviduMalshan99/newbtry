@@ -78,10 +78,16 @@
 
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label for="brand">Brand</label>
-                                    <input type="text" name="brand" class="form-control"
-                                        value="{{ old('brand', $repair->repairBattery->brand ?? '') }}" required>
-
+                                    <label for="brand_id" class="pb-0">Brand</label>
+                                    <select name="brand_id" class="form-select">
+                                        <option value="" disabled>Select brand</option>
+                                        @foreach ($brands as $brand)
+                                            <option value="{{ $brand->id }}"
+                                                {{ $brand->id == $repair->repairBattery->brand_id ? 'selected' : '' }}>
+                                                {{ $brand->type }} | {{ $brand->brand_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="mb-4">
@@ -111,6 +117,40 @@
                                         value="{{ old('advance_amount', $repair->advance_amount) }}">
                                 </div>
                             </div>
+                            <!-- Battery -->
+                            <div class="row gx-3">
+                                <div class="col-md-6 mb-4">
+                                    <label for="isForSelling" class="pb-0">Is For Selling</label>
+                                    <select name="isForSelling" class="form-select">
+                                        <option value="0"
+                                            {{ $repair->repairBattery->brand_id === 1 ? 'selected' : '' }}>NO
+                                        </option>
+                                        <option value="1"
+                                            {{ $repair->repairBattery->brand_id !== 1 ? 'selected' : '' }}>YES
+                                        </option>
+                                    </select>
+
+                                </div>
+
+                                <div class="col-md-6 mb-4">
+                                    <label for="stock_quantity">Stock Quantity</label>
+                                    <input type="number" name="stock_quantity" class="form-control"
+                                        value="{{ old('stock_quantity', $repair->repairBattery->stock_quantity) }}">
+                                </div>
+                            </div>
+
+                            <div class="row gx-3">
+                                <div class="col-md-6 mb-4">
+                                    <label for="purchase_price">Purchase Price</label>
+                                    <input type="number" name="purchase_price" class="form-control"
+                                        value="{{ old('purchase_price', $repair->repairBattery->purchase_price) }}">
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label for="selling_price">Selling Price</label>
+                                    <input type="number" name="selling_price" class="form-control"
+                                        value="{{ old('selling_price', $repair->repairBattery->selling_price) }}">
+                                </div>
+                            </div>
                             <div class="mb-4">
                                 <button type="submit" form="repairForm" class="btn btn-success col-md-3">Update</button>
                             </div>
@@ -120,6 +160,38 @@
             </div>
         </div>
     </section>
+
+    <script>
+        // Function to handle field visibility
+        function toggleFieldVisibility() {
+            const isForSelling = document.getElementById('isForSelling');
+            const fieldsToToggle = [
+                'stock_quantity',
+                'purchase_price',
+                'selling_price'
+            ];
+
+            // Function to show/hide fields based on selection
+            const toggleFields = () => {
+                const shouldShow = isForSelling.value === '1';
+                fieldsToToggle.forEach(fieldName => {
+                    const field = document.querySelector(`[name="${fieldName}"]`);
+                    const fieldContainer = field.closest('.col-md-6');
+                    fieldContainer.style.display = shouldShow ? 'block' : 'none';
+                });
+            };
+
+            // Set initial state to "No" and hide fields
+            isForSelling.value = '0';
+            toggleFields();
+
+            // Add event listener for changes
+            isForSelling.addEventListener('change', toggleFields);
+        }
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', toggleFieldVisibility);
+    </script>
 @endsection
 
 @section('script')

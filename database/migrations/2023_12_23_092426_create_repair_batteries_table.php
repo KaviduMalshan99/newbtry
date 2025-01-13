@@ -14,9 +14,17 @@ return new class extends Migration
         Schema::create('repair_batteries', function (Blueprint $table) {
             $table->id();
             $table->string('type');
-            $table->string('brand');
+            $table->unsignedBigInteger('brand_id');
             $table->string('model_number');
+            $table->decimal('purchase_price', 10, 2)->nullable();
+            $table->decimal('selling_price', 10, 2)->nullable();
+            $table->boolean('isForSelling')->default(0);
+            $table->boolean('isActive')->default(1);
+            $table->integer('stock_quantity')->nullable();
+            $table->date('added_date')->default(now());
             $table->timestamps();
+
+            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
         });
     }
 

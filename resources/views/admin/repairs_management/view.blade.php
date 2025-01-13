@@ -93,7 +93,8 @@
                                         <tr>
                                             <td>RI{{ $repair->id }}</td>
                                             <td>{{ $repair->customer->first_name }} {{ $repair->customer->last_name }} </td>
-                                            <td>{{ $repair->repairBattery->type }} | {{ $repair->repairBattery->brand }} |
+                                            <td>{{ $repair->repairBattery->type }} |
+                                                {{ $repair->repairBattery->brand->brand_name }} |
                                                 {{ $repair->repairBattery->model_number }}</td>
                                             <td>{{ $repair->repair_order_start_date }}</td>
                                             <td>{{ $repair->repair_order_end_date }}</td>
