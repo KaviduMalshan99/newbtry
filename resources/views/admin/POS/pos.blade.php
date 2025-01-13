@@ -39,7 +39,32 @@
                                 <div class="header-top">
                                     <h5>All battery Brands</h5>
                                     <div class="card-header-right-btn">
-                                        <a class="font-dark f-12" href="javascript:void(0)">View All</a>
+                                        <a class="font-dark f-12" href="javascript:void(0)" id="viewAllBrands"
+                                            data-bs-toggle="modal" data-bs-target="#dashboard83">
+                                            View All
+                                        </a>
+
+                                    </div>
+                                </div>
+
+                                <div class="modal fade" id="dashboard83" tabindex="-1" aria-labelledby="dashboard83"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="modaldashboard3">All Battery Brands</h5>
+                                                <button class="btn-close" type="button" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body p-0">
+                                                <div class="text-start dark-sign-up">
+                                                    <div class="modal-body">
+
+                                                        <div id="formMessage3"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -227,7 +252,8 @@
                                                                 novalidate>
                                                                 @csrf
                                                                 <div class="col-md-6">
-                                                                    <label class="form-label" for="validationCustom-8">First
+                                                                    <label class="form-label"
+                                                                        for="validationCustom-8">First
                                                                         Name<span class="txt-danger">*</span></label>
                                                                     <input class="form-control" id="validationCustom-8"
                                                                         name="first_name" type="text"
@@ -490,6 +516,76 @@
 
         <!-- JavaScript for Fetch -->
         <script>
+            document.getElementById('viewAllBrands').addEventListener('click', function() {
+                fetch('/api/brands') // Replace with your actual route
+                    .then(response => response.json())
+                    .then(data => {
+                        const formMessage = document.getElementById('formMessage3');
+                        formMessage.innerHTML = ''; // Clear existing content
+
+                        if (data.length === 0) {
+                            formMessage.innerHTML = '<p>No brands available.</p>';
+                        } else {
+                            const brandsContainer = document.createElement('div');
+                            brandsContainer.style.display = 'grid';
+                            brandsContainer.style.gridTemplateColumns = 'repeat(3, 1fr)';
+                            brandsContainer.style.gap = '20px';
+                            brandsContainer.style.padding = '10px';
+
+                            const brandsHTML = data.map(brand => `
+                    <div class="brand-item" style="text-align: center;">
+                        <div class="shop-box">
+                            <a class="brand-link" data-brand-id="${brand.id}" href="#">
+                                <img src="/storage/${brand.image}" alt="${brand.brand_name}" style="width: 100px;">
+                            </a>
+                        </div>
+                        <span style="margin-top: 10px; font-weight: 500; color: gray;">${brand.brand_name}</span>
+                    </div>
+                `).join('');
+
+                            brandsContainer.innerHTML = brandsHTML;
+                            formMessage.appendChild(brandsContainer);
+
+                            // Attach click event listeners to the dynamically loaded brand links
+                            const brandLinks = document.querySelectorAll('.brand-link');
+                            brandLinks.forEach(link => {
+                                link.addEventListener('click', function(e) {
+                                    e.preventDefault();
+
+                                    // Get the brand ID from the clicked element
+                                    const brandId = this.getAttribute('data-brand-id');
+
+                                    // Send an AJAX request to fetch products by brand
+                                    fetch(`/products-by-brand/${brandId}`)
+                                        .then(response => response.text())
+                                        .then(html => {
+                                            // Update the product list container with the new products
+                                            document.querySelector('.scroll-product')
+                                                .innerHTML = html;
+
+                                            // Close the modal
+                                            const modal = document.getElementById(
+                                                'dashboard83');
+                                            const bootstrapModal = bootstrap.Modal.getInstance(
+                                                modal);
+                                            bootstrapModal.hide();
+                                        })
+                                        .catch(error => console.error('Error fetching products:',
+                                            error));
+
+                                    // Optionally recalculate totals if needed
+                                    calculateTotals();
+                                });
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching brands:', error);
+                        document.getElementById('formMessage3').innerHTML =
+                            '<p>Failed to load brands. Please try again later.</p>';
+                    });
+            });
+
             let oldBatteryBackendData = null;
 
             document.getElementById("submitOldBatteryForm").addEventListener("click", async function(e) {

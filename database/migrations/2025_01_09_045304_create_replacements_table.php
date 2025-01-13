@@ -19,8 +19,10 @@ return new class extends Migration
             $table->enum('replacement_reason', ['Defective', 'Mismatch', 'Warranty Claim']); // Reason for Replacement
             $table->date('replacement_date'); // Date of Replacement
             $table->decimal('bought_old_battery_price', 10, 2)->nullable(); // Price of Old Battery
+            $table->integer('bought_old_battery_quantity');
             $table->unsignedBigInteger('new_battery_id')->nullable(); // Foreign Key: New Battery ID
             $table->decimal('new_battery_price', 10, 2); // Price of New Battery
+            $table->integer('new_battery_quantity');
             $table->decimal('price_adjustment', 10, 2); // Difference in Prices
             $table->enum('payment_type', ['Cash', 'Card', 'Bank Transfer'])->default('Cash'); // Payment Type
             $table->enum('payment_status', ['Not Completed', 'Completed', 'Pending'])->default('Not Completed'); // Payment Status

@@ -166,10 +166,10 @@ class ReplacementController extends Controller
         $validatedData = $request->validate([
             'customer_id' => 'required|exists:customers,id', // Validate that customer_id is a valid existing customer
 
-            'subtotal' => 'required|numeric|min:0', // Ensure subtotal is a valid numeric value
-            'total_price' => 'required|numeric|min:0', // Ensure total_price is a valid numeric value
-            'paid_amount' => 'required|numeric|min:0', // Ensure paid_amount is a valid numeric value
-            'due_amount' => 'required|numeric|min:0', // Ensure due_amount is a valid numeric value
+            'subtotal' => 'required|numeric', // Ensure subtotal is a valid numeric value
+            'total_price' => 'required|numeric', // Ensure total_price is a valid numeric value
+            'paid_amount' => 'required|numeric', // Ensure paid_amount is a valid numeric value
+            'due_amount' => 'required|numeric', // Ensure due_amount is a valid numeric value
             'battery_discount' => 'nullable|numeric|min:0',
             'old_battery_discount_value' => 'nullable|numeric|min:0',
             'payment_type' => 'required|in:Cash,Card,Bank Transfer', // Ensure the payment type is one of the valid options
@@ -198,8 +198,10 @@ class ReplacementController extends Controller
                 'replacement_reason' => $validatedData['replacement_reason'],
                 'replacement_date' => now(),
                 'bought_old_battery_price' => $customerOrderItems[0]['price'],
+                'bought_old_battery_quantity' => $customerOrderItems[0]['quantity'],
                 'new_battery_id' => $items[0]['battery_id'],
                 'new_battery_price' => $items[0]['price'],
+                'new_battery_quantity' => $items[0]['quantity'],
                 'price_adjustment' => $validatedData['total_price'],
                 'payment_type' => $validatedData['payment_type'],
             ]);

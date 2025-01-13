@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class BrandController extends Controller
@@ -91,14 +92,15 @@ class BrandController extends Controller
         return redirect()->route('brand.index')->with('success', 'Brand deleted successfully!');
     }
 
-            // Show the details of a brand
-            public function show(Brand $brand)
-            {
-                return view('admin.batteries.brand.show', compact('brand'));
-            }
-      
-            
-         
+    // Show the details of a brand
+    public function show(Brand $brand)
+    {
+        return view('admin.batteries.brand.show', compact('brand'));
+    }
 
+    public function getAllBrands()
+    {
+        $brands = DB::table('brands')->where('type', 'battery')->get();
+        return response()->json($brands);
+    }
 }
-

@@ -623,6 +623,9 @@ Route::prefix('admin/brand')->group(function () {
     Route::delete('/{brand}', [BrandController::class, 'destroy'])->name('brand.destroy');
 });
 
+Route::get('/api/brands', [BrandController::class, 'getAllBrands']);
+
+
 
 
 
