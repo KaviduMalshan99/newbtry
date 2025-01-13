@@ -417,7 +417,7 @@
                                         </div>
 
                                         <div class="mb-4">
-                                            <label for="replacement_reason" class="form-label">Payment Type</label>
+                                            <label for="replacement_reason" class="form-label">Replacement Reason</label>
                                             <select id="replacement_reason" name="replacement_reason" class="form-select"
                                                 required>
                                                 @foreach ($replacementReasons as $replacementReason)
@@ -1096,7 +1096,7 @@
                     const dueAmount = totalPrice - (paidAmount + oldBatteryDiscount + discount);
 
 
-                    dueAmountField.value = dueAmount > 0 ? dueAmount.toFixed(2) : "0.00";
+                    dueAmountField.value = dueAmount.toFixed(2);
                 }
 
                 // Event listener for Paid Amount input field
