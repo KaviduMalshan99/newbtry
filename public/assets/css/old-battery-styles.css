@@ -1,0 +1,41 @@
+.condition-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: white;
+    font-weight: 500;
+}
+
+.good-condition {
+    background-color: #28a745;
+}
+
+.average-condition {
+    background-color: #ffc107;
+}
+
+.poor-condition {
+    background-color: #dc3545;
+}
+
+.condition-image {
+    max-width: 120px;
+    height: auto;
+    margin: 15px auto;
+}
+
+.badge-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge-warning {
+    background-color: #ffc107;
+    color: black;
+}
+
+.our-product-wrapper {
+    position: relative;
+}

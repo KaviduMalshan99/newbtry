@@ -13,6 +13,7 @@
 
     <!-- App css-->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/pos/css/style.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/old-battery-styles.css') }}">
 
 @endsection
 
@@ -29,9 +30,40 @@
     <!-- Container-fluid starts-->
     <div class="container-fluid">
         <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-body btn-showcase">
+                                <style>
+                                    .btn-showcase {
+                                        display: flex;
+                                        gap: 10px;
+                                        flex-wrap: wrap;
+                                    }
+
+                                    .btn-showcase .btn {
+                                        flex: 1;
+                                        min-width: 150px;
+                                        white-space: nowrap;
+                                    }
+                                </style>
+                                <button class="btn btn-pill btn-outline-primary" type="button">New Battery</button>
+                                <button class="btn btn-pill btn-outline-secondary" type="button">Old Battery</button>
+                                <button class="btn btn-pill btn-outline-success" type="button">Repair Battery</button>
+                                <button id="replacementBatteryBtn" class="btn btn-pill btn-outline-info" type="button">
+                                    Replacement Battery
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-xxl-9 col-xl-8">
                 <div class="row">
                     <div class="col-xl-12">
+
+
 
 
                         <div class="card">
@@ -501,6 +533,7 @@
                                         <input type="hidden" name="total_items" id="total_items">
                                         <input type="hidden" name="subtotal" id="subtotal">
                                         <input type="hidden" name="battery_discount" id="battery_discount">
+                                        <input type="hidden" name="order_type" id="order_type">
                                         <input type="hidden" name="old_battery_discount_value"
                                             id="old_battery_discount_value">
                                         <button id="place-order-btn"
@@ -516,6 +549,12 @@
 
         <!-- JavaScript for Fetch -->
         <script>
+            let oldBatteryBackendData = null;
+
+            document.getElementById('replacementBatteryBtn').addEventListener('click', function() {
+                window.location.href = "{{ route('replacements.index') }}";
+            });
+            place
             document.getElementById('viewAllBrands').addEventListener('click', function() {
                 fetch('/api/brands') // Replace with your actual route
                     .then(response => response.json())
@@ -586,7 +625,6 @@
                     });
             });
 
-            let oldBatteryBackendData = null;
 
             document.getElementById("submitOldBatteryForm").addEventListener("click", async function(e) {
                 e.preventDefault();
@@ -644,6 +682,20 @@
 
         <script>
             const csrfToken = "{{ csrf_token() }}";
+
+            let orderType = "New Order"; // Initialize a variable to store the order type
+
+            // Add event listeners to the buttons to update the orderType value
+            document.querySelector(".btn-showcase").addEventListener("click", function(e) {
+                if (e.target.matches(".btn-outline-primary")) {
+                    orderType = "New Order";
+                } else if (e.target.matches(".btn-outline-secondary")) {
+                    orderType = "Old Battery";
+                } else if (e.target.matches(".btn-outline-success")) {
+                    orderType = "Repair";
+                }
+            });
+
             const placeOrderBtn = document.getElementById("place-order-btn");
             // console.log(placeOrderBtn); // Check if this logs the button element
 
@@ -688,13 +740,34 @@
                     const price = row.querySelector(".item-price")?.textContent.trim().replace("RS", "")
                         .replace(",", "").trim() || "0";
 
-                    if (batteryId && quantity > 0 && price) {
-                        items.push({
-                            battery_id: batteryId,
-                            quantity: parseInt(quantity, 10),
-                            price: parseFloat(price)
-                        });
+                    if (orderType == "New Order") {
+                        if (batteryId && quantity > 0 && price) {
+                            items.push({
+                                battery_id: batteryId,
+                                quantity: parseInt(quantity, 10),
+                                price: parseFloat(price)
+                            });
+                        }
+                    } else if (orderType == "Old Battery") {
+                        if (batteryId && quantity > 0 && price) {
+                            items.push({
+                                old_battery_id: batteryId,
+                                quantity: parseInt(quantity, 10),
+                                price: parseFloat(price)
+                            });
+                        }
+
+                    } else if (orderType == "Repair") {
+                        if (batteryId && quantity > 0 && price) {
+                            items.push({
+                                repair_id: batteryId,
+                                quantity: parseInt(quantity, 10),
+                                price: parseFloat(price)
+                            });
+                        }
+
                     }
+
                 });
 
                 // Get old battery details
@@ -715,6 +788,7 @@
                 document.getElementById("payment_type").value = paymentType;
                 document.getElementById("battery_discount").value = discount;
                 document.getElementById("old_battery_discount_value").value = oldBatteryDiscount;
+                document.getElementById("order_type").value = orderType;
 
                 // Add the items details to the form as a hidden input
                 const itemsInput = document.createElement("input");
@@ -723,13 +797,13 @@
                 itemsInput.value = JSON.stringify(items); // Convert items array to JSON string
                 document.getElementById("order-form").appendChild(itemsInput);
 
-
                 // Include old battery data as hidden input
                 const oldBatteryInput = document.createElement("input");
                 oldBatteryInput.type = "hidden";
                 oldBatteryInput.name = "old_battery";
                 oldBatteryInput.value = JSON.stringify(oldBatteryBackendData);
                 document.getElementById("order-form").appendChild(oldBatteryInput);
+
 
                 // Submit the form after populating the hidden fields
                 document.getElementById("order-form").submit();
@@ -842,34 +916,69 @@
                         const formattedPrice = formatPrice(price); // Format price based on conditions
                         const image = productWrapper.getAttribute("data-image");
 
-                        // Create an order card item
-                        const orderItem = `
-                <div class="order-details-wrapper">
-                    <div class="left-details">
-                        <div class="order-img widget-hover">
-                            <img src="${image}" alt="${name}">
-                        </div>
-                    </div>
-                    <div class="category-details item-row">
-                        <div class="order-details-right">
-                            <span class="text-gray mb-1">Category: <span class="font-dark">Product</span></span>
-                            <h6 class="f-14 f-w-500 mb-3 battery-id" data-id="${id}">${name}</h6>
-                            <div class="last-order-detail">
-                                <h6 class="txt-primary item-price">RS${formattedPrice}</h6>
-                                <a href="javascript:void(0)" class="trash-remove"><i class="fa fa-trash"></i></a>
-                            </div>
-                        </div>
-                        <div class="right-details">
-                            <div class="touchspin-wrapper">
-                                <button class="decrement-touchspin btn-touchspin"><i class="fa fa-minus text-gray"></i></button>
-                                <input class="input-touchspin item-quantity" type="number" value="1" readonly>
-                                <button class="increment-touchspin btn-touchspin"><i class="fa fa-plus text-gray"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
+                        // Check if it's an old battery by looking for the "Old Battery -" prefix in the name
+                        const isOldBattery = name.startsWith("Old Battery -");
 
+                        let orderItem;
+
+                        if (isOldBattery) {
+                            // Order item template for old batteries
+                            orderItem = `
+                                    <div class="order-details-wrapper old-battery-item">
+                                        <div class="category-details item-row">
+                                            <div class="order-details-right flex-grow-1">
+                                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                                    <div>
+                                                        <span class="badge bg-warning mb-1">Old Battery</span>
+                                                        <h6 class="f-14 f-w-500 mb-1 battery-id" data-id="${id}">${name}</h6>
+                                                        <span class="text-gray d-block mb-2">
+                                                            <small>Status: ${productWrapper.querySelector('.battery-status .badge:first-child')?.textContent || 'N/A'}</small>
+                                                            <br>
+                                                            <small>Condition: ${productWrapper.querySelector('.battery-status .badge:last-child')?.textContent || 'N/A'}</small>
+                                                        </span>
+                                                    </div>
+                                                    <div class="touchspin-wrapper">
+                                                        <input class="input-touchspin item-quantity" type="number" value="1" readonly>
+                                                    </div>
+                                                </div>
+                                                <div class="last-order-detail d-flex justify-content-between align-items-center">
+                                                    <h6 class="txt-primary item-price">RS${formattedPrice}</h6>
+                                                    <a href="javascript:void(0)" class="trash-remove text-danger">
+                                                        <i class="fa fa-trash"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>`;
+                        } else {
+                            // Create an order card item
+                            orderItem = `
+                                <div class="order-details-wrapper">
+                                    <div class="left-details">
+                                        <div class="order-img widget-hover">
+                                            <img src="${image}" alt="${name}">
+                                        </div>
+                                    </div>
+                                    <div class="category-details item-row">
+                                        <div class="order-details-right">
+                                            <span class="text-gray mb-1">Category: <span class="font-dark">Product</span></span>
+                                            <h6 class="f-14 f-w-500 mb-3 battery-id" data-id="${id}">${name}</h6>
+                                            <div class="last-order-detail">
+                                                <h6 class="txt-primary item-price">RS${formattedPrice}</h6>
+                                                <a href="javascript:void(0)" class="trash-remove"><i class="fa fa-trash"></i></a>
+                                            </div>
+                                        </div>
+                                        <div class="right-details">
+                                            <div class="touchspin-wrapper">
+                                                <button class="decrement-touchspin btn-touchspin"><i class="fa fa-minus text-gray"></i></button>
+                                                <input class="input-touchspin item-quantity" type="number" value="1" readonly>
+                                                <button class="increment-touchspin btn-touchspin"><i class="fa fa-plus text-gray"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                `;
+                        }
                         // Append the order item to the order card
                         orderCardContainer.insertAdjacentHTML("beforeend", orderItem);
 
@@ -948,6 +1057,166 @@
                 });
 
                 calculateTotals();
+
+                const brandSection = document.querySelector('.card-header.card-no-border').closest('.card');
+                const oldBatteryBtn = document.querySelector('.btn-outline-secondary');
+                const newBatteryBtn = document.querySelector('.btn-outline-primary');
+                const productContainer = document.querySelector('.scroll-product');
+
+                // Function to fetch and render old batteries
+                async function loadOldBatteries() {
+                    try {
+                        const response = await fetch('/api/old-batteries');
+                        const oldBatteries = await response.json();
+
+                        if (oldBatteries.length === 0) {
+                            productContainer.innerHTML =
+                                '<div class="col-12 text-center"><p>No old batteries available.</p></div>';
+                            return;
+                        }
+
+                        const oldBatteriesHTML = oldBatteries.map(battery => `
+                                <div class="col-xxl-3 col-sm-4">
+                                    <div class="our-product-wrapper h-100 widget-hover"
+                                        dataId="${battery.id}"
+                                        data-name="Old Battery - ${battery.old_battery_type}"
+                                        data-price="${battery.old_battery_value}">
+                                        <div class="our-product-content">
+                                            <div class="battery-status mb-2">
+                                                <span class="badge ${battery.battery_status === 'Direct' ? 'bg-success' : 'bg-warning'}">
+                                                    ${battery.battery_status}
+                                                </span>
+                                                <span class="badge ${getConditionBadgeClass(battery.old_battery_condition)}">
+                                                    ${battery.old_battery_condition}
+                                                </span>
+                                            </div>
+                                            <h6 class="f-14 f-w-500 pt-2 pb-1">${battery.old_battery_type}</h6>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="txt-primary">RS ${formatPriceForOldBattery(battery.old_battery_value)}</h6>
+                                                    <small class="text-muted">Added: ${formatDate(battery.created_at)}</small>
+                                                </div>
+                                                <div class="add-quantity btn border text-gray f-12 f-w-500">
+                                                    <i class="fa fa-minus remove-minus count-decrease"></i>
+                                                    <button class="btn add-btn btn-sm p-1">Add</button>
+                                                    <i class="fa fa-plus count-increase"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('');
+
+                        productContainer.innerHTML = oldBatteriesHTML;
+                    } catch (error) {
+                        console.error('Error loading old batteries:', error);
+                        productContainer.innerHTML =
+                            '<div class="col-12 text-center"><p>Error loading old batteries.</p></div>';
+                    }
+                }
+
+                // Helper function to get condition badge class
+                function getConditionBadgeClass(condition) {
+                    switch (condition) {
+                        case 'Good':
+                            return 'bg-success';
+                        case 'Average':
+                            return 'bg-warning';
+                        case 'Poor':
+                            return 'bg-danger';
+                        default:
+                            return 'bg-secondary';
+                    }
+                }
+
+                // Helper function to get badge class based on status
+                function getStatusBadgeClass(status) {
+                    return status === 'Direct' ? 'badge-success' : 'badge-warning';
+                }
+                // Helper function to format date
+                function formatDate(dateString) {
+                    return new Date(dateString).toLocaleDateString();
+                }
+
+                // Helper function to format price
+                function formatPriceForOldBattery(price) {
+                    return new Intl.NumberFormat('en-US', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(price);
+                }
+
+
+                // Store the original products HTML
+                const originalProductsHtml = productContainer.innerHTML;
+
+                // Event listeners for battery type buttons
+                oldBatteryBtn.addEventListener('click', function() {
+                    const orderQuantitySection = document.querySelector('.order-quantity');
+                    orderQuantitySection.innerHTML = '';
+                    brandSection.style.display = 'none';
+                    loadOldBatteries();
+                    oldBatteryBtn.classList.add('active');
+                    newBatteryBtn.classList.remove('active');
+                });
+
+                // Function to load all batteries
+                async function loadAllBatteries() {
+                    try {
+                        const response = await fetch('/admin/POS/batteries'); // You'll need to create this endpoint
+                        const batteries = await response.json();
+
+                        if (batteries.length === 0) {
+                            productContainer.innerHTML =
+                                '<div class="col-12 text-center"><p>No batteries available.</p></div>';
+                            return;
+                        }
+
+                        const batteriesHTML = batteries.map(battery => `
+                                <div class="col-xxl-3 col-sm-4">
+                                    <div class="our-product-wrapper h-100 widget-hover"
+                                        dataId="${battery.id}"
+                                        data-name="${battery.model_name}"
+                                        data-price="${battery.selling_price}"
+                                        data-image="/storage/${battery.image}">
+                                        <div class="our-product-img">
+                                            <img src="/storage/${battery.image}" alt="${battery.model_name}">
+                                        </div>
+                                        <div class="our-product-content">
+                                            <h6 class="f-14 f-w-500 pt-2 pb-1">${battery.model_name}</h6>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h6 class="txt-primary">RS ${new Intl.NumberFormat('en-US', {
+                                                    minimumFractionDigits: 2,
+                                                    maximumFractionDigits: 2
+                                                }).format(battery.selling_price)}</h6>
+                                                <div class="add-quantity btn border text-gray f-12 f-w-500">
+                                                    <i class="fa fa-minus remove-minus count-decrease"></i>
+                                                    <button class="btn add-btn btn-sm p-1">Add</button>
+                                                    <i class="fa fa-plus count-increase"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('');
+
+                        productContainer.innerHTML = batteriesHTML;
+                    } catch (error) {
+                        console.error('Error loading batteries:', error);
+                        productContainer.innerHTML =
+                            '<div class="col-12 text-center"><p>Error loading batteries.</p></div>';
+                    }
+                }
+
+                // Update the newBatteryBtn click handler
+                newBatteryBtn.addEventListener('click', function() {
+                    const orderQuantitySection = document.querySelector('.order-quantity');
+                    orderQuantitySection.innerHTML = '';
+                    brandSection.style.display = 'block';
+                    loadAllBatteries();
+                    newBatteryBtn.classList.add('active');
+                    oldBatteryBtn.classList.remove('active');
+                });
             });
         </script>
 

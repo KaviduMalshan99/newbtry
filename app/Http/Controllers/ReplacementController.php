@@ -185,6 +185,33 @@ class ReplacementController extends Controller
         DB::beginTransaction();
 
         try {
+
+            $paymentStatus = 'Not Completed';
+            if ($validatedData['total_price'] == 0) {
+                $paymentStatus = 'Completed';
+            }
+            if ($validatedData['paid_amount'] > 0) {
+                if ($validatedData['due_amount'] > 0) {
+                    $paymentStatus = 'Pending';
+                } else {
+                    $paymentStatus = 'Completed';
+                }
+            }
+
+
+
+            // For refund status, we need to determine if money needs to be refunded to the customer
+            $refundStatus = 'Not Processed';
+            if ($validatedData['total_price'] == 0) {
+                $refundStatus = 'Completed';
+            }
+            if ($validatedData['total_price'] <= 0) {  // Negative price adjustment means refund is needed
+                // If paid_amount covers the refund amount
+                if ($validatedData['paid_amount'] >= abs($validatedData['total_price'])) {
+                    $refundStatus = 'Completed';
+                }
+            }
+
             $oldBattery = json_decode($request->input('old_battery'), true);
             // Insert a new replacement record
             $customerOrderItems = json_decode($validatedData['customer_order_items'], true);
@@ -204,6 +231,8 @@ class ReplacementController extends Controller
                 'new_battery_quantity' => $items[0]['quantity'],
                 'price_adjustment' => $validatedData['total_price'],
                 'payment_type' => $validatedData['payment_type'],
+                'payment_status' => $paymentStatus,
+                'refund_payment_status' => $refundStatus
             ]);
 
             // Fetch the order
@@ -227,12 +256,23 @@ class ReplacementController extends Controller
             // Reindex array to ensure sequential keys
             $updatedItems = array_values($updatedItems);
 
-            // Add the new item
-            $updatedItems[] = [
-                'battery_id' => $items[0]['battery_id'],
-                'quantity' => $items[0]['quantity'],
-                'price' => $items[0]['price']
-            ];
+            // Check if new item already exists with same battery_id and price
+            $existingItemKey = array_search(
+                $items[0]['battery_id'],
+                array_column($updatedItems, 'battery_id')
+            );
+
+            if ($existingItemKey !== false && $updatedItems[$existingItemKey]['price'] === $items[0]['price']) {
+                // If exists, update quantity
+                $updatedItems[$existingItemKey]['quantity'] += $items[0]['quantity'];
+            } else {
+                // If doesn't exist, add as new item
+                $updatedItems[] = [
+                    'battery_id' => $items[0]['battery_id'],
+                    'quantity' => $items[0]['quantity'],
+                    'price' => $items[0]['price']
+                ];
+            }
 
             // Single database update
             DB::table('battery_orders')

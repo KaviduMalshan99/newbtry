@@ -36,6 +36,13 @@ class PosController extends Controller
         return view('admin.POS.pos', compact('brands', 'batteries', 'lubricants', 'customers', 'paymentTypes', 'old_battery_conditions'));
     }
 
+    public function show()
+    {
+        return DB::table('batteries')->orderBy('id', 'asc')
+            ->where('stock_quantity', '>', 0)
+            ->get();
+    }
+
     /**
      * Create a new customer.
      */
@@ -80,6 +87,7 @@ class PosController extends Controller
             'battery_discount' => 'nullable|numeric|min:0',
             'old_battery_discount_value' => 'nullable|numeric|min:0',
             'payment_type' => 'required|in:Cash,Card,Bank Transfer', // Ensure the payment type is one of the valid options
+            'order_type' => 'required|in:New Order,Old Battery,Repair', // Ensure the order type is one of the valid options
             'items' => 'required',
         ]);
 
@@ -100,7 +108,7 @@ class PosController extends Controller
             // Prepare the BatteryOrder data
             $batteryOrder = new BatteryOrder();
             $batteryOrder->customer_id = $validatedData['customer_id'];
-            $batteryOrder->order_type = $request->input('order_type', 'New Order');
+            $batteryOrder->order_type = $validatedData['order_type'];
             $batteryOrder->items = json_encode($request->items, true); // Encode items to JSON format
             $batteryOrder->battery_discount = $validatedData['battery_discount'] ?? 0;
             $batteryOrder->old_battery_discount_value = $validatedData['old_battery_discount_value'] ?? 0;
@@ -143,26 +151,43 @@ class PosController extends Controller
             $customer->save();
 
             // Update stock_quantity for each battery
-            foreach ($items as $item) {
-                $battery = Battery::find($item['battery_id']);
-                if (!$battery) {
-                    // Rollback transaction and return error if battery is not found
-                    DB::rollBack();
-                    // return redirect()->route('POS.index')->with('success', 'Battery with ID not found.');
-                    return response()->json(['error' => "Battery with ID {$item['battery_id']} not found."], 404);
-                }
+            if ($validatedData['order_type'] == "New Order") {
+                foreach ($items as $item) {
+                    $battery = Battery::find($item['battery_id']);
+                    if (!$battery) {
+                        // Rollback transaction and return error if battery is not found
+                        DB::rollBack();
+                        // return redirect()->route('POS.index')->with('success', 'Battery with ID not found.');
+                        return response()->json(['error' => "Battery with ID {$item['battery_id']} not found."], 404);
+                    }
 
-                // Check if stock is sufficient
-                if ($battery->stock_quantity < $item['quantity']) {
-                    // Rollback transaction and return error if stock is insufficient
-                    DB::rollBack();
-                    // return redirect()->route('POS.index')->with('success', 'Insufficient stock for Battery ID.');
-                    return response()->json(['error' => "Insufficient stock for Battery ID {$item['battery_id']}."], 400);
-                }
+                    // Check if stock is sufficient
+                    if ($battery->stock_quantity < $item['quantity']) {
+                        // Rollback transaction and return error if stock is insufficient
+                        DB::rollBack();
+                        // return redirect()->route('POS.index')->with('success', 'Insufficient stock for Battery ID.');
+                        return response()->json(['error' => "Insufficient stock for Battery ID {$item['battery_id']}."], 400);
+                    }
 
-                // Decrease stock quantity
-                $battery->stock_quantity -= $item['quantity'];
-                $battery->save();
+                    // Decrease stock quantity
+                    $battery->stock_quantity -= $item['quantity'];
+                    $battery->save();
+                }
+            } else if ($validatedData['order_type'] == "Old Battery") {
+                foreach ($items as $item) {
+                    $battery = OldBattery::find($item['old_battery_id']);
+                    if (!$battery) {
+                        // Rollback transaction and return error if battery is not found
+                        DB::rollBack();
+                        // return redirect()->route('POS.index')->with('success', 'Battery with ID not found.');
+                        return response()->json(['error' => "Old Battery with ID {$item['old_battery_id']} not found."], 404);
+                    }
+
+                    // Decrease stock quantity
+                    $battery->isActive = 0;
+                    $battery->save();
+                }
+            } else if ($validatedData['order_type'] == "Repair") {
             }
 
             // Commit the transaction

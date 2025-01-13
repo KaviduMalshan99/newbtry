@@ -29,6 +29,35 @@
     <!-- Container-fluid starts-->
     <div class="container-fluid">
         <div class="row">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-body btn-showcase">
+                                <style>
+                                    .btn-showcase {
+                                        display: flex;
+                                        gap: 10px;
+                                        flex-wrap: wrap;
+                                    }
+
+                                    .btn-showcase .btn {
+                                        flex: 1;
+                                        min-width: 150px;
+                                        white-space: nowrap;
+                                    }
+                                </style>
+                                <button class="btn btn-pill btn-outline-primary" type="button">New Battery</button>
+                                <button class="btn btn-pill btn-outline-secondary" type="button">Old Battery</button>
+                                <button class="btn btn-pill btn-outline-success" type="button">Repair Battery</button>
+                                <button id="replacementBatteryBtn" class="btn btn-pill btn-info" type="button">
+                                    Replacement Battery
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="col-xxl-9 col-xl-8">
                 <div class="row">
                     <div class="col-xl-12">
@@ -559,7 +588,7 @@
 
                                             // Close the modal
                                             const modal = document.getElementById(
-                                            'dashboard83');
+                                                'dashboard83');
                                             const bootstrapModal = bootstrap.Modal.getInstance(
                                                 modal);
                                             bootstrapModal.hide();

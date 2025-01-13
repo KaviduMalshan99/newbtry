@@ -22,6 +22,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
+use App\Models\OldBattery;
 use Illuminate\Support\Facades\Route;
 
 
@@ -586,6 +587,7 @@ Route::prefix('admin/replacement')->group(function () {
 
 // Define the route for accessing the POS interface
 Route::get('/admin/POS', [PosController::class, 'index'])->name('POS.index');
+Route::get('/admin/POS/batteries', [PosController::class, 'show'])->name('POS.show');
 Route::get('/products-by-brand/{brandId}', [PosController::class, 'loadProductsByBrand'])->name('POS.loadProductsByBrand');
 
 
@@ -600,6 +602,12 @@ Route::post('/store-battery-order', [PosController::class, 'storeBatteryOrder'])
 Route::post('/create-customer', [PosController::class, 'createCustomer'])->name('customer.create');
 Route::post('/show', [PosController::class, 'show'])->name('show');
 
+Route::get('/api/old-batteries', function () {
+    return OldBattery::where('isActive', 1)
+        ->with('customer')
+        ->orderBy('created_at', 'desc')
+        ->get();
+});
 
 use App\Http\Controllers\OrderController;
 
