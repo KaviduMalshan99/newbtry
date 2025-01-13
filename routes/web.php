@@ -23,6 +23,7 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use App\Models\OldBattery;
+use App\Models\RepairBattery;
 use Illuminate\Support\Facades\Route;
 
 
@@ -605,6 +606,16 @@ Route::post('/show', [PosController::class, 'show'])->name('show');
 Route::get('/api/old-batteries', function () {
     return OldBattery::where('isActive', 1)
         ->with('customer')
+        ->orderBy('created_at', 'desc')
+        ->get();
+});
+
+Route::get('/api/repair-batteries', function () {
+    return RepairBattery::where('isActive', 1)
+        ->where('isForSelling', 1)
+        ->where('stock_quantity', '>', 0)
+        ->with('brand')
+        ->with('repairs')
         ->orderBy('created_at', 'desc')
         ->get();
 });

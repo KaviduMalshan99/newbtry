@@ -554,7 +554,7 @@
             document.getElementById('replacementBatteryBtn').addEventListener('click', function() {
                 window.location.href = "{{ route('replacements.index') }}";
             });
-            place
+
             document.getElementById('viewAllBrands').addEventListener('click', function() {
                 fetch('/api/brands') // Replace with your actual route
                     .then(response => response.json())
@@ -760,7 +760,7 @@
                     } else if (orderType == "Repair") {
                         if (batteryId && quantity > 0 && price) {
                             items.push({
-                                repair_id: batteryId,
+                                repair_battery_id: batteryId,
                                 quantity: parseInt(quantity, 10),
                                 price: parseFloat(price)
                             });
@@ -918,6 +918,7 @@
 
                         // Check if it's an old battery by looking for the "Old Battery -" prefix in the name
                         const isOldBattery = name.startsWith("Old Battery -");
+                        const isRepairBattery = name.startsWith("Repair Battery");
 
                         let orderItem;
 
@@ -950,6 +951,48 @@
                                             </div>
                                         </div>
                                     </div>`;
+                        } else if (isRepairBattery) {
+                            // Extract product details from data attributes
+                            const type = productWrapper.getAttribute("data-type");
+                            const id = productWrapper.getAttribute("data-id");
+                            const priceString = productWrapper.getAttribute("data-price");
+                            const price = parseFloat(priceString.replace(/,/g,
+                                '')); // Remove commas before parsing
+                            const formattedPrice = formatPrice(price);
+
+                            orderItem = `
+                                <div class="order-details-wrapper repair-battery-item">
+                                    <div class="category-details item-row">
+                                        <div class="order-details-right flex-grow-1">
+                                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                                <div>
+                                                    <span class="badge bg-primary mb-1">Repair Battery</span>
+                                                    <h6 class="f-14 f-w-500 mb-1 battery-id" data-id="${id}">${type}</h6>
+                                                    <span class="text-gray d-block mb-2">
+                                                        <small>Model: ${productWrapper.querySelector('.battery-details p').textContent.replace('Model: ', '')}</small>
+                                                        <br>
+                                                        <small>Stock: ${productWrapper.querySelector('.stock-info .badge').textContent.replace('Stock: ', '')}</small>
+                                                    </span>
+                                                </div>
+                                                <div class="touchspin-wrapper">
+                                                    <button class="decrement-touchspin btn-touchspin">
+                                                        <i class="fa fa-minus text-gray"></i>
+                                                    </button>
+                                                    <input class="input-touchspin item-quantity" type="number" value="1" readonly>
+                                                    <button class="increment-touchspin btn-touchspin">
+                                                        <i class="fa fa-plus text-gray"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="last-order-detail d-flex justify-content-between align-items-center">
+                                                <h6 class="txt-primary item-price">RS${formattedPrice}</h6>
+                                                <a href="javascript:void(0)" class="trash-remove text-danger">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>`;
                         } else {
                             // Create an order card item
                             orderItem = `
@@ -1061,6 +1104,7 @@
                 const brandSection = document.querySelector('.card-header.card-no-border').closest('.card');
                 const oldBatteryBtn = document.querySelector('.btn-outline-secondary');
                 const newBatteryBtn = document.querySelector('.btn-outline-primary');
+                const repairBatteryBtn = document.querySelector('.btn-outline-success');
                 const productContainer = document.querySelector('.scroll-product');
 
                 // Function to fetch and render old batteries
@@ -1158,6 +1202,7 @@
                     loadOldBatteries();
                     oldBatteryBtn.classList.add('active');
                     newBatteryBtn.classList.remove('active');
+                    repairBatteryBtn.classList.remove('active');
                 });
 
                 // Function to load all batteries
@@ -1216,7 +1261,113 @@
                     loadAllBatteries();
                     newBatteryBtn.classList.add('active');
                     oldBatteryBtn.classList.remove('active');
+                    repairBatteryBtn.classList.remove('active');
                 });
+
+                // Event listeners for battery type buttons
+                repairBatteryBtn.addEventListener('click', function() {
+                    const orderQuantitySection = document.querySelector('.order-quantity');
+                    orderQuantitySection.innerHTML = '';
+                    brandSection.style.display = 'block';
+                    loadRepairBatteries();
+                    repairBatteryBtn.classList.add('active');
+                    newBatteryBtn.classList.remove('active');
+                    oldBatteryBtn.classList.remove('active');
+                });
+
+                async function loadRepairBatteries() {
+                    try {
+                        const response = await fetch('/api/repair-batteries');
+                        const repairBatteries = await response.json();
+
+                        if (repairBatteries.length === 0) {
+                            productContainer.innerHTML =
+                                '<div class="col-12 text-center"><p>No repair batteries available.</p></div>';
+                            return;
+                        }
+
+                        const repairBatteriesHTML = repairBatteries.map(battery => `
+                                    <div class="col-xxl-3 col-sm-4">
+                                        <div class="our-product-wrapper h-100 widget-hover"
+                                            data-id="${battery.id}"
+                                            data-name="Repair Battery"
+                                            data-type="${battery.type}"
+                                            data-price="${battery.selling_price}">
+                                            <div class="our-product-content">
+                                                <div class="battery-info mb-2">
+                                                    <span class="badge ${battery.isForSelling ? 'bg-success' : 'bg-secondary'}">
+                                                        ${battery.isForSelling ? 'For Sale' : 'Not for Sale'}
+                                                    </span>
+                                                    <span class="badge ${battery.isActive ? 'bg-primary' : 'bg-danger'}">
+                                                        ${battery.isActive ? 'Active' : 'Inactive'}
+                                                    </span>
+                                                </div>
+                                                <div class="battery-details">
+                                                    <h6 class="f-14 f-w-500 pt-2">${battery.type}</h6>
+                                                    <p class="text-muted mb-2">Model: ${battery.model_number}</p>
+                                                </div>
+                                                <div class="stock-info mb-2">
+                                                    <span class="badge bg-info">
+                                                        Stock: ${battery.stock_quantity || 0}
+                                                    </span>
+                                                </div>
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h6 class="txt-primary">RS ${formatPrice2(battery.selling_price)}</h6>
+                                                        <small class="text-muted">Added: ${formatDate2(battery.added_date)}</small>
+                                                    </div>
+                                                    <div class="add-quantity btn border text-gray f-12 f-w-500">
+                                                        <i class="fa fa-minus remove-minus count-decrease"></i>
+                                                        <button class="btn add-btn btn-sm p-1">Add</button>
+                                                        <i class="fa fa-plus count-increase"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('');
+
+                        productContainer.innerHTML = repairBatteriesHTML;
+
+                        // Add event listeners for quantity controls
+                        setupQuantityControls();
+                    } catch (error) {
+                        console.error('Error loading repair batteries:', error);
+                        productContainer.innerHTML =
+                            '<div class="col-12 text-center"><p>Error loading repair batteries.</p></div>';
+                    }
+                }
+
+
+                // Setup quantity control event listeners
+                function setupQuantityControls() {
+                    document.querySelectorAll('.count-decrease').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const quantityInput = this.parentElement.querySelector('.add-btn');
+                            // Add your quantity decrease logic here
+                        });
+                    });
+
+                    document.querySelectorAll('.count-increase').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const quantityInput = this.parentElement.querySelector('.add-btn');
+                            // Add your quantity increase logic here
+                        });
+                    });
+                }
+
+                // Helper function to format date
+                function formatDate2(date) {
+                    return new Date(date).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+                }
+                // Helper function to format price
+                function formatPrice2(price) {
+                    return price ? parseFloat(price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00";
+                }
             });
         </script>
 
