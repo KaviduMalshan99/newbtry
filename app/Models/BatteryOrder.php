@@ -49,4 +49,14 @@ class BatteryOrder extends Model
     {
         return $this->belongsTo(Battery::class);
     }
+
+    public function repairBattery()
+    {
+        return $this->belongsTo(RepairBattery::class);
+    }
+
+    public function oldBattery()
+    {
+        return $this->belongsTo(OldBattery::class);
+    }
 }

@@ -591,7 +591,7 @@ Route::get('/admin/POS', [PosController::class, 'index'])->name('POS.index');
 Route::get('/admin/POS/batteries', [PosController::class, 'show'])->name('POS.show');
 Route::get('/products-by-brand/{brandId}', [PosController::class, 'loadProductsByBrand'])->name('POS.loadProductsByBrand');
 Route::get('/repair-products-by-brand/{brandId}', [PosController::class, 'loadRepairProductsByBrand'])->name('POS.loadRepairProductsByBrand');
-
+Route::get('/admin/POS/{batteryOrder}/bill', [PosController::class, 'generateBill'])->name('POS.bill');
 
 // Define the route for placing an order via POST request
 // Route::post('/admin/POS/place-order', [PosController::class, 'placeOrder'])->name('POS.place');

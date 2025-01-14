@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Battery;
 use App\Models\BatteryOrder;
 use App\Models\Brand;
+use App\Models\Company;
 use App\Models\Customer;
 use App\Models\Lubricant;
 use App\Models\OldBattery;
 use App\Models\RepairBattery;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\DB;
@@ -96,7 +98,7 @@ class PosController extends Controller
         $paymentStatus = 'Pending';
         if ($validatedData['due_amount'] > 0) {
             $paymentStatus = 'Not Completed';
-        } elseif ($validatedData['paid_amount'] >= $validatedData['total_price']) {
+        } elseif ($validatedData['paid_amount'] >= $validatedData['subtotal']) {
             $paymentStatus = 'Completed';
         }
 
@@ -215,7 +217,8 @@ class PosController extends Controller
             // Commit the transaction
             DB::commit();
 
-            return redirect()->route('POS.index')->with('success', 'Purchase Saved successfully!');
+            // return redirect()->route('POS.index')->with('success', 'Purchase Saved successfully!');
+            return redirect()->route('POS.bill', $batteryOrder->id)->with('success', 'Purchase Saved successfully!');
         } catch (\Exception $e) {
             // Rollback the transaction in case of an error
             DB::rollBack();
@@ -308,5 +311,28 @@ class PosController extends Controller
                 'message' => 'Failed to add Old Battery. ' . $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function generateBill($id)
+    {
+        $batteryOrder = BatteryOrder::with(['customer', 'battery', 'oldBattery', 'repairBattery'])->findOrFail($id);
+        // Current date and time
+        $currentDateTime = Carbon::now()->format('d.m.Y H:i');
+        $companyDetails = Company::first();
+
+        $firstDecode = json_decode($batteryOrder->items);
+
+        $items = json_decode($firstDecode, true);
+
+        // Pass the data to the view
+        return view('admin.POS.bill', [
+            'batteryOrder' => $batteryOrder,
+            'currentDateTime' => $currentDateTime,
+            'companyDetails' => $companyDetails,
+            'items' => $items,
+            'batteries' => Battery::all(),
+            'oldBatteries' => OldBattery::all(),
+            'repairBatteries' => RepairBattery::all(),
+        ]);
     }
 }
