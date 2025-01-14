@@ -42,4 +42,8 @@ class Replacement extends Model
     {
         return $this->belongsTo(Battery::class, 'new_battery_id');
     }
+    public function boughtOldBattery()
+    {
+        return $this->belongsTo(Battery::class, 'bought_old_battery_id');
+    }
 }

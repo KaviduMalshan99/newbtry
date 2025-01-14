@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Battery;
 use App\Models\BatteryOrder;
+use App\Models\Company;
 use App\Models\OldBattery;
 use App\Models\Replacement;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -23,6 +25,7 @@ class ReplacementController extends Controller
         // Fetch customers whose ID exists in the battery_orders table
         $customers = DB::table('customers')
             ->join('battery_orders', 'customers.id', '=', 'battery_orders.customer_id')
+            ->where('battery_orders.order_type', 'New Order')
             ->select('customers.id', 'customers.first_name', 'customers.last_name', 'customers.phone_number')
             ->distinct()
             ->get();
@@ -38,6 +41,7 @@ class ReplacementController extends Controller
     {
         // Use the BatteryOrder model to fetch orders
         $orders = BatteryOrder::where('customer_id', $customerId)
+            ->where('order_type', 'New Order')
             ->select('id', 'order_id', 'order_type', 'order_date')
             ->orderBy('order_date', 'desc')
             ->get();
@@ -323,7 +327,8 @@ class ReplacementController extends Controller
             //     'updated_order' => $batteryOrder,
             // ]);
 
-            return redirect()->route('replacements.index')->with('success', 'Replacement processed successfully.');
+            // return redirect()->route('replacements.index')->with('success', 'Replacement processed successfully.');
+            return redirect()->route('replacements.bill', $replacement->id)->with('success', 'Replacement processed successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -332,5 +337,21 @@ class ReplacementController extends Controller
                 'details' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function generateBill($id)
+    {
+        $replacement = Replacement::with(['newBattery', 'order', 'oldBattery', 'boughtOldBattery'])->findOrFail($id);
+        // Current date and timee
+        $currentDateTime = Carbon::now()->format('d.m.Y H:i');
+        $companyDetails = Company::first();
+
+
+        // Pass the data to the view
+        return view('admin.replacement_management.bill', [
+            'replacement' => $replacement,
+            'currentDateTime' => $currentDateTime,
+            'companyDetails' => $companyDetails,
+        ]);
     }
 }

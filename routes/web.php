@@ -577,11 +577,7 @@ Route::prefix('admin/replacement')->group(function () {
     Route::get('/get-customer-orders/{customerId}', [ReplacementController::class, 'getCustomerOrders']);
     Route::get('/get-order-items/{orderId}', [ReplacementController::class, 'getOrderItems']);
     Route::post('/', [ReplacementController::class, 'storeReplacement'])->name('replacements.storeReplacement');
-    // Route::post('/', [LubricantPurchaseController::class, 'store'])->name('lubricant_purchases.store');
-    // Route::get('/{lubricant_purchase}', [LubricantPurchaseController::class, 'show'])->name('lubricant_purchases.show');
-    // Route::get('/{lubricant_purchase}/edit', [LubricantPurchaseController::class, 'edit'])->name('lubricant_purchases.edit');
-    // Route::put('/{lubricant_purchase}', [LubricantPurchaseController::class, 'update'])->name('lubricant_purchases.update');
-    // Route::delete('/{lubricant_purchase}', [LubricantPurchaseController::class, 'destroy'])->name('lubricant_purchases.destroy');
+    Route::get('{replacement}/bill', [ReplacementController::class, 'generateBill'])->name('replacements.bill');
 });
 
 // pos

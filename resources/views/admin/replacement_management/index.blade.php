@@ -47,12 +47,14 @@
                                         white-space: nowrap;
                                     }
                                 </style>
-                                <button class="btn btn-pill btn-outline-primary" type="button">New Battery</button>
-                                <button class="btn btn-pill btn-outline-secondary" type="button">Old Battery</button>
-                                <button class="btn btn-pill btn-outline-success" type="button">Repair Battery</button>
-                                <button id="replacementBatteryBtn" class="btn btn-pill btn-info" type="button">
-                                    Replacement Battery
-                                </button>
+                                <button id="newBatteryBtn" class="btn btn-pill btn-outline-primary" type="button">New
+                                    Battery</button>
+                                <button id="oldBatteryBtn" class="btn btn-pill btn-outline-secondary" type="button">Old
+                                    Battery</button>
+                                <button id="repairBatteryBtn" class="btn btn-pill btn-outline-success" type="button">Repair
+                                    Battery</button>
+                                <button id="replacementBatteryBtn" class="btn btn-pill btn-info" type="button">Replacement
+                                    Battery</button>
                             </div>
                         </div>
                     </div>
@@ -1399,6 +1401,31 @@
                 });
 
                 calculateTotals();
+
+                // Define the routes
+                const routes = {
+                    newBattery: "{{ route('POS.index') }}", // Replace with your actual route name
+                    oldBattery: "{{ route('POS.index') }}", // Replace with your actual route name
+                    repairBattery: "{{ route('POS.index') }}", // Replace with your actual route name
+                    replacementBattery: "{{ route('replacements.index') }}" // Replacement Battery Route
+                };
+
+                // Event listeners for buttons
+                document.getElementById('newBatteryBtn').addEventListener('click', function() {
+                    window.location.href = routes.newBattery;
+                });
+
+                document.getElementById('oldBatteryBtn').addEventListener('click', function() {
+                    window.location.href = routes.oldBattery;
+                });
+
+                document.getElementById('repairBatteryBtn').addEventListener('click', function() {
+                    window.location.href = routes.repairBattery;
+                });
+
+                document.getElementById('replacementBatteryBtn').addEventListener('click', function() {
+                    window.location.href = routes.replacementBattery;
+                });
             });
         </script>
 
