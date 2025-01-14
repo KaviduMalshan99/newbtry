@@ -203,6 +203,23 @@
                     </li>
 
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
+                            href="#">
+                            <svg class="stroke-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
+                            </svg>
+                            <svg class="fill-icon">
+                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
+                            </svg><span>POS</span></a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('POS.index') }}">POS</a></li>
+                            {{-- <li><a
+                                href="{{ request()->query('ref') === 'view' ? route('rentals.show', $rental->id) : route('rentals.index') }}">View
+                                Rental</a></li> --}}
+
+                        </ul>
+                    </li>
+
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="{{ route('company.create') }}">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>

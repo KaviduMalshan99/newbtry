@@ -1,4 +1,4 @@
-// time 
+// time
 function startTime() {
     var today = new Date();
     var h = today.getHours();
@@ -96,7 +96,7 @@ var options2 = {
     axisTicks: {
       show: false,
     },
-    
+
   },
   tooltip: {
     shared: false,
@@ -404,17 +404,17 @@ var options = {
         color: '#7064F5',
         opacity: 0.1
       }
-    }, 
+    },
     plotOptions: {
-      bar:{       
+      bar:{
         horizontal: false,
         columnWidth: '25px',
         borderRadius: 0,
       },
-    }, 
+    },
     grid: {
-      show:true,   
-      borderColor: 'var(--chart-border)',               
+      show:true,
+      borderColor: 'var(--chart-border)',
     },
     dataLabels:{
       enabled: false,
@@ -423,31 +423,31 @@ var options = {
       width: 2,
       dashArray: 0,
       lineCap: 'butt',
-      colors: "#fff",     
+      colors: "#fff",
     },
     fill: {
       opacity: 1
     },
     legend: {
       show:false
-    },    
-    states: {          
+    },
+    states: {
       hover: {
         filter: {
           type: 'darken',
           value: 1,
         }
-      }           
+      }
     },
     colors:[CubaAdminConfig.primary,'#AAAFCB'],
     yaxis: {
-      tickAmount: 3,   
+      tickAmount: 3,
       labels: {
         show: true,
         style: {
           fontFamily: 'Rubik, sans-serif',
         },
-      },  
+      },
       axisBorder:{
        show:false,
      },
@@ -455,7 +455,7 @@ var options = {
         show: false,
       },
     },
-    xaxis:{     
+    xaxis:{
       categories:[
         '1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18', '19','20','21'
       ],
@@ -471,14 +471,14 @@ var options = {
         show: false,
       },
     },
-    states: {          
+    states: {
       hover: {
         filter: {
           type: 'darken',
           value: 1,
         }
-      }           
-    },    
+      }
+    },
     responsive: [
         {
           breakpoint: 1661,
@@ -492,10 +492,10 @@ var options = {
           breakpoint: 767,
           options:{
             plotOptions: {
-              bar:{       
+              bar:{
                 columnWidth: '35px',
               },
-            }, 
+            },
              yaxis: {
                   labels: {
                     show: false,
@@ -518,14 +518,16 @@ var options = {
                 height: 170,
             },
             plotOptions: {
-              bar:{       
+              bar:{
                 columnWidth: '40px',
               },
-            }, 
+            },
           }
         },
-      ]    
+      ]
   };
+
+
 
 var chart = new ApexCharts(document.querySelector("#chart-currently"), options);
 chart.render();
@@ -571,7 +573,7 @@ var recentoptions = {
           opacity: 1
         }
       },
-  
+
       dataLabels: {
         show: true,
         name: {
@@ -703,7 +705,7 @@ var recentoptions = {
             },
           },
         },
-      ]  
+      ]
   };
 
   var recentchart = new ApexCharts(document.querySelector("#recentchart"), recentoptions);
@@ -811,7 +813,7 @@ var recentoptions = {
   {
     breakpoint: 576,
     options:{
-      yaxis:{     
+      yaxis:{
         labels: {
           show: false
         },
@@ -823,97 +825,187 @@ var recentoptions = {
       }
     }
   },
-  ] 
+  ]
   };
 
   var schedulechart = new ApexCharts(document.querySelector("#schedulechart"), scheduleoptions);
   schedulechart.render();
 
  // growth chart
- var growthoptions = {
+//  var growthoptions = {
+//     series: [{
+//     name: 'Growth',
+//     data: [10, 5, 15, 0, 15, 12, 29, 29, 29, 12, 15,5]
+//   }],
+//     chart: {
+//       height: 200,
+//       type: 'line',
+//       toolbar: {
+//         show: false
+//       },
+//       dropShadow: {
+//         enabled: true,
+//         enabledOnSeries: undefined,
+//         top: 5,
+//         left: 0,
+//         blur: 4,
+//         color: '#7366ff',
+//         opacity: 0.22
+//       },
+//     },
+//   grid: {
+//     yaxis: {
+//       lines: {
+//           show: false
+//       }
+//     },
+//   },
+//   colors: ["#5527FF"],
+//   stroke: {
+//     width: 3,
+//     curve: 'smooth'
+//   },
+//   xaxis: {
+//     type: 'category',
+//     categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
+//     tickAmount: 10,
+//     labels: {
+//       style: {
+//           fontFamily: 'Rubik, sans-serif',
+//       },
+//     },
+//     axisTicks: {
+//       show: false
+//     },
+//     axisBorder: {
+//       show: false
+//     },
+//     tooltip: {
+//       enabled: false,
+//     },
+//   },
+//   fill: {
+//     type: 'gradient',
+//     gradient: {
+//       shade: 'dark',
+//       gradientToColors: [ '#5527FF' ],
+//       shadeIntensity: 1,
+//       type: 'horizontal',
+//       opacityFrom: 1,
+//       opacityTo: 1,
+//       colorStops: [
+//         {
+//           offset: 0,
+//           color: "#5527FF",
+//           opacity: 1
+//         },
+//         {
+//           offset: 100,
+//           color: "#E069AE",
+//           opacity: 1
+//         },
+//       ]
+//       // stops: [0, 100, 100, 100]
+//     },
+//   },
+//   yaxis: {
+//     min: -10,
+//     max: 40,
+//     labels: {
+//       show: false
+//     }
+//   }
+//   };
+
+// var growthchart = new ApexCharts(document.querySelector("#growthchart"), growthoptions);
+// growthchart.render();
+
+// Followers Growth Chart
+var growthoptions = {
     series: [{
-    name: 'Growth',
-    data: [10, 5, 15, 0, 15, 12, 29, 29, 29, 12, 15,5]
-  }],
+        name: "Growth",
+        data: [0] // Will be updated with real data
+    }],
     chart: {
-      height: 200,
-      type: 'line',
-      toolbar: {
-        show: false
-      },
-      dropShadow: {
-        enabled: true,
-        enabledOnSeries: undefined,
-        top: 5,
-        left: 0,
-        blur: 4,
-        color: '#7366ff',
-        opacity: 0.22
-      },
+        height: 200,
+        type: 'area',
+        toolbar: {
+            show: false
+        },
     },
-  grid: {
+    dataLabels: {
+        enabled: false
+    },
+    stroke: {
+        curve: 'smooth',
+        width: 2,
+    },
+    colors: ['#7366ff'],
+    fill: {
+        type: 'gradient',
+        gradient: {
+            shadeIntensity: 1,
+            opacityFrom: 0.5,
+            opacityTo: 0.1,
+            stops: [0, 90, 100]
+        }
+    },
+    xaxis: {
+        categories: [], // Will be updated with real data
+        labels: {
+            style: {
+                fontSize: '12px',
+                fontFamily: 'Roboto, sans-serif',
+            },
+        },
+        axisBorder: {
+            show: false
+        },
+        axisTicks: {
+            show: false
+        },
+    },
     yaxis: {
-      lines: {
-          show: false
-      }
-    },  
-  },
-  colors: ["#5527FF"],
-  stroke: {
-    width: 3,
-    curve: 'smooth'
-  },
-  xaxis: {
-    type: 'category',
-    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan'],
-    tickAmount: 10,
-    labels: {
-      style: {
-          fontFamily: 'Rubik, sans-serif',
-      },
+        labels: {
+            style: {
+                fontSize: '12px',
+                fontFamily: 'Roboto, sans-serif',
+            },
+        },
     },
-    axisTicks: {
-      show: false
-    },
-    axisBorder: {
-      show: false
+    grid: {
+        borderColor: 'rgba(115, 102, 255, 0.1)',
+        padding: {
+            top: 0,
+            right: 0,
+            bottom: 0,
+        },
     },
     tooltip: {
-      enabled: false,
-    },
-  },
-  fill: {
-    type: 'gradient',
-    gradient: {
-      shade: 'dark',
-      gradientToColors: [ '#5527FF' ],
-      shadeIntensity: 1,
-      type: 'horizontal',
-      opacityFrom: 1,
-      opacityTo: 1,
-      colorStops: [
-        {
-          offset: 0,
-          color: "#5527FF",
-          opacity: 1
+        x: {
+            format: 'dd/MM/yy HH:mm'
         },
-        {
-          offset: 100,
-          color: "#E069AE",
-          opacity: 1
-        },
-      ]
-      // stops: [0, 100, 100, 100]
-    },
-  },
-  yaxis: {
-    min: -10,
-    max: 40,
-    labels: {
-      show: false
     }
-  }
-  };
+};
 
-var growthchart = new ApexCharts(document.querySelector("#growthchart"), growthoptions);
-growthchart.render();
+var growthChart = new ApexCharts(document.querySelector("#growthchart"), growthoptions);
+growthChart.render();
+
+// Fetch and update data
+fetch('/dashboard/growth-data')
+    .then(response => response.json())
+    .then(data => {
+        const months = data.map(item => item.month);
+        const growth = data.map(item => item.growth);
+
+        growthChart.updateOptions({
+            xaxis: {
+                categories: months
+            }
+        });
+
+        growthChart.updateSeries([{
+            name: 'Growth',
+            data: growth
+        }]);
+    });

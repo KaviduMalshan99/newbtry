@@ -134,7 +134,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <h4>7000</h4><span class="f-light">Sales return</span>
+                                        <h4>{{ number_format($suppliersCount) }}</h4><span class="f-light">Suppliers</span>
                                     </div>
                                 </div>
                                 <div class="font-warning f-w-500"><i
@@ -156,7 +156,8 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <h4>5700</h4><span class="f-light">Purchase rate</span>
+                                            <h4>{{ number_format($batteryCount) }}</h4><span
+                                                class="f-light">Batteries</span>
                                         </div>
                                     </div>
                                     <div class="font-success f-w-500"><i
@@ -173,7 +174,8 @@
                         <div class="card widget-1 widget-with-chart">
                             <div class="card-body">
                                 <div>
-                                    <h4 class="mb-1">1,80k</h4><span class="f-light">Orders</span>
+                                    <h4 class="mb-1">{{ number_format($lubricantsCount) }}</h4><span
+                                        class="f-light">Lubricants</span>
                                 </div>
                                 <div class="order-chart">
                                     <div id="orderchart"></div>
@@ -185,7 +187,8 @@
                         <div class="card widget-1 widget-with-chart">
                             <div class="card-body">
                                 <div>
-                                    <h4 class="mb-1">6,90k</h4><span class="f-light">Profit</span>
+                                    <h4 class="mb-1">{{ number_format($batteryOrdersCount) }}</h4><span
+                                        class="f-light">Orders</span>
                                 </div>
                                 <div class="profit-chart">
                                     <div id="profitchart"></div>
@@ -570,7 +573,7 @@
                         <div class="card growth-wrap">
                             <div class="card-header card-no-border">
                                 <div class="header-top">
-                                    <h5>Followers Growth</h5>
+                                    <h5>Customer Growth</h5>
                                     <div class="dropdown icon-dropdown">
                                         <button class="btn dropdown-toggle" id="growthdropdown" type="button"
                                             data-bs-toggle="dropdown" aria-expanded="false"><i
@@ -667,4 +670,6 @@
     <script src="{{ asset('assets/js/typeahead-search/typeahead-custom.js') }}"></script>
     <script src="{{ asset('assets/js/height-equal.js') }}"></script>
     <script src="{{ asset('assets/js/animation/wow/wow.min.js') }}"></script>
+
+
 @endsection

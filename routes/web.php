@@ -501,6 +501,7 @@ Route::prefix('admin/reports')->group(function () {
 Route::prefix('dashboard')->group(function () {
     Route::get('/index', [DashboardController::class, 'index'])->name('index');
     Route::view('dashboard-02', 'dashboard.dashboard-02')->name('dashboard-02');
+    Route::get('/growth-data', [DashboardController::class, 'getGrowthData']);
 });
 
 
