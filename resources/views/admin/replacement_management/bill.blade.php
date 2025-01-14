@@ -268,7 +268,7 @@
         // After printing, redirect to the bookings list
         window.onafterprint = function() {
             window.location.href =
-                "{{ request()->query('ref') === 'view' ? route('POS.show', $replacement->id) : route('POS.index') }}";
+                "{{ request()->query('ref') === 'view' ? route('replacements.show', $replacement->id) : route('replacements.index') }}";
         };
     </script>
 
