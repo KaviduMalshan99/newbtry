@@ -189,6 +189,27 @@ class PosController extends Controller
                     $battery->save();
                 }
             } else if ($validatedData['order_type'] == "Repair") {
+                foreach ($items as $item) {
+                    $battery = RepairBattery::find($item['repair_battery_id']);
+                    if (!$battery) {
+                        // Rollback transaction and return error if battery is not found
+                        DB::rollBack();
+                        // return redirect()->route('POS.index')->with('success', 'Battery with ID not found.');
+                        return response()->json(['error' => "Repair Battery with ID {$item['repair_battery_id']} not found."], 404);
+                    }
+
+                    // Check if stock is sufficient
+                    if ($battery->stock_quantity < $item['quantity']) {
+                        // Rollback transaction and return error if stock is insufficient
+                        DB::rollBack();
+                        // return redirect()->route('POS.index')->with('success', 'Insufficient stock for Battery ID.');
+                        return response()->json(['error' => "Insufficient stock for Battery ID {$item['repair_battery_id']}."], 400);
+                    }
+
+                    // Decrease stock quantity
+                    $battery->stock_quantity -= $item['quantity'];
+                    $battery->save();
+                }
             }
 
             // Commit the transaction

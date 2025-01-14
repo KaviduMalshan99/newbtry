@@ -985,7 +985,15 @@
                                                         <small>Stock: ${productWrapper.querySelector('.stock-info .badge').textContent.replace('Stock: ', '')}</small>
                                                     </span>
                                                 </div>
-                                                <div class="touchspin-wrapper">
+
+                                            </div>
+                                            <div class="last-order-detail d-flex justify-content-between align-items-center">
+                                                <h6 class="txt-primary item-price">RS${formattedPrice}</h6>
+                                                <a href="javascript:void(0)" class="trash-remove text-danger">
+                                                    <i class="fa fa-trash"></i>
+                                                </a>
+                                            </div>
+                                            <div class="touchspin-wrapper">
                                                     <button class="decrement-touchspin btn-touchspin">
                                                         <i class="fa fa-minus text-gray"></i>
                                                     </button>
@@ -993,13 +1001,6 @@
                                                     <button class="increment-touchspin btn-touchspin">
                                                         <i class="fa fa-plus text-gray"></i>
                                                     </button>
-                                                </div>
-                                            </div>
-                                            <div class="last-order-detail d-flex justify-content-between align-items-center">
-                                                <h6 class="txt-primary item-price">RS${formattedPrice}</h6>
-                                                <a href="javascript:void(0)" class="trash-remove text-danger">
-                                                    <i class="fa fa-trash"></i>
-                                                </a>
                                             </div>
                                         </div>
                                     </div>

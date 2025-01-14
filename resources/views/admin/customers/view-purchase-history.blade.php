@@ -61,7 +61,17 @@
                                                     @if (is_array($order['items']))
                                                         @foreach ($order['items'] as $item)
                                                             <li>
-                                                                Battery ID: {{ $item['battery_id'] }},
+                                                                @if (isset($item['battery_id']))
+                                                                    New Battery ID: {{ $item['battery_id'] }},
+                                                                @endif
+
+                                                                @if (isset($item['old_battery_id']))
+                                                                    Old Battery ID: {{ $item['old_battery_id'] }},
+                                                                @endif
+
+                                                                @if (isset($item['repair_battery_id']))
+                                                                    Repair Battery ID: {{ $item['repair_battery_id'] }},
+                                                                @endif
                                                                 Quantity: {{ $item['quantity'] }},
                                                                 Price: {{ number_format($item['price'], 2) }}
                                                             </li>
