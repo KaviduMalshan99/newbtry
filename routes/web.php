@@ -590,6 +590,7 @@ Route::prefix('admin/replacement')->group(function () {
 Route::get('/admin/POS', [PosController::class, 'index'])->name('POS.index');
 Route::get('/admin/POS/batteries', [PosController::class, 'show'])->name('POS.show');
 Route::get('/products-by-brand/{brandId}', [PosController::class, 'loadProductsByBrand'])->name('POS.loadProductsByBrand');
+Route::get('/repair-products-by-brand/{brandId}', [PosController::class, 'loadRepairProductsByBrand'])->name('POS.loadRepairProductsByBrand');
 
 
 // Define the route for placing an order via POST request

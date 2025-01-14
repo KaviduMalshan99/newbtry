@@ -8,6 +8,7 @@ use App\Models\Brand;
 use App\Models\Customer;
 use App\Models\Lubricant;
 use App\Models\OldBattery;
+use App\Models\RepairBattery;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\DB;
@@ -223,6 +224,31 @@ class PosController extends Controller
 
         // Return the partial view with the fetched products
         return view('admin.POS.partials.product-list', compact('products'));
+    }
+
+    public function loadRepairProductsByBrand($brandId)
+    {
+        // Fetch the brand by its ID
+        $brand = Brand::findOrFail($brandId);
+
+        // Get products based on brand type
+        if ($brand->type == 'battery') {
+            $products = RepairBattery::where('brand_id', $brandId)
+                ->where('isForSelling', 1)
+                ->where('isActive', 1)
+                ->where('stock_quantity', '>', 0)
+                ->with('brand')
+                ->with('repairs')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } elseif ($brand->type == 'lubricant') {
+            $products = Lubricant::where('brand_id', $brandId)->get();
+        } else {
+            $products = collect(); // Return empty collection for unknown types
+        }
+
+        // Return the partial view with the fetched products
+        return view('admin.POS.partials.repair-product-list', compact('products'));
     }
 
     public function storeOldBattery(Request $request)

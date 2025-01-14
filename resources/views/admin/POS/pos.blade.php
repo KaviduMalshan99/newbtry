@@ -594,8 +594,19 @@
                                     // Get the brand ID from the clicked element
                                     const brandId = this.getAttribute('data-brand-id');
 
+                                    let endpoint = ``;
+
+
+                                    if (orderType == "New Order") {
+
+                                        endpoint = `/products-by-brand/${brandId}`;
+                                    } else if (orderType == "Repair") {
+                                        endpoint = `/repair-products-by-brand/${brandId}`;
+
+                                    }
+
                                     // Send an AJAX request to fetch products by brand
-                                    fetch(`/products-by-brand/${brandId}`)
+                                    fetch(endpoint)
                                         .then(response => response.text())
                                         .then(html => {
                                             // Update the product list container with the new products
@@ -1086,8 +1097,20 @@
                         // Get the brand ID from the clicked element
                         const brandId = this.querySelector('a').getAttribute('data-brand-id');
 
+                        let endpoint = ``;
+
+
+                        if (orderType == "New Order") {
+
+                            endpoint = `/products-by-brand/${brandId}`;
+                        } else if (orderType == "Repair") {
+                            endpoint = `/repair-products-by-brand/${brandId}`;
+
+                        }
+
+
                         // Send an AJAX request to fetch products by brand
-                        fetch(`/products-by-brand/${brandId}`)
+                        fetch(endpoint)
                             .then(response => response.text())
                             .then(html => {
                                 // Update the product list container with the new products
@@ -1369,6 +1392,19 @@
                     return price ? parseFloat(price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00";
                 }
             });
+
+            // Helper function to format date
+            function formatDate2(date) {
+                return new Date(date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+            }
+            // Helper function to format price
+            function formatPrice2(price) {
+                return price ? parseFloat(price).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",") : "0.00";
+            }
         </script>
 
 
