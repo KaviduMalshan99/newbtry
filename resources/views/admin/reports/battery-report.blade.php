@@ -57,7 +57,7 @@
                                         <tr>
                                             <td>{{ $battery->id }}</td>
                                             <td>{{ $battery->model_name }}</td>
-                                            <td>{{ $battery->brand }}</td>
+                                            <td>{{ $battery->brand->brand_name }}</td>
                                             <td>{{ $battery->capacity }}</td>
                                             <td>{{ $battery->voltage }}</td>
                                             <td>{{ $battery->type }}</td>
