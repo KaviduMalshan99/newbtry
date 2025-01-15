@@ -128,6 +128,7 @@
                                     Supplier</a></li>
 
                         </ul>
+
                     </li>
 
 
@@ -196,6 +197,8 @@
                                         class="sub-arrow"><i class="fa fa-angle-right"></i></span></a>
 
                             </li>
+
+                            
                             <li><a class="submenu-title" href="#">Brand<span class="sub-arrow"><i
                                             class="fa fa-angle-right"></i></span></a>
                                 <ul class="nav-sub-childmenu submenu-content">
@@ -227,10 +230,20 @@
 
                             </li>
 
-                            <li><a class="submenu-title" href="{{ route('lubricant_purchases.index') }}"> View purchases<span
+
+                            
+
+                            <li>
+                                <a class="submenu-title" href="{{ route('lubricant_purchases.index') }}"> View purchases<span
                                 class="sub-arrow"><i class="fa fa-angle-right"></i></span></a>
 
-                    </li>
+                           </li>
+
+                            <li>
+                                <a class="submenu-title" href="{{ route('POS.lubricant_order') }}">  Lubricant  Order <span
+                                class="sub-arrow"><i class="fa fa-angle-right"></i></span></a>
+
+                            </li>
 
                         </ul>
                     </li>
