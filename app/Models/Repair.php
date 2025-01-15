@@ -11,35 +11,19 @@ class Repair extends Model
 
     protected $fillable = [
         'customer_id',
-        'repair_battery_id',
-        'repair_order_start_date',
-        'repair_order_end_date',
-        'diagnostic_report',
-        'items_used',
+        'battery_id',
         'repair_cost',
-        'labor_charges',
-        'total_cost',
-        'repair_status',
-        'delivery_status',
-        'notes',
-        'advance_amount',
-        'paid_amount',
-        'due_amount',
-        'payment_type',
-        'payment_status',
+        'repair_details',
     ];
 
-    protected $casts = [
-        'items_used' => 'array',
-    ];
-
-    public function repairBattery()
-    {
-        return $this->belongsTo(RepairBattery::class);
-    }
-
+    // Relationships
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function battery()
+    {
+        return $this->belongsTo(Battery::class);
     }
 }

@@ -16,4 +16,9 @@ class Brand extends Model
         'image',
         'date',
     ];
+
+    public function lubricants()
+    {
+        return $this->hasMany(Lubricant::class);
+    }
 }

@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Battery;
+use App\Models\Brand; // Import the Brand model
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class BatteryController extends Controller
@@ -12,50 +12,52 @@ class BatteryController extends Controller
     // Display the list of all batteries
     public function index()
     {
-        $batteries = Battery::all();
+        $batteries = Battery::with('brand')->get(); // Eager load the brand relationship
         return view('admin.batteries.index', compact('batteries'));
     }
 
     // Show the form for creating a new battery
     public function create()
     {
-        $brands = DB::table('brands')->where('type', 'battery')->get();
+        $brands = Brand::all(); // Fetch all brands
         return view('admin.batteries.create', compact('brands'));
     }
 
     // Store a newly created battery in the database
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'type' => 'required|string|max:255',
-            'brand_id' => 'required|string|max:255',
-            'capacity' => 'required|numeric',
-            'voltage' => 'required|string|max:10', // Voltage can be a string (e.g., "12V")
-            'purchase_price' => 'required|numeric',
-            'selling_price' => 'required|numeric',
-            'warranty_period' => 'required|integer',
-            'manufacturing_date' => 'required|date',
-            'expiry_date' => 'nullable|date',
-            'stock_quantity' => 'required|integer',
-            'added_date' => 'required|date',
-            'model_name' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
+{
+    $validatedData = $request->validate([
+        'type' => 'required|string|max:255',
+        'brand_id' => 'required|exists:brands,brand_id', // Corrected validation rule
+        'capacity' => 'required|numeric',
+        'voltage' => 'required|string|max:10',
+        'purchase_price' => 'required|numeric',
+        'selling_price' => 'required|numeric',
+        'warranty_period' => 'required|integer',
+        'manufacturing_date' => 'required|date',
+        'expiry_date' => 'nullable|date',
+        'stock_quantity' => 'required|integer',
+        'added_date' => 'required|date',
+        'model_name' => 'required|string|max:255',
+        'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
 
-        if ($request->hasFile('image')) {
-            $validatedData['image'] = $request->file('image')->store('batteries', 'public');
-        }
-
-        Battery::create($validatedData);
-
-        return redirect()->route('batteries.index')->with('success', 'Battery added successfully!');
+    if ($request->hasFile('image')) {
+        $validatedData['image'] = $request->file('image')->store('batteries', 'public');
     }
+
+    Battery::create($validatedData);
+
+    return redirect()->route('batteries.index')->with('success', 'Battery added successfully!');
+}
+
+    
 
     // Show the form for editing a specific battery
     public function edit($id)
     {
-        $brands = DB::table('brands')->where('type', 'battery')->get();
-        $battery = Battery::findOrFail($id); // Use findOrFail for better error handling
+        $battery = Battery::findOrFail($id);
+        $brands = Brand::all(); // Fetch all brands
         return view('admin.batteries.edit', compact('battery', 'brands'));
     }
 
@@ -66,7 +68,7 @@ class BatteryController extends Controller
 
         $validatedData = $request->validate([
             'type' => 'required|string|max:255',
-            'brand_id' => 'required|string|max:255',
+            'brand_id' => 'required|exists:brands,brand_id',
             'capacity' => 'required|numeric',
             'voltage' => 'required|string|max:10',
             'purchase_price' => 'required|numeric',
@@ -77,11 +79,10 @@ class BatteryController extends Controller
             'stock_quantity' => 'required|integer',
             'added_date' => 'required|date',
             'model_name' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Nullable for updates
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($request->hasFile('image')) {
-            // Delete the old image if it exists
             if ($battery->image) {
                 Storage::disk('public')->delete($battery->image);
             }
@@ -98,7 +99,6 @@ class BatteryController extends Controller
     {
         $battery = Battery::findOrFail($id);
 
-        // Delete the associated image
         if ($battery->image) {
             Storage::disk('public')->delete($battery->image);
         }

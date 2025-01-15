@@ -21,7 +21,7 @@
 @endsection
 
 @section('breadcrumb-items')
-    <li class="breadcrumb-item active">POS (point of sale)</li>
+    <li class="breadcrumb-item active">POS</li>
 @endsection
 
 @section('content')
@@ -37,7 +37,7 @@
                         <div class="card">
                             <div class="card-header card-no-border">
                                 <div class="header-top">
-                                    <h5>All Lubricant  Brands</h5>
+                                    <h5>All battery Brands</h5>
                                     <div class="card-header-right-btn">
                                         <a class="font-dark f-12" href="javascript:void(0)">View All</a>
                                     </div>
@@ -106,8 +106,6 @@
                                         <div class="col-xxl-3 col-sm-4">
                                             <div class="our-product-wrapper h-100 widget-hover"
                                                 dataId="{{ $lubricant->id }}" data-name="{{ $lubricant->name }}"
-                                                stock_quantity="{{ $lubricant->total_count }}"
-                                                volume="{{ $lubricant->volume }}"
                                                 data-price="{{ number_format($lubricant->sale_price, 2) }}"
                                                 data-image="{{ asset('storage/' . $lubricant->image) }}">
                                                 <div class="our-product-img">
@@ -293,65 +291,18 @@
 
                                 </div>
                             </div>
-
-
-
                             <div class="card-body pt-0 order-details">
-                                <div class="form-group">
-                                    <label for="phonenumber" class="form-label">Select Customer</label>
-                                    <select class="form-select f-w-400 f-14 text-gray py-2" id="phonenumber" name="phonenumber" required>
-                                        <option selected disabled>Select Customer</option>
-                                        @foreach ($customers as $customer)
-                                            <option value="{{ $customer->id }}" data-phone="{{ $customer->phone_number }}">
-                                                {{ $customer->phone_number }} - {{ $customer->first_name }} {{ $customer->last_name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                <select class="form-select f-w-400 f-14 text-gray py-2" aria-label="Select Customer"
+                                id="customer-select" required>
+                            <option selected disabled>Select Customer</option>
+                            @foreach ($customers as $customer)
+                                <option value="{{ $customer->phone_number }}">
+                                    {{ $customer->phone_number }} - {{ $customer->first_name }} {{ $customer->last_name }}
+                                </option>
+                            @endforeach
+                        </select>
 
 
-                                {{-- <input type="text" id="customer_phone" name="customer_phone" class="form-control" placeholder="Phone Number" readonly> --}}
-
-                                <!-- Add jQuery and Select2 -->
-                                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-                                <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/select2.min.js"></script>
-                                <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/select2.min.css" rel="stylesheet" />
-
-                                <script>
-                                    $(document).ready(function () {
-                                        // Initialize Select2
-                                        $('#phonenumber').select2({
-                                            placeholder: 'Search by Phone Number or Name',
-                                            allowClear: true
-                                        });
-
-                                        // Event listener for dropdown changes
-                                        $('#phonenumber').on('change', function () {
-                                            // Get the selected option
-                                            const selectedOption = $(this).find(':selected');
-
-                                            // Get the customer ID and phone number from the selected option
-                                            const customerId = selectedOption.val();
-                                            const customerPhone = selectedOption.data('phone');
-
-                                            // Update the input fields
-                                            $('#customer_id').val(customerId);
-                                            $('#customer_phone').val(customerPhone);
-                                        });
-                                    });
-                                </script>
-
-
-                        {{-- <script>
-                            // Add an event listener to the dropdown
-                            document.getElementById("phonenumber").addEventListener("change", function() {
-                                // Get the selected phone number
-                                const selectedPhoneNumber = this.value;
-
-                                // Update the input field with the selected phone number
-                                document.querySelector(".coustomer").value = selectedPhoneNumber;
-                            });
-                        </script> --}}
 
 
                                 <h5 class="m-0">Order Details</h5>
@@ -407,9 +358,7 @@
 
 
 
-                                <form id="order-form" method="POST" action="{{ route('POS.lubricant.placeOrder') }}">
-
-
+                                <form id="order-form" method="POST" action="{{ route('POS.storeBatteryOrder') }}">
                                     @csrf
                                     <div class="widget-hover">
                                         <h5 class="m-0 p-t-40">Payment Section</h5>
@@ -428,31 +377,16 @@
                                         <div class="mb-4">
                                             <label for="measurement_type" class="form-label">Measurement Type</label>
                                             <select id="measurement_type" name="measurement_type" class="form-select" required>
-                                                <option value="bottle">Bottle</option>
-                                                <option value="mililiter">mili - Liter</option>
+                                                <option value="barrel">Barrel</option>
+                                                <option value="liter">Liter</option>
                                                 <option value="drum">Drum</option>
                                             </select>
                                         </div>
 
                                         <!-- Unit Section -->
                                         <div class="mb-4">
-                                            <label for="unit" class="form-label">Quantity</label>
-                                            <input type="number" id="unit" name="unit" class="form-control" placeholder="Enter Quantity "  required>
-                                        </div>
-
-
-                                     
-
-
-
-                                        <div class="mb-4">
-
-                                            <input type="hidden" id="total_items" name="total_items" class="total_items form-control" placeholder="Enter all_id" required>
-                                        </div>
-
-                                        <div class="mb-4">
-
-                                            <input type="hidden" id="all_id" name="all_id" class="battery-id form-control" placeholder="Enter all_id" required>
+                                            <label for="unit" class="form-label">Unit</label>
+                                            <input type="number" id="unit" name="unit" class="form-control" placeholder="Enter unit" required>
                                         </div>
 
                                         <!-- Total Price Section -->
@@ -467,26 +401,13 @@
                                             <input type="number" id="paid_amount" name="paid_amount" class="form-control" step="0.01" placeholder="Enter Paid Amount" required>
                                         </div>
 
-
-                                        {{-- <input type="text" name="customer_id" class="form-control coustomer"
-                                        placeholder="Phone Number" readonly>  --}}
-
-                                        <input type="hidden" id="customer_id" name="customer_id" class="form-control" placeholder="Customer ID" readonly>
-
-                                        {{-- <input type="hidden" id="customer_id" name="customer_id" class="form-control" placeholder="Customer ID" readonly>
-
-                                        <input type="hidden" id="customer_id" name="customer_id" class="form-control" placeholder="Customer ID" readonly> --}}
+                                    
 
                                         <!-- Due Amount Section -->
                                         <div class="mb-4">
                                             <label for="due_amount" class="form-label">Due Amount</label>
                                             <input type="number" id="due_amount" name="due_amount" class="form-control" step="0.01" placeholder="Due Amount" readonly>
                                         </div>
-
-
-
-
-
 
                                         <!-- Payment Type Section -->
                                         <div class="mb-4">
@@ -500,17 +421,13 @@
                                     </div>
 
                                     <!-- Hidden Inputs for Order Management -->
-                                    {{-- <input type="hidden" name="customer_id" id="customer_id">
+                                    <input type="hidden" name="customer_id" id="customer_id">
                                     <input type="hidden" name="total_items" id="total_items">
-                                    <input type="hidden" name="subtotal" id="subtotal"> --}}
-
+                                    <input type="hidden" name="subtotal" id="subtotal">
 
                                     <!-- Submit Button -->
                                     <div class="place-order">
-                                        <p id="place-order-btn" >
-
-                                        </p>
-                                        <button  class="btn btn-primary btn-hover-effect w-100 f-w-500" type="submit">
+                                        <button id="place-order-btn" class="btn btn-primary btn-hover-effect w-100 f-w-500" type="submit">
                                             Place Order
                                         </button>
                                     </div>
@@ -581,11 +498,6 @@
                 document.getElementById("due_amount").value = dueAmountValue;
                 document.getElementById("payment_type").value = paymentType;
 
-                document.getElementById("stockQuantity").value = stock_quantity;
-                document.getElementById("volumeField").value = volume;
-
-
-
                 // Add the items details to the form as a hidden input
                 const itemsInput = document.createElement("input");
                 itemsInput.type = "hidden";
@@ -651,18 +563,6 @@
 
                     totalPriceField.value = subtotal + fee;
                     calculateDueAmount();
-
-
-                    // Collect all product IDs
-                const orderIds = Array.from(document.querySelectorAll('.battery-id')).map(item => item.getAttribute('data-id'));
-
-                // Display IDs in the input field separated by commas
-                document.getElementById("all_id").value = orderIds.join(", ");
-
-                document.getElementById("total_items").value = totalItems;
-
-
-
                 }
 
 
@@ -696,27 +596,19 @@
                         const price = parseFloat(priceString.replace(/,/g, '')); // Remove commas before parsing
                         const formattedPrice = formatPrice(price); // Format price based on conditions
                         const image = productWrapper.getAttribute("data-image");
-                        const stock_quantity = productWrapper.getAttribute("stock_quantity");
-                        const volume = productWrapper.getAttribute("volume");
-
-
 
                         // Create an order card item
                         const orderItem = `
                 <div class="order-details-wrapper">
                     <div class="left-details">
                         <div class="order-img widget-hover">
-                            <img src="${image}" alt="${name}"  data-bs-toggle="popover" title=" ${id} - ${volume} ml and stock_quantity is ${stock_quantity} " data-bs-content="And here's some amazing content. It's very engaging. Right?">
+                            <img src="${image}" alt="${name}">
                         </div>
                     </div>
                     <div class="category-details item-row">
                         <div class="order-details-right">
                             <span class="text-gray mb-1">Category: <span class="font-dark">Product</span></span>
                             <h6 class="f-14 f-w-500 mb-3 battery-id" data-id="${id}">${name}</h6>
-                            <h6 class="f-14 f-w-500 mb-3 " data-id="${id}"> volume : ${volume} ml</h6>
-                            <h6 class="f-14 f-w-500 mb-3 " data-id="${id}">Available : ${stock_quantity}</h6>
-
-
                             <div class="last-order-detail">
                                 <h6 class="txt-primary item-price">RS${formattedPrice}</h6>
                                 <a href="javascript:void(0)" class="trash-remove"><i class="fa fa-trash"></i></a>

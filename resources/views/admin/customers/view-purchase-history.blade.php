@@ -46,43 +46,23 @@
                             <table class="display" id="keytable">
                                 <thead>
                                     <tr>
-                                        <th>Order ID</th>
-                                        <th>Item Details</th>
-                                        <th>Total Amount</th>
-                                        <th>Order Date</th>
+                                        <th>Item</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse ($validOrders as $order)
+                                    @forelse ($purchaseHistories as $purchaseHistory)
                                         <tr>
-                                            <td>{{ $order['order_id'] }}</td>
-                                            <td>
-                                                <ul>
-                                                    @if (is_array($order['items']))
-                                                        @foreach ($order['items'] as $item)
-                                                            <li>
-                                                                Battery ID: {{ $item['battery_id'] }},
-                                                                Quantity: {{ $item['quantity'] }},
-                                                                Price: {{ number_format($item['price'], 2) }}
-                                                            </li>
-                                                        @endforeach
-                                                    @else
-                                                        <li>No items found</li>
-                                                    @endif
-                                                </ul>
-                                            </td>
-                                            <td>{{ number_format($order['total_price'], 2) }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($order['order_date'])->format('d.m.Y') }}</td>
+                                            <td>{{ $purchaseHistory->item }} </td>
+                                            <td>{{ $purchaseHistory->amount }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($purchaseHistory->date)->format('d.m.Y') }}</td>
                                         </tr>
                                     @empty
-                                        <tr>
-                                            <td colspan="4" class="text-center">No purchase history found.</td>
-                                        </tr>
+                                        <p class="text-center">No purchase history found.</p>
                                     @endforelse
                                 </tbody>
                             </table>
-
-
                         </div>
                     </div>
                 </div>

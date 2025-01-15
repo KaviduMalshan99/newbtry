@@ -28,19 +28,22 @@
                             <h6 class="lan-1">General</h6>
                         </div>
                     </li>
-
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i>
                         <label class="badge badge-light-primary">5</label><a class="sidebar-link sidebar-title"
-                            href="{{ route('index') }}">
+                            href="#">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-home') }}"></use>
                             </svg>
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-home') }}"></use>
                             </svg><span class="lan-3">Dashboard</span></a>
+                        <ul class="sidebar-submenu">
+                            <li><a class="lan-4" href="{{ route('index') }}">Default</a></li>
+                            <li><a class="lan-5" href="{{ route('dashboard-02') }}">Ecommerce</a></li>
 
+                        </ul>
                     </li>
-                    {{-- <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-widget') }}"></use>
@@ -52,7 +55,7 @@
                             <li><a href="{{ route('general-widget') }}">General</a></li>
                             <li><a href="{{ route('chart-widget') }}">Chart</a></li>
                         </ul>
-                    </li> --}}
+                    </li>
 
                     <li class="sidebar-main-title">
                         <div>
@@ -60,7 +63,7 @@
                         </div>
                     </li>
 
-                    {{-- <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
@@ -74,7 +77,7 @@
                             <li><a href="{{ route('list-products') }}">Product list</a></li>
 
                         </ul>
-                    </li> --}}
+                    </li>
 
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
@@ -119,102 +122,16 @@
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
                             </svg><span>Purchase</span></a>
                         <ul class="sidebar-submenu">
-                            <li><a href="{{ route('purchases.create_battery') }}">Add New Battery Purchase</a></li>
+                            <li><a href="{{ route('purchases.create') }}">Add Purchase</a></li>
                             <li><a
                                     href="{{ request()->query('ref') === 'view' ? route('purchases.show', $purchase->id) : route('purchases.index') }}">View
-                                    Battery Purchase</a></li>
+                                    Supplier</a></li>
 
                         </ul>
                     </li>
 
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
-                            href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
-                            </svg><span>Repair</span></a>
-                        <ul class="sidebar-submenu">
-                            <li><a href="{{ route('repairs.create') }}">Add New Repair Battery</a></li>
-                            <li><a
-                                    href="{{ request()->query('ref') === 'view' ? route('repairs.show', $repair->id) : route('repairs.index') }}">View
-                                    Repair Battery</a></li>
-
-                        </ul>
-                    </li>
 
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
-                            href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
-                            </svg><span>Old Battery</span></a>
-                        <ul class="sidebar-submenu">
-                            <li><a href="{{ route('oldBatteries.create') }}">Add New Old Battery</a></li>
-                            <li><a
-                                    href="{{ request()->query('ref') === 'view' ? route('oldBatteries.show', $oldBattery->id) : route('oldBatteries.index') }}">View
-                                    Old Battery</a></li>
-
-                        </ul>
-                    </li>
-
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
-                            href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
-                            </svg><span>Rental</span></a>
-                        <ul class="sidebar-submenu">
-                            <li><a href="{{ route('rentals.create') }}">Add New Rental</a></li>
-                            <li><a
-                                    href="{{ request()->query('ref') === 'view' ? route('rentals.show', $rental->id) : route('rentals.index') }}">View
-                                    Rental</a></li>
-
-                        </ul>
-                    </li>
-
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
-                            href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
-                            </svg><span>Reports</span></a>
-                        <ul class="sidebar-submenu">
-                            <li><a href="{{ route('reports.customerIndex') }}">Customer Report</a></li>
-                            <li><a href="{{ route('reports.supplierIndex') }}">Supplier Report</a></li>
-                            <li><a href="{{ route('reports.batteryPurchaseIndex') }}">Battery Purchase Report</a></li>
-                            <li><a href="{{ route('reports.repairIndex') }}">Repair Report</a></li>
-                            <li><a href="{{ route('reports.repairCompleteIndex') }}">Complete Repair Report</a></li>
-                            <li><a href="{{ route('reports.RentalIndex') }}">Rental Report</a></li>
-                            <li><a href="{{ route('reports.completeRentalIndex') }}">Complete Rental Report</a></li>
-                            <li><a href="{{ route('reports.batteryIndex') }}">Battery Report</a></li>
-                            <li><a href="{{ route('reports.LubricantIndex') }}">Lubricant Report</a></li>
-
-
-
-                        </ul>
-                    </li>
-
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
-                            href="{{ route('company.create') }}">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
-                            </svg><span>Company</span></a>
-
-                    </li>
-
-
-                    {{-- <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-user') }}"></use>
@@ -227,16 +144,16 @@
                             <li><a href="{{ route('edit-profile') }}">Users Edit</a></li>
                             <li><a href="{{ route('user-cards') }}">Users Cards</a></li>
                         </ul>
-                    </li> --}}
-                    {{-- <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
+                    </li>
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
                             class="sidebar-link sidebar-title link-nav" href="{{ route('bookmark') }}">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-bookmark') }}"></use>
                             </svg>
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-bookmark') }}"> </use>
-                            </svg><span>Bookmarks</span></a></li> --}}
-                    {{-- <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
+                            </svg><span>Bookmarks</span></a></li>
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
                             class="sidebar-link sidebar-title link-nav" href="{{ route('contacts') }}">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-contact') }}"></use>
@@ -244,16 +161,16 @@
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-contact') }}"> </use>
                             </svg><span>Contacts</span></a>
-                    </li> --}}
+                    </li>
 
-                    {{-- <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
+                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a
                             class="sidebar-link sidebar-title link-nav" href="{{ route('calendar-basic') }}">
                             <svg class="stroke-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-calendar') }}"></use>
                             </svg>
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-calender') }}"></use>
-                            </svg><span>Calendar</span></a></li> --}}
+                            </svg><span>Calendar</span></a></li>
 
 
 
@@ -310,6 +227,11 @@
 
                             </li>
 
+                            <li><a class="submenu-title" href="{{ route('lubricant_purchases.index') }}"> View purchases<span
+                                class="sub-arrow"><i class="fa fa-angle-right"></i></span></a>
+
+                    </li>
+
                         </ul>
                     </li>
 
@@ -333,83 +255,7 @@
 
 
 
-                    {{-- <li class="sidebar-main-title">
-                        <div>
-                            <h6>Forms & Table</h6>
-                        </div>
-                    </li>
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
-                            href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-form') }}"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-form') }}"> </use>
-                            </svg><span>Forms</span></a>
-                        <ul class="sidebar-submenu">
-                            <li><a class="submenu-title" href="#">Form Controls<span class="sub-arrow"><i
-                                            class="fa fa-angle-right"></i></span></a>
-                                <ul class="nav-sub-childmenu submenu-content">
-                                    <li><a href="{{ route('form-validation') }}">Form Validation</a></li>
-                                    <li><a href="{{ route('base-input') }}">Base Inputs</a></li>
-                                    <li><a href="{{ route('radio-checkbox-control') }}">Checkbox & Radio</a></li>
-                                    <li><a href="{{ route('input-group') }}">Input Groups</a></li>
-                                    <li><a href="{{ route('megaoptions') }}">Mega Options</a></li>
-                                </ul>
-                            </li>
-                            <li><a class="submenu-title" href="#">Form Widgets<span class="sub-arrow"><i
-                                            class="fa fa-angle-right"></i></span></a>
-                                <ul class="nav-sub-childmenu submenu-content">
-                                    <li><a href="{{ route('datepicker') }}">Datepicker</a></li>
-                                    <li><a href="{{ route('time-picker') }}">Timepicker</a></li>
-                                    <li><a href="{{ route('datetimepicker') }}">Datetimepicker</a></li>
-                                    <li><a href="{{ route('daterangepicker') }}">Daterangepicker</a></li>
-                                    <li><a href="{{ route('touchspin') }}">Touchspin</a></li>
-                                    <li><a href="{{ route('select2') }}">Select2</a></li>
-                                    <li><a href="{{ route('switch') }}">Switch</a></li>
-                                    <li><a href="{{ route('typeahead') }}">Typeahead</a></li>
-                                    <li><a href="{{ route('clipboard') }}">Clipboard</a></li>
-                                </ul>
-                            </li>
-                            <li><a class="submenu-title" href="#">Form layout<span class="sub-arrow"><i
-                                            class="fa fa-angle-right"></i></span></a>
-                                <ul class="nav-sub-childmenu submenu-content">
-                                    <li><a href="{{ route('default-form') }}">Default Forms</a></li>
-                                    <li><a href="{{ route('form-wizard') }}">Form Wizard 1</a></li>
-                                    <li><a href="{{ route('form-wizard-two') }}">Form Wizard 2</a></li>
-                                    <li><a href="{{ route('form-wizard-three') }}">Form Wizard 3</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
-                            href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-table') }}"></use>
-                            </svg>
-                            <svg class="fill-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-table') }}"></use>
-                            </svg><span>Tables</span></a>
-                        <ul class="sidebar-submenu">
-                            <li><a class="submenu-title" href="#">Bootstrap Tables<span class="sub-arrow"><i
-                                            class="fa fa-angle-right"></i></span></a>
-                                <ul class="nav-sub-childmenu submenu-content">
-                                    <li><a href="{{ route('bootstrap-basic-table') }}">Basic Tables</a></li>
-                                    <li><a href="{{ route('table-components') }}">Table components</a></li>
-                                </ul>
-                            </li>
-                            <li><a class="submenu-title" href="#">Data Tables<span class="sub-arrow"><i
-                                            class="fa fa-angle-right"></i></span></a>
-                                <ul class="nav-sub-childmenu submenu-content">
-                                    <li><a href="{{ route('datatable-basic-init') }}">Basic Init</a></li>
-                                    <li><a href="{{ route('datatable-api') }}">API</a></li>
-                                    <li><a href="{{ route('datatable-data-source') }}">Data Sources</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="{{ route('datatable-ext-autofill') }}">Ex. Data Tables</a></li>
-                            <li><a href="{{ route('jsgrid-table') }}">Js Grid Table </a></li>
-                        </ul>
-                    </li> --}}
+
                     <li class="sidebar-main-title">
                         <div>
                             <h6>Components</h6>
@@ -570,7 +416,7 @@
                             <li><a href="{{ route('chart-peity') }}">Peity Chart</a></li>
                         </ul>
                     </li>
-                    {{-- <li class="sidebar-main-title">
+                    <li class="sidebar-main-title">
                         <div>
                             <h6>Pages</h6>
                         </div>
@@ -635,7 +481,7 @@
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="col mega-box">
+                                    {{-- <div class="col mega-box">
                                         <div class="link-section">
                                             <div class="submenu-title">
                                                 <h5> Authentication</h5>
@@ -676,8 +522,8 @@
                                                 </li>
                                                 <li><a href="{{ route('maintenance') }}">Maintenance</a></li>
                                             </ul>
-                                        </div>
-                                    </div>
+                                        </div> 
+                                    </div>  --}}
                                     <div class="col mega-box">
                                         <div class="link-section">
                                             <div class="submenu-title">
@@ -741,7 +587,7 @@
                             <li><a href="{{ route('simple-mde') }}">MDE editor</a></li>
                             <li><a href="{{ route('ace-code-editor') }}">ACE code editor </a></li>
                         </ul>
-                    </li> --}}
+                    </li>
 
                 </ul>
             </div>

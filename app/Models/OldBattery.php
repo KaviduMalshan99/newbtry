@@ -11,27 +11,15 @@ class OldBattery extends Model
 
     protected $fillable = [
         'order_id',
-        'customer_id',
         'old_battery_type',
         'old_battery_condition',
         'old_battery_value',
-        'battery_status',
-        'isActive',
         'notes',
     ];
 
+    // Relationship to the Order model (if needed)
     public function order()
     {
         return $this->belongsTo(Order::class);
-    }
-
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class);
-    }
-
-    public function rentals()
-    {
-        return $this->hasMany(Rental::class);
     }
 }

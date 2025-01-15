@@ -32,11 +32,8 @@
                             <div class="col-md-2 mb-4">
                                 <a href="{{ route('lubricants.create') }}" class="btn btn-primary btn-sm rounded">Add New Lubricant
                                     </a>
-                                    @if(session('success'))
-                                    <div class="alert alert-success">
-                                        {{ session('success') }}
-                                    </div>
-                                @endif
+                                  
+                                
                             </div>
                            
                         </div>
@@ -51,9 +48,12 @@
                                         <th scope="col">Brand</th>
                                         <th scope="col">Purchase Price</th>
                                         <th scope="col">Sale Price</th>
-                                        <th scope="col">Stock Quantity</th>
+                                        
                                         <th scope="col">Type</th>
-                                        <th scope="col">Unit</th>
+                                        {{-- <th scope="col">Unit</th> --}}
+                                        <th scope="col">Volume</th>
+                                        {{-- <th scope="col">Total Count</th> --}}
+                                        <th scope="col">Stock Quantity</th>
                                         <th scope="col">Image</th>
                                         <th scope="col">Actions</th>
                                     </tr>
@@ -63,12 +63,14 @@
                                     <tr>
                                         <td>{{ $lubricant->id }}</td>
                                         <td>{{ $lubricant->name }}</td>
-                                        <td>{{ $lubricant->brand }}</td>
+                                        <td>{{ $lubricant->brand_id }}</td>
                                         <td>{{ $lubricant->purchase_price }}</td>
                                         <td>{{ $lubricant->sale_price }}</td>
-                                        <td>{{ $lubricant->stock_quantity }}</td>
+                                        {{-- <td>{{ $lubricant->stock_quantity }}</td> --}}
                                         <td>{{ $lubricant->type }}</td>
-                                        <td>{{ $lubricant->unit }}</td>
+                                        {{-- <td>{{ $lubricant->unit }}</td> --}}
+                                        <td>{{ $lubricant->volume }} ml</td>
+                                        <td>{{ $lubricant->total_count }}</td>
                                         <td>
                                             @if($lubricant->image)
                                             <img src="{{ asset('storage/' . $lubricant->image) }}" alt="Lubricant Image" width="50" height="50">

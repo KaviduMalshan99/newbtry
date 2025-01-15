@@ -34,9 +34,8 @@
                             </div>
                             <div class="col-md-2 mb-4">
                                 <div>
-                                    <a href="{{ route('purchases.create_battery') }}"
-                                        class="btn btn-primary btn-sm rounded">Create
-                                        Battery New</a>
+                                    <a href="{{ route('purchases.create') }}" class="btn btn-primary btn-sm rounded">Create
+                                        new</a>
                                 </div>
                             </div>
                         </div>
@@ -45,10 +44,8 @@
                             <table class="display" id="keytable">
                                 <thead>
                                     <tr>
-                                        <th>Id</th>
                                         <th>Supplier Name</th>
                                         <th>Total Price</th>
-                                        <th>Payment Status</th>
                                         <th>Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -56,15 +53,13 @@
                                 <tbody>
                                     @forelse ($purchases as $purchase)
                                         <tr>
-                                            <td>IP{{ $purchase->id }}</td>
                                             <td>{{ $purchase->supplier->name }}</td>
                                             <td>{{ number_format($purchase->total_price, 2) }}</td>
-                                            <td>{{ $purchase->payment_status }}</td>
                                             <td>{{ $purchase->created_at->format('d.m.Y') }}</td>
                                             <td>
                                                 <ul class="action">
                                                     <li class="edit btn btn-sm"> <a
-                                                            href="{{ route('purchases.edit_battery', $purchase->id) }}"><i
+                                                            href="{{ route('purchases.edit', $purchase->id) }}"><i
                                                                 class="icon-pencil-alt"></i></a>
                                                     </li>
                                                     <li class="btn btn-sm"><a

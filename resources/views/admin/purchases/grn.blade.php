@@ -110,14 +110,13 @@
         <!-- Header Section -->
         <div class="header">
             <div class="logo">
-                <img src="{{ Storage::url($companyDetails->company_logo ?? '') }}" alt="Hotel Logo"
-                    style="width: 100px; height: auto;">
+                <img src="" alt="Hotel Logo" style="width: 100px; height: auto;">
             </div>
             <div class="company-info">
-                <h1>{{ $companyDetails->company_name ?? '' }}</h1>
-                <p>{{ $companyDetails->address ?? '' }}</p>
-                <p>{{ $companyDetails->email ?? '' }}</p>
-                <p>{{ $companyDetails->contact ?? '' }}</p>
+                <h1>New York Restaurant & Guest House (PVT) LTD</h1>
+                <p>12, first lane, first city, Colombo</p>
+                <p>abc@gmail.com</p>
+                <p>0771234567</p>
 
             </div>
         </div>
@@ -188,29 +187,6 @@
                 <tr>
                     <td class="label"><strong>Total Cost (LKR):</strong></td>
                     <td style="text-align: right;"><strong>{{ $purchase->total_price }}</strong></td>
-                </tr>
-            </table>
-        </div>
-
-        <!-- Section 4: Payment Details -->
-        <div class="section">
-            <h2>Payment Details</h2>
-            <table>
-                <tr>
-                    <td class="label">Payment Type:</td>
-                    <td style="text-align: right;">{{ $purchase->payment_type }}</td>
-                </tr>
-                <tr>
-                    <td class="label">Payment Date:</td>
-                    <td style="text-align: right;">{{ $purchase->updated_at }}</td>
-                </tr>
-                <tr>
-                    <td class="label">Paid Amount (LKR):</td>
-                    <td style="text-align: right;">{{ $purchase->paid_amount ?? '0' }}</td>
-                </tr>
-                <tr>
-                    <td class="label">Due Amount (LKR):</td>
-                    <td style="text-align: right;">{{ $purchase->due_amount ?? '0' }}</td>
                 </tr>
             </table>
         </div>

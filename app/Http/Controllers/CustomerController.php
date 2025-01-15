@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BatteryOrder;
 use App\Models\Customer;
-use App\Models\Repair;
 use Illuminate\Http\Request;
-use Log;
 
 class CustomerController extends Controller
 {
@@ -27,11 +24,11 @@ class CustomerController extends Controller
         ]);
 
         // Add purchase history to the data
-        // $validated['purchase_history'] = json_encode([
-        //     ['item' => 'Laptop', 'amount' => 1200, 'date' => '2024-12-01'],
-        //     ['item' => 'Laptop', 'amount' => 1200, 'date' => '2024-12-01'],
-        //     ['item' => 'Laptop', 'amount' => 1200, 'date' => '2024-12-01'],
-        // ]);
+        $validated['purchase_history'] = json_encode([
+            ['item' => 'Laptop', 'amount' => 1200, 'date' => '2024-12-01'],
+            ['item' => 'Laptop', 'amount' => 1200, 'date' => '2024-12-01'],
+            ['item' => 'Laptop', 'amount' => 1200, 'date' => '2024-12-01'],
+        ]);
 
         Customer::create($validated);
 
@@ -49,51 +46,12 @@ class CustomerController extends Controller
 
     public function viewPurchaseHistory(Customer $customer)
     {
-        try {
-            // 1. Decode purchase history and get order IDs
-            $purchaseHistories = collect(json_decode($customer->purchase_history));
-            $orderIds = $purchaseHistories->pluck('battery_order_id')->toArray();
+        // Decode the JSON purchase history
+        $purchaseHistories = collect(json_decode($customer->purchase_history));
 
-            // 2. Get battery orders
-            $batteryOrders = BatteryOrder::whereIn('order_id', $orderIds)->get();
-
-            $validOrders = [];
-
-            foreach ($batteryOrders as $order) {
-                // The items string is double-encoded in the database, so we need to:
-                // 1. First decode the outer JSON string (removes outer quotes and escapes)
-                // 2. Then decode the resulting JSON string to get the actual array
-
-                $firstDecode = json_decode($order->items);
-
-                if ($firstDecode === null) {
-                    // \Log::error('First JSON decode failed for order ' . $order->order_id . ': ' . json_last_error_msg());
-                    continue;
-                }
-
-                $items = json_decode($firstDecode, true);
-
-                if (is_array($items)) {
-                    $validOrders[] = [
-                        'order_id' => $order->order_id,
-                        'items' => $items,
-                        'total_price' => $order->total_price,
-                        'order_date' => $order->created_at,
-                    ];
-                } else {
-                    // \Log::error('Second JSON decode failed for order ' . $order->order_id . ': ' . json_last_error_msg());
-                }
-            }
-
-            return view('admin/customers.view-purchase-history', compact('validOrders', 'customer'));
-        } catch (\Exception $e) {
-            // \Log::error('Purchase history error: ' . $e->getMessage());
-            $validOrders = [];
-            return view('admin/customers.view-purchase-history', compact('validOrders', 'customer'));
-        }
+        // Pass data to the view
+        return view('admin/customers.view-purchase-history', compact('purchaseHistories', 'customer'));
     }
-
-
 
     public function edit(Customer $customer)
     {
@@ -129,11 +87,5 @@ class CustomerController extends Controller
         } catch (\Exception $e) {
             return redirect()->route('customers.index')->with('error', 'Failed to delete customer.');
         }
-    }
-
-    public function indexByCustomer($customerId)
-    {
-        $repairs = Repair::where('customer_id', $customerId)->orderBy('updated_at', 'desc')->get();
-        return view('admin.repairs_management.view', compact('repairs'));
     }
 }

@@ -2,125 +2,76 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Models\Company;
-use App\Models\Customer;
 use App\Models\OldBattery;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class OldBatteryController extends Controller
 {
-    public function create()
-    {
-        $customers = Customer::all();
-        $old_battery_conditions = ['Good', 'Average', 'Poor'];
-        return view('admin.old_batteries_management.create', compact('customers', 'old_battery_conditions'));
-    }
-
-    public function store(Request $request)
-    {
-        // Validate incoming request
-        $validatedData = $request->validate([
-            'customer_id' => 'required|exists:customers,id',
-            'old_battery_type' => 'required|string',
-            'old_battery_condition' => 'required|in:Good,Average,Poor',
-            'old_battery_value' => 'required|numeric|min:0',
-            'notes' => 'nullable|string|max:500',
-        ]);
-
-        // Store the data in the database
-        $oldBattery = OldBattery::create([
-            'customer_id' => $validatedData['customer_id'],
-            'old_battery_type' => $validatedData['old_battery_type'],
-            'old_battery_condition' => $validatedData['old_battery_condition'],
-            'old_battery_value' => $validatedData['old_battery_value'],
-            'battery_status' => 'Direct', // Assuming 'Direct' as the default value
-            'notes' => $validatedData['notes'],
-        ]);
-
-        // Redirect back with a success message
-        // return redirect()->route('oldBatteries.index')->with('success', 'Old battery added successfully.');
-        return redirect()->route('oldBatteries.bill', $oldBattery->id)->with('success', 'Old battery added successfully.');
-    }
-
+    // Display a listing of old batteries
     public function index()
     {
-        // Fetch all old batteries with related customer details
-        $oldBatteries = OldBattery::with('customer')->get();
-
-        // Return the view with old batteries data
-        return view('admin.old_batteries_management.view', compact('oldBatteries'));
+        $batteries = OldBattery::all();
+        return view('admin.batteries.old-batteries.index', compact('batteries'));
     }
 
+    // Show the form to create a new old battery
+    public function create()
+    {
+        return view('admin.batteries.old-batteries.create');
+    }
+
+    // Store a newly created old battery in the database
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'order_id' => 'required|exists:orders,id',
+            'old_battery_type' => 'required|string',
+            'old_battery_condition' => 'required|string',
+            'old_battery_value' => 'required|numeric',
+            'notes' => 'nullable|string',
+        ]);
+
+        OldBattery::create($validatedData);
+        return redirect()->route('admin.old-batteries.index')->with('success', 'Old Battery added successfully!');
+    }
+
+    // Display the specified old battery
+    public function show($id)
+    {
+        $battery = OldBattery::findOrFail($id);
+        return view('admin.batteries.old-batteries.show', compact('battery'));
+    }
+
+    // Show the form to edit an existing old battery
     public function edit($id)
     {
-        $oldBattery = OldBattery::findOrFail($id);
-        $customers = Customer::all();
-        $old_battery_conditions = ['Good', 'Average', 'Poor'];
-        return view('admin.old_batteries_management.update', compact('oldBattery', 'customers', 'old_battery_conditions'));
+        $battery = OldBattery::findOrFail($id);
+        return view('admin.batteries.old-batteries.edit', compact('battery'));
     }
 
+    // Update the specified old battery in the database
     public function update(Request $request, $id)
     {
-        // Validate incoming request
         $validatedData = $request->validate([
-            'customer_id' => 'required|exists:customers,id',
+            'order_id' => 'required|exists:orders,id',
             'old_battery_type' => 'required|string',
-            'old_battery_condition' => 'required|in:Good,Average,Poor',
-            'old_battery_value' => 'required|numeric|min:0',
-            'notes' => 'nullable|string|max:500',
+            'old_battery_condition' => 'required|string',
+            'old_battery_value' => 'required|numeric',
+            'notes' => 'nullable|string',
         ]);
 
-        // Find the old battery by ID
-        $oldBattery = OldBattery::findOrFail($id);
+        $battery = OldBattery::findOrFail($id);
+        $battery->update($validatedData);
 
-        // Update the old battery data
-        $oldBattery->update([
-            'customer_id' => $validatedData['customer_id'],
-            'old_battery_type' => $validatedData['old_battery_type'],
-            'old_battery_condition' => $validatedData['old_battery_condition'],
-            'old_battery_value' => $validatedData['old_battery_value'],
-            'notes' => $validatedData['notes'],
-        ]);
-
-        // Redirect back with a success message
-        return redirect()->route('oldBatteries.index')->with('success', 'Old battery updated successfully.');
+        return redirect()->route('admin.old-batteries.index')->with('success', 'Old Battery updated successfully!');
     }
 
-    public function viewOldBatteryDetails($id)
-    {
-        // Fetch the old battery with related customer details
-        $oldBattery = OldBattery::with('customer')->findOrFail($id);
-
-        // Return the view with old battery data
-        return view('admin.old_batteries_management.view_old_battery', compact('oldBattery'));
-    }
-
+    // Remove the specified old battery from the database
     public function destroy($id)
     {
-        // Find the old battery by ID
-        $oldBattery = OldBattery::findOrFail($id);
+        $battery = OldBattery::findOrFail($id);
+        $battery->delete();
 
-        // Delete the old battery
-        $oldBattery->delete();
-
-        // Redirect back with a success message
-        return redirect()->route('oldBatteries.index')->with('success', 'Old battery deleted successfully.');
-    }
-
-    public function generateBill($id)
-    {
-        $oldBattery = OldBattery::with(['customer'])->findOrFail($id);
-        // Current date and time
-        $currentDateTime = Carbon::now()->format('d.m.Y H:i');
-        $companyDetails = Company::first();
-
-        // Pass the data to the view
-        return view('admin.old_batteries_management.bill', [
-            'oldBattery' => $oldBattery,
-            'currentDateTime' => $currentDateTime,
-            'companyDetails' => $companyDetails,
-        ]);
+        return redirect()->route('admin.old-batteries.index')->with('success', 'Old Battery deleted successfully!');
     }
 }
