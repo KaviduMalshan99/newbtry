@@ -198,10 +198,13 @@
                     </div>
                 </div>
             </div>
+            @php
+                $balanceStats = app(\App\Http\Controllers\DashboardController::class)->getBalanceStatistics();
+            @endphp
             <div class="col-xxl-8 col-lg-12 box-col-12">
                 <div class="card">
                     <div class="card-header card-no-border">
-                        <h5>Overall balance</h5>
+                        <h5>Battery Overall balance</h5>
                     </div>
                     <div class="card-body pt-0">
                         <div class="row m-0 overall-card">
@@ -234,19 +237,22 @@
                                                 </svg>
                                             </div>
                                             <div> <span class="f-light">Income</span>
-                                                <h6 class="mt-1 mb-0">$22,678</h6>
+                                                <h6 class="mt-1 mb-0">Rs:
+                                                    {{ number_format($balanceStats['earnings']['total']) }}</h6>
                                             </div>
                                             <div class="ms-auto text-end">
                                                 <div class="dropdown icon-dropdown">
                                                     <button class="btn dropdown-toggle" id="incomedropdown"
                                                         type="button" data-bs-toggle="dropdown" aria-expanded="false"><i
                                                             class="icon-more-alt"></i></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                    {{-- <div class="dropdown-menu dropdown-menu-end"
                                                         aria-labelledby="incomedropdown"><a class="dropdown-item"
                                                             href="#">Today</a><a class="dropdown-item"
                                                             href="#">Tomorrow</a><a class="dropdown-item"
-                                                            href="#">Yesterday </a></div>
-                                                </div><span class="font-success">+$456</span>
+                                                            href="#">Yesterday </a>
+                                                        </div> --}}
+                                                </div><span
+                                                    class="{{ $balanceStats['earnings']['change'] >= 0 ? 'font-success' : 'font-danger' }}">{{ $balanceStats['earnings']['change'] >= 0 ? '+' : '-' }}Rs:{{ number_format(abs($balanceStats['earnings']['change'])) }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -258,19 +264,21 @@
                                                 </svg>
                                             </div>
                                             <div> <span class="f-light">Expense</span>
-                                                <h6 class="mt-1 mb-0">$12,057</h6>
+                                                <h6 class="mt-1 mb-0">Rs:
+                                                    {{ number_format($balanceStats['expense']['total']) }}</h6>
                                             </div>
                                             <div class="ms-auto text-end">
                                                 <div class="dropdown icon-dropdown">
                                                     <button class="btn dropdown-toggle" id="expensedropdown"
                                                         type="button" data-bs-toggle="dropdown" aria-expanded="false"><i
                                                             class="icon-more-alt"></i></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                    {{-- <div class="dropdown-menu dropdown-menu-end"
                                                         aria-labelledby="expensedropdown"><a class="dropdown-item"
                                                             href="#">Today</a><a class="dropdown-item"
                                                             href="#">Tomorrow</a><a class="dropdown-item"
-                                                            href="#">Yesterday </a></div>
-                                                </div><span class="font-danger">+$256</span>
+                                                            href="#">Yesterday </a></div> --}}
+                                                </div><span
+                                                    class="{{ $balanceStats['expense']['change'] >= 0 ? 'font-success' : 'font-danger' }}">{{ $balanceStats['expense']['change'] >= 0 ? '+' : '-' }}${{ number_format(abs($balanceStats['earnings']['change'])) }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -283,18 +291,19 @@
                                                 </svg>
                                             </div>
                                             <div> <span class="f-light">Cashback</span>
-                                                <h6 class="mt-1 mb-0">8,475</h6>
+                                                <h6 class="mt-1 mb-0">
+                                                    {{ number_format($balanceStats['cashback']['total']) }}</h6>
                                             </div>
                                             <div class="ms-auto text-end">
                                                 <div class="dropdown icon-dropdown">
                                                     <button class="btn dropdown-toggle" id="cashbackdropdown"
                                                         type="button" data-bs-toggle="dropdown" aria-expanded="false"><i
                                                             class="icon-more-alt"></i></button>
-                                                    <div class="dropdown-menu dropdown-menu-end"
+                                                    {{-- <div class="dropdown-menu dropdown-menu-end"
                                                         aria-labelledby="cashbackdropdown"><a class="dropdown-item"
                                                             href="#">Today</a><a class="dropdown-item"
                                                             href="#">Tomorrow</a><a class="dropdown-item"
-                                                            href="#">Yesterday </a></div>
+                                                            href="#">Yesterday </a></div> --}}
                                                 </div>
                                             </div>
                                         </div>
@@ -309,8 +318,8 @@
                 <div class="card height-equal">
                     <div class="card-header card-no-border">
                         <div class="header-top">
-                            <h5>Recent Orders</h5>
-                            <div class="card-header-right-icon">
+                            <h5>Recent Orders Payment Status</h5>
+                            {{-- <div class="card-header-right-icon">
                                 <div class="dropdown icon-dropdown">
                                     <button class="btn dropdown-toggle" id="recentdropdown" type="button"
                                         data-bs-toggle="dropdown" aria-expanded="false"><i
@@ -320,7 +329,7 @@
                                             href="#">Monthly</a><a class="dropdown-item" href="#">Yearly</a>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="card-body pt-0">
@@ -332,25 +341,38 @@
                             </div>
                             <div class="col-xl-6">
                                 <ul class="order-content">
-                                    <li> <span class="recent-circle bg-primary"> </span>
-                                        <div> <span class="f-light f-w-500">Cancelled </span>
-                                            <h4 class="mt-1 mb-0">2,302<span class="f-light f-14 f-w-400 ms-1">(Last 6
-                                                    Month) </span></h4>
+                                    <li>
+                                        <span class="recent-circle bg-primary"></span>
+                                        <div>
+                                            <span class="f-light f-w-500">Not Completed</span>
+                                            <h4 class="mt-1 mb-0">--<span class="f-light f-14 f-w-400 ms-1">(Last 6
+                                                    Month)</span></h4>
                                         </div>
                                     </li>
-                                    <li> <span class="recent-circle bg-info"></span>
-                                        <div> <span class="f-light f-w-500">Delivered</span>
-                                            <h4 class="mt-1 mb-0">9,302<span class="f-light f-14 f-w-400 ms-1">(Last 6
-                                                    Month) </span></h4>
+                                    <li>
+                                        <span class="recent-circle bg-info"></span>
+                                        <div>
+                                            <span class="f-light f-w-500">Completed</span>
+                                            <h4 class="mt-1 mb-0">--<span class="f-light f-14 f-w-400 ms-1">(Last 6
+                                                    Month)</span></h4>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="recent-circle bg-warning"></span>
+                                        <div>
+                                            <span class="f-light f-w-500">Pending</span>
+                                            <h4 class="mt-1 mb-0">--<span class="f-light f-14 f-w-400 ms-1">(Last 6
+                                                    Month)</span></h4>
                                         </div>
                                     </li>
                                 </ul>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xxl-4 col-xl-5 col-md-6 col-sm-7 notification box-col-6">
+            {{-- <div class="col-xxl-4 col-xl-5 col-md-6 col-sm-7 notification box-col-6">
                 <div class="card height-equal">
                     <div class="card-header card-no-border">
                         <div class="header-top">
@@ -402,8 +424,8 @@
                         </ul>
                     </div>
                 </div>
-            </div>
-            <div class="col-xxl-4 col-md-6 appointment-sec box-col-6">
+            </div> --}}
+            {{-- <div class="col-xxl-4 col-md-6 appointment-sec box-col-6">
                 <div class="appointment">
                     <div class="card">
                         <div class="card-header card-no-border">
@@ -486,8 +508,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xxl-4 col-md-6 box-col-6">
+            </div> --}}
+            {{-- <div class="col-xxl-4 col-md-6 box-col-6">
                 <div class="card">
                     <div class="card-header card-no-border">
                         <div class="header-top">
@@ -510,8 +532,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-xxl-3 col-md-6 box-col-6 col-ed-none wow zoomIn">
+            </div> --}}
+            {{-- <div class="col-xxl-3 col-md-6 box-col-6 col-ed-none wow zoomIn">
                 <div class="card purchase-card"><img class="img-fluid"
                         src="{{ asset('assets/images/dashboard/purchase.png') }}" alt="vector mens with leptop">
                     <div class="card-body pt-3">
@@ -520,15 +542,15 @@
                             href="https://1.envato.market/3GVzd" target="_blank">Purchase Now</a>
                     </div>
                 </div>
-            </div>
+            </div> --}}
             <div class="col-xxl-4 col-md-6 box-col-6 col-ed-6">
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="card">
                             <div class="card-header card-no-border">
                                 <div class="header-top">
-                                    <h5>Total Users</h5>
-                                    <div class="dropdown icon-dropdown">
+                                    <h5>Total Customers</h5>
+                                    {{-- <div class="dropdown icon-dropdown">
                                         <button class="btn dropdown-toggle" id="userdropdown" type="button"
                                             data-bs-toggle="dropdown" aria-expanded="false"><i
                                                 class="icon-more-alt"></i></button>
@@ -536,9 +558,13 @@
                                                 class="dropdown-item" href="#">Weekly</a><a class="dropdown-item"
                                                 href="#">Monthly</a><a class="dropdown-item"
                                                 href="#">Yearly</a></div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
+
+                            @php
+                                $userStats = app(\App\Http\Controllers\DashboardController::class)->getUserStatistics();
+                            @endphp
                             <div class="card-body pt-0">
                                 <ul class="user-list">
                                     <li>
@@ -547,10 +573,16 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <h5 class="mb-1">178,098</h5><span
-                                                class="font-primary d-flex align-items-center"><i
-                                                    class="icon-arrow-up icon-rotate me-1"> </i><span
-                                                    class="f-w-500">+30.89</span></span>
+                                            <h5 class="mb-1">{{ number_format($userStats['active_users']['count']) }}
+                                            </h5><span class="font-primary d-flex align-items-center">
+                                                @if ($userStats['active_users']['percentage'] > 0)
+                                                    <i class="icon-arrow-up icon-rotate me-1"></i>
+                                                @else
+                                                    <i class="icon-arrow-down icon-rotate me-1"></i>
+                                                @endif
+                                                <span
+                                                    class="f-w-500">{{ abs($userStats['active_users']['percentage']) }}%</span>
+                                            </span>
                                         </div>
                                     </li>
                                     <li>
@@ -559,10 +591,16 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <h5 class="mb-1">178,098</h5><span
-                                                class="font-danger d-flex align-items-center"><i
-                                                    class="icon-arrow-down icon-rotate me-1"></i><span
-                                                    class="f-w-500">-08.89</span></span>
+                                            <h5 class="mb-1">{{ number_format($userStats['inactive_users']['count']) }}
+                                            </h5><span class="font-danger d-flex align-items-center">
+                                                @if ($userStats['inactive_users']['percentage'] > 0)
+                                                    <i class="icon-arrow-up icon-rotate me-1"></i>
+                                                @else
+                                                    <i class="icon-arrow-down icon-rotate me-1"></i>
+                                                @endif
+                                                <span
+                                                    class="f-w-500">{{ abs($userStats['inactive_users']['percentage']) }}%</span>
+                                            </span>
                                         </div>
                                     </li>
                                 </ul>
@@ -574,7 +612,7 @@
                             <div class="card-header card-no-border">
                                 <div class="header-top">
                                     <h5>Customer Growth</h5>
-                                    <div class="dropdown icon-dropdown">
+                                    {{-- <div class="dropdown icon-dropdown">
                                         <button class="btn dropdown-toggle" id="growthdropdown" type="button"
                                             data-bs-toggle="dropdown" aria-expanded="false"><i
                                                 class="icon-more-alt"></i></button>
@@ -582,7 +620,7 @@
                                                 class="dropdown-item" href="#">Weekly</a><a class="dropdown-item"
                                                 href="#">Monthly</a><a class="dropdown-item"
                                                 href="#">Yearly</a></div>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             <div class="card-body pt-0">
@@ -595,56 +633,81 @@
                 </div>
             </div>
             <div class="col-xxl-5 col-lg-8 col-md-11 box-col-8 col-ed-6">
-                <div class="card papernote-wrap">
-                    <div class="card-header card-no-border">
-                        <div class="header-top">
-                            <h5>PaperNote</h5><a class="f-light d-flex align-items-center" href="#">View project <i
-                                    class="f-w-700 icon-arrow-top-right"></i></a>
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-header card-no-border">
+                            <div class="header-top">
+                                <h5>Total Suppliers</h5>
+                                {{-- <div class="dropdown icon-dropdown">
+                                    <button class="btn dropdown-toggle" id="userdropdown" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false"><i
+                                            class="icon-more-alt"></i></button>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userdropdown"><a
+                                            class="dropdown-item" href="#">Weekly</a><a class="dropdown-item"
+                                            href="#">Monthly</a><a class="dropdown-item"
+                                            href="#">Yearly</a></div>
+                                </div> --}}
+                            </div>
+                        </div>
+
+                        @php
+                            $supplierStats = app(
+                                \App\Http\Controllers\DashboardController::class,
+                            )->getSupplierStatistics();
+                        @endphp
+                        <div class="card-body pt-0">
+                            <ul class="user-list">
+                                <li>
+                                    <div class="user-icon primary">
+                                        <div class="user-box"><i class="font-primary" data-feather="user-plus"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">{{ number_format($supplierStats['active_users']['count']) }}
+                                        </h5><span class="font-primary d-flex align-items-center">
+                                            @if ($supplierStats['active_users']['percentage'] > 0)
+                                                <i class="icon-arrow-up icon-rotate me-1"></i>
+                                            @else
+                                                <i class="icon-arrow-down icon-rotate me-1"></i>
+                                            @endif
+                                            <span
+                                                class="f-w-500">{{ abs($supplierStats['active_users']['percentage']) }}%</span>
+                                        </span>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="user-icon success">
+                                        <div class="user-box"><i class="font-success" data-feather="user-minus"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-1">{{ number_format($supplierStats['inactive_users']['count']) }}
+                                        </h5><span class="font-danger d-flex align-items-center">
+                                            @if ($supplierStats['inactive_users']['percentage'] > 0)
+                                                <i class="icon-arrow-up icon-rotate me-1"></i>
+                                            @else
+                                                <i class="icon-arrow-down icon-rotate me-1"></i>
+                                            @endif
+                                            <span
+                                                class="f-w-500">{{ abs($supplierStats['inactive_users']['percentage']) }}%</span>
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                    <div class="card-body pt-0"> <img class="banner-img img-fluid"
-                            src="{{ asset('assets/images/dashboard/papernote.jpg') }}" alt="multicolor background">
-                        <div class="note-content mt-sm-4 mt-2">
-                            <p>Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia
-                                consequat duis enim velit mollit.</p>
-                            <div class="note-labels">
-                                <ul>
-                                    <li> <span class="badge badge-light-primary">SAAS</span></li>
-                                    <li> <span class="badge badge-light-success">E-Commerce</span></li>
-                                    <li> <span class="badge badge-light-warning">Crypto</span></li>
-                                    <li> <span class="badge badge-light-info">Project</span></li>
-                                    <li> <span class="badge badge-light-secondary">NFT</span></li>
-                                    <li> <span class="badge badge-light-light">+9</span></li>
-                                </ul>
-                                <div class="last-label"> <span class="badge badge-light-success">Inprogress</span></div>
+                </div>
+                <div class="col-xl-12">
+                    <div class="card growth-wrap">
+                        <div class="card-header card-no-border">
+                            <div class="header-top">
+                                <h5>Supplier Growth</h5>
+
                             </div>
-                            <div class="mt-sm-4 mt-2 user-details">
-                                <div class="customers">
-                                    <ul>
-                                        <li class="d-inline-block"><img class="img-40 rounded-circle"
-                                                src="{{ asset('assets/images/dashboard/user/1.jpg') }}" alt="user">
-                                        </li>
-                                        <li class="d-inline-block"><img class="img-40 rounded-circle"
-                                                src="{{ asset('assets/images/dashboard/user/6.jpg') }}" alt="user">
-                                        </li>
-                                        <li class="d-inline-block"><img class="img-40 rounded-circle"
-                                                src="{{ asset('assets/images/dashboard/user/7.jpg') }}" alt="user">
-                                        </li>
-                                        <li class="d-inline-block"><img class="img-40 rounded-circle"
-                                                src="{{ asset('assets/images/dashboard/user/3.jpg') }}" alt="user">
-                                        </li>
-                                        <li class="d-inline-block"><img class="img-40 rounded-circle"
-                                                src="{{ asset('assets/images/dashboard/user/8.jpg') }}" alt="user">
-                                        </li>
-                                        <li class="d-inline-block">
-                                            <div class="light-card"><span class="f-w-500">+5</span></div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <h5 class="mb-0 font-primary f-18 me-1">$239,098</h5><span
-                                        class="f-light f-w-500">(Budget)</span>
-                                </div>
+                        </div>
+                        <div class="card-body pt-0">
+                            <div class="growth-wrapper">
+                                <div id="growthchart2"></div>
                             </div>
                         </div>
                     </div>
@@ -658,6 +721,41 @@
 @endsection
 
 @section('script')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/dashboard/recent-orders')
+                .then(response => response.json())
+                .then(data => {
+                    // Update HTML dynamically
+                    document.querySelector('.order-content li:nth-child(1) h4').innerHTML =
+                        `${data.notCompletedPaymentOrders} <span class="f-light f-14 f-w-400 ms-1">(Last 6 Month)</span>`;
+                    document.querySelector('.order-content li:nth-child(2) h4').innerHTML =
+                        `${data.completedPaymentOrders} <span class="f-light f-14 f-w-400 ms-1">(Last 6 Month)</span>`;
+                    document.querySelector('.order-content li:nth-child(3) h4').innerHTML =
+                        `${data.pendingPaymentOrders} <span class="f-light f-14 f-w-400 ms-1">(Last 6 Month)</span>`;
+
+                    // Update chart
+                    initRecentChart(data.notCompletedPaymentOrders, data.completedPaymentOrders, data
+                        .pendingPaymentOrders);
+                })
+                .catch(error => console.error('Error fetching recent orders:', error));
+        });
+
+        function initRecentChart(NotCompleted, Completed, Pending) {
+            var options = {
+                chart: {
+                    type: 'pie',
+                    height: 300
+                },
+                series: [NotCompleted, Completed, Pending],
+                labels: ['Not Completed', 'Completed', 'Pending'],
+                colors: ['#FF4560', '#00E396', '#FEB019'],
+            };
+
+            var chart = new ApexCharts(document.querySelector("#recentchart"), options);
+            chart.render();
+        }
+    </script>
     <script src="{{ asset('assets/js/clock.js') }}"></script>
     <script src="{{ asset('assets/js/chart/apex-chart/moment.min.js') }}"></script>
     <script src="{{ asset('assets/js/notify/bootstrap-notify.min.js') }}"></script>

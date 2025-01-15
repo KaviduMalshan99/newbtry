@@ -527,189 +527,354 @@ var options = {
       ]
   };
 
+ // Overall Balance Chart
+var chart_currently = {
+    series: [],
+    chart: {
+        type: 'bar',
+        height: 300,
+        stacked: true,
+        toolbar: {
+            show: false,
+        },
+        dropShadow: {
+            enabled: true,
+            top: 8,
+            left: 0,
+            blur: 10,
+            color: '#7064F5',
+            opacity: 0.1,
+        },
+    },
+    plotOptions: {
+        bar: {
+            horizontal: false,
+            columnWidth: '25px',
+            borderRadius: 0,
+        },
+    },
+    grid: {
+        show: true,
+        borderColor: 'var(--chart-border)',
+    },
+    dataLabels: {
+        enabled: false,
+    },
+    stroke: {
+        width: 2,
+        dashArray: 0,
+        lineCap: 'butt',
+        colors: "#fff",
+    },
+    fill: {
+        opacity: 1,
+    },
+    legend: {
+        show: false,
+    },
+    states: {
+        hover: {
+            filter: {
+                type: 'darken',
+                value: 1,
+            },
+        },
+    },
+    colors: ['#ffa941', '#7366ff'], // Update colors as per your requirements
+    yaxis: {
+        tickAmount: 3,
+        labels: {
+            show: true,
+            style: {
+                fontFamily: 'Rubik, sans-serif',
+            },
+        },
+        axisBorder: {
+            show: false,
+        },
+        axisTicks: {
+            show: false,
+        },
+    },
+    xaxis: {
+        categories: [], // Will be populated dynamically
+        labels: {
+            style: {
+                fontFamily: 'Rubik, sans-serif',
+            },
+        },
+        axisBorder: {
+            show: false,
+        },
+        axisTicks: {
+            show: false,
+        },
+    },
+    responsive: [
+        {
+            breakpoint: 1661,
+            options: {
+                chart: {
+                    height: 290,
+                },
+            },
+        },
+        {
+            breakpoint: 767,
+            options: {
+                plotOptions: {
+                    bar: {
+                        columnWidth: '35px',
+                    },
+                },
+                yaxis: {
+                    labels: {
+                        show: false,
+                    },
+                },
+            },
+        },
+        {
+            breakpoint: 481,
+            options: {
+                chart: {
+                    height: 200,
+                },
+            },
+        },
+        {
+            breakpoint: 420,
+            options: {
+                chart: {
+                    height: 170,
+                },
+                plotOptions: {
+                    bar: {
+                        columnWidth: '40px',
+                    },
+                },
+            },
+        },
+    ],
+};
 
-
-var chart = new ApexCharts(document.querySelector("#chart-currently"), options);
+// Initialize chart
+var chart = new ApexCharts(document.querySelector("#chart-currently"), chart_currently);
 chart.render();
 
+// Fetch and update chart data
+fetch('/dashboard/balance-data')
+    .then(response => response.json())
+    .then(data => {
+        // Access `chart_data` from the response
+        const chartData = data.chart_data || [];
+        const dates = chartData.map(item => item.date);
+        const earnings = chartData.map(item => parseFloat(item.earnings));
+        const expenses = chartData.map(item => parseFloat(item.expenses));
+
+        // Update the chart with the fetched data
+        chart.updateOptions({
+            xaxis: {
+                categories: dates, // Set the x-axis categories as dates
+            },
+        });
+
+        chart.updateSeries([
+            {
+                name: 'Earning',
+                data: earnings, // Populate earnings data
+            },
+            {
+                name: 'Expense',
+                data: expenses, // Populate expenses data
+            },
+        ]);
+    })
+    .catch(error => console.error('Error fetching data:', error));
+
+
+
+// var chart = new ApexCharts(document.querySelector("#chart-currently"), options);
+// chart.render();
+
 // recent chart
-var recentoptions = {
-    series: [100],
-    chart: {
-    height: 290,
-    type: 'radialBar',
-    toolbar: {
-      show: false
-    }
-  },
-  plotOptions: {
-    radialBar: {
-        hollow: {
-        margin: 0,
-        size: '60%',
-        background: 'var(--recent-chart-bg)',
-        image: undefined,
-        imageOffsetX: 0,
-        imageOffsetY: 0,
-        position: 'front',
-        dropShadow: {
-          enabled: true,
-          top: 3,
-          left: 0,
-          blur: 4,
-          opacity: 0.05
-        }
-      },
-      track: {
-        background: '#F4F4F4',
-        strokeWidth: '67%',
-        margin: 0,
-        dropShadow: {
-          enabled: true,
-          top: 0,
-          left: 0,
-          blur: 10,
-          color: '#ddd',
-          opacity: 1
-        }
-      },
+// var recentoptions = {
+//     series: [100],
+//     chart: {
+//     height: 290,
+//     type: 'radialBar',
+//     toolbar: {
+//       show: false
+//     }
+//   },
+//   plotOptions: {
+//     radialBar: {
+//         hollow: {
+//         margin: 0,
+//         size: '60%',
+//         background: 'var(--recent-chart-bg)',
+//         image: undefined,
+//         imageOffsetX: 0,
+//         imageOffsetY: 0,
+//         position: 'front',
+//         dropShadow: {
+//           enabled: true,
+//           top: 3,
+//           left: 0,
+//           blur: 4,
+//           opacity: 0.05
+//         }
+//       },
+//       track: {
+//         background: '#F4F4F4',
+//         strokeWidth: '67%',
+//         margin: 0,
+//         dropShadow: {
+//           enabled: true,
+//           top: 0,
+//           left: 0,
+//           blur: 10,
+//           color: '#ddd',
+//           opacity: 1
+//         }
+//       },
 
-      dataLabels: {
-        show: true,
-        name: {
-          offsetY: 30,
-          show: true,
-          color: '#888',
-          fontSize: '17px',
-          fontWeight: '500',
-          fontFamily: 'Rubik, sans-serif',
-        },
-        value: {
-          formatter: function(val) {
-            return parseInt(val);
-          },
-          offsetY: -8,
-          color: '#111',
-          fontSize: '36px',
-          show: true,
-        }
-      }
-    }
-  },
-  fill: {
-    type: 'gradient',
-    gradient: {
-      shade: 'dark',
-      type: 'horizontal',
-      shadeIntensity: 0.5,
-      opacityFrom: 1,
-      opacityTo: 1,
-      colorStops: [
-        {
-          offset: 0,
-          color: "#7366FF",
-          opacity: 1
-        },
-        {
-          offset: 20,
-          color: "#3EA4F1",
-          opacity: 1
-        },
-        {
-          offset: 100,
-          color: "#FFFFFF",
-          opacity: 1
-        },
-      ]
-    }
-  },
-  stroke: {
-    lineCap: 'round'
-  },
-  labels: ['Total Profit'],
-  responsive: [
-        {
-          breakpoint: 1840,
-          options:{
-            chart: {
-                height: 260,
-            }
-          }
-        },
-        {
-          breakpoint: 1700,
-          options:{
-            chart: {
-                height: 250,
-            }
-          }
-        },
-        {
-          breakpoint: 1660,
-          options:{
-            chart: {
-                height: 230,
-                dataLabels: {
-                  name: {
-                    fontSize: '15px',
-                  }
-                }
-            },
-          },
-        },
-        {
-          breakpoint: 1561,
-          options:{
-            chart: {
-                height: 275,
-            },
-          },
-        },
-        {
-          breakpoint: 1400,
-          options:{
-            chart: {
-                height: 360,
-            },
-          },
-        },
-        {
-          breakpoint: 1361,
-          options:{
-            chart: {
-                height: 300,
-            },
-          },
-        },
-        {
-          breakpoint: 1200,
-          options:{
-            chart: {
-                height: 230,
-            },
-          },
-        },
-        {
-          breakpoint: 1007,
-          options:{
-            chart: {
-                height: 240,
-            },
-          },
-        },
-        {
-          breakpoint: 600,
-          options:{
-            chart: {
-                height: 230,
-            },
-          },
-        },
-      ]
-  };
+//       dataLabels: {
+//         show: true,
+//         name: {
+//           offsetY: 30,
+//           show: true,
+//           color: '#888',
+//           fontSize: '17px',
+//           fontWeight: '500',
+//           fontFamily: 'Rubik, sans-serif',
+//         },
+//         value: {
+//           formatter: function(val) {
+//             return parseInt(val);
+//           },
+//           offsetY: -8,
+//           color: '#111',
+//           fontSize: '36px',
+//           show: true,
+//         }
+//       }
+//     }
+//   },
+//   fill: {
+//     type: 'gradient',
+//     gradient: {
+//       shade: 'dark',
+//       type: 'horizontal',
+//       shadeIntensity: 0.5,
+//       opacityFrom: 1,
+//       opacityTo: 1,
+//       colorStops: [
+//         {
+//           offset: 0,
+//           color: "#7366FF",
+//           opacity: 1
+//         },
+//         {
+//           offset: 20,
+//           color: "#3EA4F1",
+//           opacity: 1
+//         },
+//         {
+//           offset: 100,
+//           color: "#FFFFFF",
+//           opacity: 1
+//         },
+//       ]
+//     }
+//   },
+//   stroke: {
+//     lineCap: 'round'
+//   },
+//   labels: ['Total Profit'],
+//   responsive: [
+//         {
+//           breakpoint: 1840,
+//           options:{
+//             chart: {
+//                 height: 260,
+//             }
+//           }
+//         },
+//         {
+//           breakpoint: 1700,
+//           options:{
+//             chart: {
+//                 height: 250,
+//             }
+//           }
+//         },
+//         {
+//           breakpoint: 1660,
+//           options:{
+//             chart: {
+//                 height: 230,
+//                 dataLabels: {
+//                   name: {
+//                     fontSize: '15px',
+//                   }
+//                 }
+//             },
+//           },
+//         },
+//         {
+//           breakpoint: 1561,
+//           options:{
+//             chart: {
+//                 height: 275,
+//             },
+//           },
+//         },
+//         {
+//           breakpoint: 1400,
+//           options:{
+//             chart: {
+//                 height: 360,
+//             },
+//           },
+//         },
+//         {
+//           breakpoint: 1361,
+//           options:{
+//             chart: {
+//                 height: 300,
+//             },
+//           },
+//         },
+//         {
+//           breakpoint: 1200,
+//           options:{
+//             chart: {
+//                 height: 230,
+//             },
+//           },
+//         },
+//         {
+//           breakpoint: 1007,
+//           options:{
+//             chart: {
+//                 height: 240,
+//             },
+//           },
+//         },
+//         {
+//           breakpoint: 600,
+//           options:{
+//             chart: {
+//                 height: 230,
+//             },
+//           },
+//         },
+//       ]
+//   };
 
-  var recentchart = new ApexCharts(document.querySelector("#recentchart"), recentoptions);
-  recentchart.render();
+//   var recentchart = new ApexCharts(document.querySelector("#recentchart"), recentoptions);
+//   recentchart.render();
 
 
   // schedule chart
@@ -989,7 +1154,9 @@ var growthoptions = {
 };
 
 var growthChart = new ApexCharts(document.querySelector("#growthchart"), growthoptions);
+var growthChart2 = new ApexCharts(document.querySelector("#growthchart2"), growthoptions);
 growthChart.render();
+growthChart2.render();
 
 // Fetch and update data
 fetch('/dashboard/growth-data')
@@ -1005,6 +1172,25 @@ fetch('/dashboard/growth-data')
         });
 
         growthChart.updateSeries([{
+            name: 'Growth',
+            data: growth
+        }]);
+    });
+
+// Fetch and update data
+fetch('/dashboard/growth-supplier-data')
+    .then(response => response.json())
+    .then(data => {
+        const months = data.map(item => item.month);
+        const growth = data.map(item => item.growth);
+
+        growthChart2.updateOptions({
+            xaxis: {
+                categories: months
+            }
+        });
+
+        growthChart2.updateSeries([{
             name: 'Growth',
             data: growth
         }]);
