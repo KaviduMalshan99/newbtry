@@ -24,6 +24,12 @@ return new class extends Migration
             $table->decimal('new_battery_price', 10, 2); // Price of New Battery
             $table->integer('new_battery_quantity');
             $table->decimal('price_adjustment', 10, 2); // Difference in Prices
+            $table->decimal('battery_discount', 10, 2)->nullable();
+            $table->decimal('old_battery_discount_value', 10, 2)->nullable;
+            $table->decimal('subtotal', 10, 2);
+            $table->decimal('total_price', 10, 2);
+            $table->decimal('paid_amount', 10, 2)->default(0); // New column
+            $table->decimal('due_amount', 10, 2)->default(0);  // New column
             $table->enum('payment_type', ['Cash', 'Card', 'Bank Transfer'])->default('Cash'); // Payment Type
             $table->enum('payment_status', ['Not Completed', 'Completed', 'Pending'])->default('Not Completed'); // Payment Status
             $table->enum('refund_payment_status', ['Not Processed', 'Completed'])->default('Not Processed'); // Refund/Payment Status

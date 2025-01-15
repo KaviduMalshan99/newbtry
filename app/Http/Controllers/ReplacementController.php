@@ -234,6 +234,12 @@ class ReplacementController extends Controller
                 'new_battery_price' => $items[0]['price'],
                 'new_battery_quantity' => $items[0]['quantity'],
                 'price_adjustment' => $validatedData['total_price'],
+                'subtotal' => $validatedData['subtotal'],
+                'total_price' => $validatedData['total_price'],
+                'paid_amount' => $validatedData['paid_amount'],
+                'due_amount' => $validatedData['due_amount'],
+                'battery_discount' => $validatedData['battery_discount'],
+                'old_battery_discount_value' => $validatedData['old_battery_discount_value'],
                 'payment_type' => $validatedData['payment_type'],
                 'payment_status' => $paymentStatus,
                 'refund_payment_status' => $refundStatus

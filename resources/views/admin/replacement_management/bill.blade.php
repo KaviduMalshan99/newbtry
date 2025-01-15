@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Booking Invoice</title>
+    <title>Premium Battery Invoice</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -224,10 +224,15 @@
                     <td style="text-align: right;">{{ $replacement->price_adjustment }}</td>
                 </tr>
 
-                {{-- <tr>
+                <tr>
+                    <td class="label">Total Cost (LKR):</td>
+                    <td style="text-align: right;">{{ $replacement->total_price }}</td>
+                </tr>
+
+                <tr>
                     <td class="label">Sub Total (LKR):</td>
                     <td style="text-align: right;">{{ $replacement->subtotal }}</td>
-                </tr> --}}
+                </tr>
 
             </table>
         </div>
@@ -244,14 +249,14 @@
                     <td class="label">Payment Status:</td>
                     <td style="text-align: right;">{{ $replacement->payment_status }}</td>
                 </tr>
-                {{-- <tr>
+                <tr>
                     <td class="label">Paid Amount (LKR):</td>
                     <td style="text-align: right;">{{ $replacement->paid_amount ?? '0' }}</td>
                 </tr>
                 <tr>
                     <td class="label">Due Amount (LKR):</td>
                     <td style="text-align: right;">{{ $replacement->due_amount ?? '0' }}</td>
-                </tr> --}}
+                </tr>
             </table>
         </div>
 
