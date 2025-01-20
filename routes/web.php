@@ -624,10 +624,52 @@ Route::get('/api/repair-batteries', function () {
 use App\Http\Controllers\OrderController;
 
 Route::post('/admin/submit-order', [OrderController::class, 'submitOrder'])->name('submit.order');
-Route::get('/admin/POS/summary', [OrderController::class, 'summary'])->name('POS.summary');
+
 
 
 // brand
+
+
+// pos
+
+// Define the route for accessing the POS interface
+Route::get('/admin/POS', [PosController::class, 'index'])->name('POS.index');
+
+Route::get('/admin/POS/lubricant', [PosController::class, 'lubricant'])->name('POS.lubricant');
+
+
+Route::get('/admin/POS/lubricant-order', [LubricantController::class, 'lubricant_order'])->name('POS.lubricant_order');
+
+Route::get('/admin/POS/lubricant-bill', [LubricantController::class, 'lubricant_bill'])->name('POS.lubricant_bill');
+
+Route::get('/admin/POS/lubricant-bill/{id}', [LubricantController::class, 'lubricant_bill'])->name('POS.lubricant_bill');
+
+// Define the route for placing an order via POST request
+// Route::post('/admin/POS/place-order', [PosController::class, 'placeOrder'])->name('POS.place');
+// Route::post('/admin/POS/place-order', [PosController::class, 'storeBatteryOrder'])->name('order.place');
+
+
+// Route::post('/admin/POS/place-order', [PosController::class, 'storeOrder'])->name('POS.placeOrder');
+// Route::post('/admin/POS/lubricant/place-order', [PosController::class, 'storeOrderLubrican'])->name('POS.lubricant.placeOrder');
+// Route::get('/admin/POS/filter/{brandId}', [PosController::class, 'filterBatteriesByBrand']);
+
+// Route::get('/admin/POS/bsummary', [PosController::class, 'bsummary'])->name('POS.bsummary');
+
+Route::get('/admin/POS', [PosController::class, 'index'])->name('POS.index');
+Route::get('/products-by-brand/{brandId}', [PosController::class, 'loadProductsByBrand'])->name('POS.loadProductsByBrand');
+Route::post('/admin/POS', [PosController::class, 'storeBatteryOrder'])->name('POS.storeBatteryOrder');
+Route::post('/admin/POS/lubricant', [PosController::class, 'storeLubricantOrder'])->name('POS.storeLubricantOrder');
+Route::post('/pos/lubricant', [PosController::class, 'storeOrderLubricant'])->name('POS.lubricant.placeOrder');
+
+// store data
+
+Route::post('/admin/POS/process-lubricant-order-items', [PosController::class, 'storeLubricantOrderItems'])->name('process.lubricant.order.items');
+
+
+Route::post('/create-customer', [PosController::class, 'createCustomer'])->name('customer.create');
+Route::post('/show', [PosController::class, 'show'])->name('show');
+
+
 
 
 
@@ -677,3 +719,6 @@ Route::prefix('admin/payment')->group(function () {
     Route::put('/{l_payment}', [LpaymentController::class, 'update'])->name('l_payment.update');
     Route::delete('/{l_payment}', [LpaymentController::class, 'destroy'])->name('l_payment.destroy');
 });
+
+
+
