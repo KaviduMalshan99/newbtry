@@ -1,3 +1,6 @@
+
+@auth
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +15,7 @@
     <meta name="author" content="pixelstrap">
     <link rel="icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
     <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}" type="image/x-icon">
-    <title>Cuba - Premium Admin Template</title>
+    <title>Cuba</title>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- Google font-->
@@ -45,6 +48,13 @@
     @include('layouts.simple.css')
     @yield('style')
 </head>
+
+
+
+{{ Auth::user()->name }} {{ Auth::user()->email }}
+
+
+
 
 <body
     @if (Route::current()->getName() == 'index') onload="startTime()" @elseif (Route::current()->getName() == 'button-builder') class="button-builder" @endif>
@@ -160,7 +170,10 @@
     <!-- latest jquery-->
     @include('layouts.simple.script')
     <!-- Plugin used-->
+    @else
 
+    <p>Please <a href="{{ route('login') }}">log in</a> to access your account.</p>
+    @endauth
 </body>
 
 </html>

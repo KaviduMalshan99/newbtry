@@ -39,7 +39,7 @@ class AuthController extends Controller
         ]);
 
         // After registration, redirect to login page
-        return redirect()->route('login');
+        return redirect()->route('auth.login');
     }
 
     // Show Login Form
@@ -57,15 +57,15 @@ class AuthController extends Controller
             $user = Auth::user();
             session([
                 'user_id' => $user->user_id,
-                'user_name' => $user->name,
-                'user_email' => $user->email
+                'name' => $user->name,
+                'email' => $user->email
             ]);
             
-            return redirect()->route('admin.index'); // Redirect to admin dashboard
+            return redirect()->route('dashboard.index'); // Redirect to admin dashboard
         }
     
         // If login fails, redirect back with an error
-        return back()->withErrors(['login' => 'Invalid credentials']);
+        return back()->withErrors(['auth.login' => 'Invalid credentials']);
     }
     
 

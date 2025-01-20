@@ -24,11 +24,15 @@ return new class extends Migration
             // $table->timestamps();
 
             $table->id();
+            $table->string('user_id', 6)->unique()->nullable();
             $table->string('first_name');
             $table->string('last_name');
             $table->string('phone_number')->unique();
             $table->string('email')->unique();
             $table->string('password');
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->rememberToken();
             $table->enum('user_type', ['Admin', 'SuperAdmin', 'Cashier']);
             $table->timestamps();
         });

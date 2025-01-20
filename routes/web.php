@@ -28,9 +28,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainPosController;
 
 
-
+// Redirect to Dashboard if Authenticated, Otherwise Login
 Route::get('/', function () {
-    return redirect()->route('admin.index'); // Redirects to the admin dashboard
+    if (Auth::check()) {
+        return redirect()->route('dashboard.index');
+    }
+    return redirect()->route('login');
 });
 
 // Show Registration Form
@@ -45,16 +48,23 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 // Handle Login Form Submission
 Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
 
-// Handle Logout
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-// Admin Dashboard - Accessible only to authenticated users
-Route::get('/admin/index', [AdminController::class, 'index'])->middleware('auth')->name('admin.index');
-
+// Dashboard - Protected by Auth Middleware
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard.index');
+    })->name('dashboard.index');
+    
+    // Handle Logout
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+});
 // Redirecting after registration, login, and logout actions
 Route::get('/', function () {
     return redirect()->route('login');
+
+    
 });
+
+
 
 
 
@@ -292,7 +302,7 @@ Route::prefix('others')->group(function () {
 });
 
 Route::prefix('authentication')->group(function () {
-    Route::view('login', 'authentication.login')->name('login');
+    // Route::view('login', 'authentication.login')->name('login');
     Route::view('login-one', 'authentication.login-one')->name('login-one');
     Route::view('login-two', 'authentication.login-two')->name('login-two');
     Route::view('login-bs-validation', 'authentication.login-bs-validation')->name('login-bs-validation');

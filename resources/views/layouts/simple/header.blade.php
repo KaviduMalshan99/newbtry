@@ -188,11 +188,15 @@
                         {{-- <li><a href="#"><i data-feather="mail"></i><span>Inbox</span></a></li>
                         <li><a href="#"><i data-feather="file-text"></i><span>Taskboard</span></a></li>
                         <li><a href="#"><i data-feather="settings"></i><span>Settings</span></a></li> --}}
-                        <form action="{{ route('logout') }}" method="POST">
-                            @csrf
-                            <button type="submit">Logout</button>
-                            <li><a href=""><i data-feather="log-in"> </i><span>Log Out</span></a></li>
-                        </form>
+                        <a href="{{ route('logout') }}" 
+                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                Logout
+                            </a>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+
 
                     </ul>
                 </li>
