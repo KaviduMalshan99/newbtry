@@ -188,8 +188,8 @@
                         <div class="card widget-1 widget-with-chart">
                             <div class="card-body">
                                 <div>
-                                    <h4 class="mb-1">{{ number_format($lubricantsCount) }}</h4><span
-                                        class="f-light">Lubricants</span>
+                                    <h4 class="mb-1">{{ number_format($lubricantsOrderCount) }}</h4><span
+                                        class="f-light">Lubricant Orders</span>
                                 </div>
                                 <div class="profit-chart">
                                     <div id="profitchart"></div>
@@ -342,6 +342,183 @@
                             </div>
                             <div class="col-xl-6">
                                 <ul class="order-content">
+                                    <li>
+                                        <span class="recent-circle bg-primary"></span>
+                                        <div>
+                                            <span class="f-light f-w-500">Not Completed</span>
+                                            <h4 class="mt-1 mb-0">--<span class="f-light f-14 f-w-400 ms-1">(Last 6
+                                                    Month)</span></h4>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="recent-circle bg-info"></span>
+                                        <div>
+                                            <span class="f-light f-w-500">Completed</span>
+                                            <h4 class="mt-1 mb-0">--<span class="f-light f-14 f-w-400 ms-1">(Last 6
+                                                    Month)</span></h4>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span class="recent-circle bg-warning"></span>
+                                        <div>
+                                            <span class="f-light f-w-500">Pending</span>
+                                            <h4 class="mt-1 mb-0">--<span class="f-light f-14 f-w-400 ms-1">(Last 6
+                                                    Month)</span></h4>
+                                        </div>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @php
+                $lubricantBalanceStats = app(
+                    \App\Http\Controllers\DashboardController::class,
+                )->getLubricantBalanceStatistics();
+            @endphp
+            <div class="col-xxl-8 col-lg-12 box-col-12">
+                <div class="card">
+                    <div class="card-header card-no-border">
+                        <h5>Lubricant Overall balance</h5>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="row m-0 overall-card">
+                            <div class="col-xl-9 col-md-12 col-sm-7 p-0">
+                                <div class="chart-right">
+                                    <div class="row">
+                                        <div class="col-xl-12">
+                                            <div class="card-body p-0">
+                                                <ul class="balance-data">
+                                                    <li><span class="circle bg-warning"> </span><span
+                                                            class="f-light ms-1">Earning</span></li>
+                                                    <li><span class="circle bg-primary"> </span><span
+                                                            class="f-light ms-1">Expense</span></li>
+                                                </ul>
+                                                <div class="current-sale-container">
+                                                    <div id="chart-currently-lubricant"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-md-12 col-sm-5 p-0">
+                                <div class="row g-sm-4 g-2">
+                                    <div class="col-xl-12 col-md-4">
+                                        <div class="light-card balance-card widget-hover">
+                                            <div class="svg-box">
+                                                <svg class="svg-fill">
+                                                    <use href="{{ asset('assets/svg/icon-sprite.svg#income') }}"></use>
+                                                </svg>
+                                            </div>
+                                            <div> <span class="f-light">Income</span>
+                                                <h6 class="mt-1 mb-0">Rs:
+                                                    {{ number_format($lubricantBalanceStats['earnings']['total']) }}</h6>
+                                            </div>
+                                            <div class="ms-auto text-end">
+                                                <div class="dropdown icon-dropdown">
+                                                    <button class="btn dropdown-toggle" id="incomedropdown"
+                                                        type="button" data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                            class="icon-more-alt"></i></button>
+                                                    {{-- <div class="dropdown-menu dropdown-menu-end"
+                                                        aria-labelledby="incomedropdown"><a class="dropdown-item"
+                                                            href="#">Today</a><a class="dropdown-item"
+                                                            href="#">Tomorrow</a><a class="dropdown-item"
+                                                            href="#">Yesterday </a>
+                                                        </div> --}}
+                                                </div><span
+                                                    class="{{ $lubricantBalanceStats['earnings']['change'] >= 0 ? 'font-success' : 'font-danger' }}">{{ $lubricantBalanceStats['earnings']['change'] >= 0 ? '+' : '-' }}Rs:{{ number_format(abs($lubricantBalanceStats['earnings']['change'])) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-md-4">
+                                        <div class="light-card balance-card widget-hover">
+                                            <div class="svg-box">
+                                                <svg class="svg-fill">
+                                                    <use href="{{ asset('assets/svg/icon-sprite.svg#expense') }}"></use>
+                                                </svg>
+                                            </div>
+                                            <div> <span class="f-light">Expense</span>
+                                                <h6 class="mt-1 mb-0">Rs:
+                                                    {{ number_format($lubricantBalanceStats['expense']['total']) }}</h6>
+                                            </div>
+                                            <div class="ms-auto text-end">
+                                                <div class="dropdown icon-dropdown">
+                                                    <button class="btn dropdown-toggle" id="expensedropdown"
+                                                        type="button" data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                            class="icon-more-alt"></i></button>
+                                                    {{-- <div class="dropdown-menu dropdown-menu-end"
+                                                        aria-labelledby="expensedropdown"><a class="dropdown-item"
+                                                            href="#">Today</a><a class="dropdown-item"
+                                                            href="#">Tomorrow</a><a class="dropdown-item"
+                                                            href="#">Yesterday </a></div> --}}
+                                                </div><span
+                                                    class="{{ $lubricantBalanceStats['expense']['change'] >= 0 ? 'font-success' : 'font-danger' }}">{{ $lubricantBalanceStats['expense']['change'] >= 0 ? '+' : '-' }}${{ number_format(abs($lubricantBalanceStats['earnings']['change'])) }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12 col-md-4">
+                                        <div class="light-card balance-card widget-hover">
+                                            <div class="svg-box">
+                                                <svg class="svg-fill">
+                                                    <use href="{{ asset('assets/svg/icon-sprite.svg#doller-return') }}">
+                                                    </use>
+                                                </svg>
+                                            </div>
+                                            <div> <span class="f-light">Cashback</span>
+                                                <h6 class="mt-1 mb-0">
+                                                    {{ number_format($lubricantBalanceStats['cashback']['total']) }}</h6>
+                                            </div>
+                                            <div class="ms-auto text-end">
+                                                <div class="dropdown icon-dropdown">
+                                                    <button class="btn dropdown-toggle" id="cashbackdropdown"
+                                                        type="button" data-bs-toggle="dropdown" aria-expanded="false"><i
+                                                            class="icon-more-alt"></i></button>
+                                                    {{-- <div class="dropdown-menu dropdown-menu-end"
+                                                        aria-labelledby="cashbackdropdown"><a class="dropdown-item"
+                                                            href="#">Today</a><a class="dropdown-item"
+                                                            href="#">Tomorrow</a><a class="dropdown-item"
+                                                            href="#">Yesterday </a></div> --}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-4 col-xl-7 col-md-6 col-sm-5 box-col-6">
+                <div class="card height-equal">
+                    <div class="card-header card-no-border">
+                        <div class="header-top">
+                            <h5>Recent Orders Payment Status</h5>
+                            {{-- <div class="card-header-right-icon">
+                                <div class="dropdown icon-dropdown">
+                                    <button class="btn dropdown-toggle" id="recentdropdown" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false"><i
+                                            class="icon-more-alt"></i></button>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="recentdropdown"><a
+                                            class="dropdown-item" href="#">Weekly</a><a class="dropdown-item"
+                                            href="#">Monthly</a><a class="dropdown-item" href="#">Yearly</a>
+                                    </div>
+                                </div>
+                            </div> --}}
+                        </div>
+                    </div>
+                    <div class="card-body pt-0">
+                        <div class="row recent-wrapper">
+                            <div class="col-xl-6">
+                                <div class="recent-chart">
+                                    <div id="recentchartlubricant"></div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <ul class="order-content-lubricant">
                                     <li>
                                         <span class="recent-circle bg-primary"></span>
                                         <div>
@@ -737,12 +914,29 @@
 
                     // Update chart
                     initRecentChart(data.notCompletedPaymentOrders, data.completedPaymentOrders, data
-                        .pendingPaymentOrders);
+                        .pendingPaymentOrders, "Battery");
+                })
+                .catch(error => console.error('Error fetching recent orders:', error));
+
+            fetch('/dashboard/lubricant-recent-orders')
+                .then(response => response.json())
+                .then(data => {
+                    // Update HTML dynamically
+                    document.querySelector('.order-content-lubricant li:nth-child(1) h4').innerHTML =
+                        `${data.notCompletedPaymentOrders} <span class="f-light f-14 f-w-400 ms-1">(Last 6 Month)</span>`;
+                    document.querySelector('.order-content-lubricant li:nth-child(2) h4').innerHTML =
+                        `${data.completedPaymentOrders} <span class="f-light f-14 f-w-400 ms-1">(Last 6 Month)</span>`;
+                    document.querySelector('.order-content-lubricant li:nth-child(3) h4').innerHTML =
+                        `${data.pendingPaymentOrders} <span class="f-light f-14 f-w-400 ms-1">(Last 6 Month)</span>`;
+
+                    // Update chart
+                    initRecentChart(data.notCompletedPaymentOrders, data.completedPaymentOrders, data
+                        .pendingPaymentOrders, "Lubricant");
                 })
                 .catch(error => console.error('Error fetching recent orders:', error));
         });
 
-        function initRecentChart(NotCompleted, Completed, Pending) {
+        function initRecentChart(NotCompleted, Completed, Pending, Type) {
             var options = {
                 chart: {
                     type: 'pie',
@@ -752,9 +946,14 @@
                 labels: ['Not Completed', 'Completed', 'Pending'],
                 colors: ['#FF4560', '#00E396', '#FEB019'],
             };
-
-            var chart = new ApexCharts(document.querySelector("#recentchart"), options);
-            chart.render();
+            if (Type == "Lubricant") {
+                var chart = new ApexCharts(document.querySelector("#recentchartlubricant"), options);
+                chart.render();
+            }
+            if (Type == "Battery") {
+                var chart = new ApexCharts(document.querySelector("#recentchart"), options);
+                chart.render();
+            }
         }
     </script>
     <script src="{{ asset('assets/js/clock.js') }}"></script>

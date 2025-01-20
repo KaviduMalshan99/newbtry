@@ -506,6 +506,8 @@ Route::prefix('dashboard')->group(function () {
     Route::get('/growth-supplier-data', [DashboardController::class, 'getGrowthSupplierData']);
     Route::get('/balance-data', [DashboardController::class, 'getBalanceStatistics']);
     Route::get('/recent-orders', [DashboardController::class, 'getRecentOrders']);
+    Route::get('/lubricant-balance-data', [DashboardController::class, 'getLubricantBalanceStatistics']);
+    Route::get('/lubricant-recent-orders', [DashboardController::class, 'getLubricantRecentOrders']);
 });
 
 
@@ -703,11 +705,11 @@ Route::get('/admin/POS/lubricant-bill/{id}', [LubricantController::class, 'lubri
 
 Route::get('/admin/POS', [PosController::class, 'index'])->name('POS.index');
 Route::get('/products-by-brand/{brandId}', [PosController::class, 'loadProductsByBrand'])->name('POS.loadProductsByBrand');
-Route::post('/admin/POS', [PosController::class, 'storeBatteryOrder'])->name('POS.storeBatteryOrder');  
+Route::post('/admin/POS', [PosController::class, 'storeBatteryOrder'])->name('POS.storeBatteryOrder');
 Route::post('/admin/POS/lubricant', [PosController::class, 'storeLubricantOrder'])->name('POS.storeLubricantOrder');
 Route::post('/pos/lubricant', [PosController::class, 'storeOrderLubricant'])->name('POS.lubricant.placeOrder');
 
-// store data 
+// store data
 
 Route::post('/admin/POS/process-lubricant-order-items', [PosController::class, 'storeLubricantOrderItems'])->name('process.lubricant.order.items');
 
@@ -717,7 +719,7 @@ Route::post('/show', [PosController::class, 'show'])->name('show');
 
 
 
-// mainController 
+// mainController
 
 // Route::prefix('admin/POS')->group(function () {
 //     Route::get('/mainpos', [MainPosController::class, 'mainpos'])->name('mainpos.mainpos');
@@ -732,7 +734,3 @@ Route::get('/mainpos', [MainPosController::class, 'mainpos'])->name('mainpos.ind
 
 
 Route::get('/lubricant-dashboard', [MainPosController::class, 'lubricantdashboard'])->name('dashboard.lubricant');
-
-
-
-

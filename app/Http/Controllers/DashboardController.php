@@ -7,6 +7,7 @@ use App\Models\Battery;
 use App\Models\BatteryOrder;
 use App\Models\Customer;
 use App\Models\Lubricant;
+use App\Models\LubricantOrder;
 use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class DashboardController extends Controller
         $lubricantsPurchaseCount = DB::table('lubricant_purchases')->count(); // Example query
         $suppliersCount = Supplier::count(); // Example query
         $batteryCount = Battery::count(); // Example query
-        $lubricantsCount = Lubricant::count(); // Example query
+        $lubricantsOrderCount = LubricantOrder::count(); // Example query
         $batteryOrdersCount = BatteryOrder::count(); // Example
 
 
@@ -30,7 +31,7 @@ class DashboardController extends Controller
             'lubricantsPurchaseCount',
             'suppliersCount',
             'batteryCount',
-            'lubricantsCount',
+            'lubricantsOrderCount',
             'batteryOrdersCount'
         ));
     }
@@ -230,6 +231,94 @@ class DashboardController extends Controller
             ->count();
 
         $pendingPaymentOrders = BatteryOrder::where('order_date', '>=', $startDate)
+            ->where('payment_status', 'Pending') // Assuming 'Pending' represents orders in progress
+            ->count();
+
+        // Return the data
+        return response()->json([
+            'notCompletedPaymentOrders' => $notCompletedPaymentOrders,
+            'completedPaymentOrders' => $completedPaymentOrders,
+            'pendingPaymentOrders' => $pendingPaymentOrders,
+        ]);
+    }
+
+    public function getLubricantBalanceStatistics()
+    {
+        // Get today's date and first day of current month
+        $today = now();
+        $firstDayOfMonth = $today->startOfMonth();
+
+        // Calculate total earnings (total_price)
+        $totalEarnings = LubricantOrder::whereMonth('created_at', $today->month)
+            ->whereYear('created_at', $today->year)
+            ->sum('total_price');
+
+        // Calculate total expenses (assuming 70% of price is expense)
+        $totalExpense = LubricantOrder::whereMonth('created_at', $today->month)
+            ->whereYear('created_at', $today->year)
+            ->sum(DB::raw('total_price - subtotal')); // Adjust this calculation based on your actual expense logic
+
+        // Calculate cashback (total of discounts)
+        $totalCashback = LubricantOrder::whereMonth('created_at', $today->month)
+            ->whereYear('created_at', $today->year)
+            ->sum(DB::raw('COALESCE(battery_discount, 0)'));
+
+        // Get daily earnings and expenses for the chart
+        $dailyData = LubricantOrder::select(
+            DB::raw('DATE(created_at) as date'),
+            DB::raw('SUM(total_price) as earnings'),
+            DB::raw('SUM(total_price - subtotal) as expenses') // Adjust based on actual expense calculation
+        )
+            ->whereMonth('created_at', $today->month)
+            ->whereYear('created_at', $today->year)
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
+
+        // Calculate today's changes
+        $todayEarnings = LubricantOrder::whereDate('created_at', $today)
+            ->sum('total_price');
+        $yesterdayEarnings = LubricantOrder::whereDate('created_at', $today->copy()->subDay())
+            ->sum('total_price');
+        $earningsChange = $todayEarnings - $yesterdayEarnings;
+
+        $todayExpense = LubricantOrder::whereDate('created_at', $today)
+            ->sum(DB::raw('total_price - subtotal'));
+        $yesterdayExpense = LubricantOrder::whereDate('created_at', $today->copy()->subDay())
+            ->sum(DB::raw('total_price - subtotal'));
+        $expenseChange = $todayExpense - $yesterdayExpense;
+
+        return [
+            'earnings' => [
+                'total' => round($totalEarnings, 2),
+                'change' => round($earningsChange, 2)
+            ],
+            'expense' => [
+                'total' => round($totalExpense, 2),
+                'change' => round($expenseChange, 2)
+            ],
+            'cashback' => [
+                'total' => round($totalCashback, 2)
+            ],
+            'chart_data' => $dailyData
+        ];
+    }
+
+    public function getLubricantRecentOrders()
+    {
+        // Define the start date (6 months ago from today)
+        $startDate = Carbon::now()->subMonths(6);
+
+        // Fetch order data
+        $notCompletedPaymentOrders = LubricantOrder::where('order_date', '>=', $startDate)
+            ->where('payment_status', 'Not Completed') // Assuming 'Not Completed' represents canceled orders
+            ->count();
+
+        $completedPaymentOrders = LubricantOrder::where('order_date', '>=', $startDate)
+            ->where('payment_status', 'Completed') // Assuming 'Completed' represents delivered orders
+            ->count();
+
+        $pendingPaymentOrders = LubricantOrder::where('order_date', '>=', $startDate)
             ->where('payment_status', 'Pending') // Assuming 'Pending' represents orders in progress
             ->count();
 

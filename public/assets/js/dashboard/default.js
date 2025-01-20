@@ -692,6 +692,40 @@ fetch('/dashboard/balance-data')
     })
     .catch(error => console.error('Error fetching data:', error));
 
+    // Initialize chart
+var chart2 = new ApexCharts(document.querySelector("#chart-currently-lubricant"), chart_currently);
+chart2.render();
+
+// Fetch and update chart data
+fetch('/dashboard/lubricant-balance-data')
+    .then(response => response.json())
+    .then(data => {
+        // Access `chart_data` from the response
+        const chartData = data.chart_data || [];
+        const dates = chartData.map(item => item.date);
+        const earnings = chartData.map(item => parseFloat(item.earnings));
+        const expenses = chartData.map(item => parseFloat(item.expenses));
+
+        // Update the chart with the fetched data
+        chart2.updateOptions({
+            xaxis: {
+                categories: dates, // Set the x-axis categories as dates
+            },
+        });
+
+        chart2.updateSeries([
+            {
+                name: 'Earning',
+                data: earnings, // Populate earnings data
+            },
+            {
+                name: 'Expense',
+                data: expenses, // Populate expenses data
+            },
+        ]);
+    })
+    .catch(error => console.error('Error fetching data:', error));
+
 
 
 // var chart = new ApexCharts(document.querySelector("#chart-currently"), options);
