@@ -53,7 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard.index');
     })->name('dashboard.index');
-    
+
     // Handle Logout
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
@@ -61,7 +61,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/', function () {
     return redirect()->route('login');
 
-    
+
 });
 
 
