@@ -18,7 +18,7 @@ class DashboardController extends Controller
     {
         // Fetch data from database (adjust queries as per your schema)
         $purchaseBatteryCount = DB::table('battery_purchases')->count(); // Example query
-        $customerCount = DB::table('customers')->count(); // Example query
+        $lubricantsPurchaseCount = DB::table('lubricant_purchases')->count(); // Example query
         $suppliersCount = Supplier::count(); // Example query
         $batteryCount = Battery::count(); // Example query
         $lubricantsCount = Lubricant::count(); // Example query
@@ -27,7 +27,7 @@ class DashboardController extends Controller
 
         return view('dashboard.index', compact(
             'purchaseBatteryCount',
-            'customerCount',
+            'lubricantsPurchaseCount',
             'suppliersCount',
             'batteryCount',
             'lubricantsCount',

@@ -81,8 +81,8 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <h4>{{ number_format($purchaseBatteryCount) }}</h4><span
-                                            class="f-light">Purchase</span>
+                                        <h4>{{ number_format($purchaseBatteryCount) }}</h4><span class="f-light">New Battery
+                                            Purchases</span>
                                     </div>
                                 </div>
                                 <div class="font-secondary f-w-500"><i
@@ -104,8 +104,8 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <h4>{{ number_format($customerCount) }}</h4><span
-                                                class="f-light">Customers</span>
+                                            <h4>{{ number_format($lubricantsPurchaseCount) }}</h4><span
+                                                class="f-light">Lubricant Purchases</span>
                                         </div>
                                     </div>
                                     <div class="font-primary f-w-500"><i
@@ -173,9 +173,10 @@
                     <div class="col-xxl-12 col-xl-6 box-col-12">
                         <div class="card widget-1 widget-with-chart">
                             <div class="card-body">
+
                                 <div>
-                                    <h4 class="mb-1">{{ number_format($lubricantsCount) }}</h4><span
-                                        class="f-light">Lubricants</span>
+                                    <h4 class="mb-1">{{ number_format($batteryOrdersCount) }}</h4><span
+                                        class="f-light">New Battery Orders</span>
                                 </div>
                                 <div class="order-chart">
                                     <div id="orderchart"></div>
@@ -187,8 +188,8 @@
                         <div class="card widget-1 widget-with-chart">
                             <div class="card-body">
                                 <div>
-                                    <h4 class="mb-1">{{ number_format($batteryOrdersCount) }}</h4><span
-                                        class="f-light">Orders</span>
+                                    <h4 class="mb-1">{{ number_format($lubricantsCount) }}</h4><span
+                                        class="f-light">Lubricants</span>
                                 </div>
                                 <div class="profit-chart">
                                     <div id="profitchart"></div>
