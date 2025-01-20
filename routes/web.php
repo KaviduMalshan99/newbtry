@@ -25,6 +25,7 @@ use App\Http\Controllers\UserController;
 use App\Models\OldBattery;
 use App\Models\RepairBattery;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MainPosController;
 
 
 
@@ -713,3 +714,24 @@ Route::post('/admin/POS/process-lubricant-order-items', [PosController::class, '
 
 Route::post('/create-customer', [PosController::class, 'createCustomer'])->name('customer.create');
 Route::post('/show', [PosController::class, 'show'])->name('show');
+
+
+
+// mainController 
+
+// Route::prefix('admin/POS')->group(function () {
+//     Route::get('/mainpos', [MainPosController::class, 'mainpos'])->name('mainpos.mainpos');
+// });
+
+
+
+// Route::get('/mainpos', [MainPosController::class, 'mainpos'])->name('mainpos.mainpos');
+
+Route::get('/mainpos', [MainPosController::class, 'mainpos'])->name('mainpos.index');
+
+
+
+
+
+
+
