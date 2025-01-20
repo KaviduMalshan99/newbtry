@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('purchases', function (Blueprint $table) {
+        Schema::create('lubricant_purchase', function (Blueprint $table) {
             $table->id();
             $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
             $table->decimal('total_price', 10, 2);
+            $table->decimal('paid_amount', 10, 2)->default(0); // New column
+            $table->decimal('due_amount', 10, 2)->default(0);  // New column
+            $table->enum('payment_type', ['Cash', 'Card', 'Bank Transfer'])->default('Cash');
+            $table->enum('payment_status', ['Not Completed', 'Completed', 'Pending'])->default('Pending'); // New column
             $table->timestamps();
         });
     }
@@ -24,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('purchases');
+        Schema::dropIfExists('lubricant_purchase');
     }
 };

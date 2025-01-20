@@ -31,9 +31,4 @@ class Customer extends Model
     protected $casts = [
         'purchase_history' => 'array',
     ];
-
-    public function rentals()
-    {
-        return $this->hasMany(Rental::class);
-    }
 }

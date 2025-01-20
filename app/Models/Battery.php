@@ -23,7 +23,7 @@ class Battery extends Model
         'warranty_period',   // Warranty period in months
         'purchase_price',    // Price at which the battery was purchased
         'selling_price',     // Price at which the battery is sold
-        'manufacturing_date', // Date of manufacturing
+        'manufacturing_date',// Date of manufacturing
         'expiry_date',       // Expiry date, if applicable
         'stock_quantity',    // Current stock quantity
         'added_date',        // Date the battery was added to the system
@@ -39,8 +39,10 @@ class Battery extends Model
         return $this->belongsTo(Supplier::class);
     }
 
-    public function brand()
-    {
-        return $this->belongsTo(Brand::class);
-    }
+    // Battery.php
+        public function brand()
+        {
+            return $this->belongsTo(Brand::class);
+        }
+
 }

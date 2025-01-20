@@ -18,7 +18,6 @@ class PurchaseController extends Controller
         return view('admin.purchases.view', compact('purchases'));
     }
 
-    // remove
     public function create()
     {
         $suppliers = Supplier::all();
@@ -26,7 +25,6 @@ class PurchaseController extends Controller
         return view('admin.purchases.add', compact('suppliers', 'productTypes'));
     }
 
-    // remove
     public function getProducts($type)
     {
         if ($type == 'batteries') {
@@ -40,9 +38,6 @@ class PurchaseController extends Controller
         return response()->json($products);
     }
 
-
-
-    // remove
     public function store(Request $request)
     {
         // Validate the incoming request
@@ -78,19 +73,6 @@ class PurchaseController extends Controller
                 'quantity' => $quantity,
                 'purchase_price' => $purchasePrice,
             ]);
-
-            // Update the quantity in the respective product table
-            if ($productType == 'batteries') {
-                $battery = Battery::find($productId);
-                if ($battery) {
-                    $battery->increment('stock_quantity', $quantity);
-                }
-            } elseif ($productType == 'lubricants') {
-                $lubricant = Lubricant::find($productId);
-                if ($lubricant) {
-                    $lubricant->increment('stock_quantity', $quantity);
-                }
-            }
         }
         $purchase->update([
             'total_price' => $totalPrice,
@@ -103,8 +85,6 @@ class PurchaseController extends Controller
     }
 
 
-
-    //remove
     public function edit($id)
     {
         $purchase = Purchase::with('purchaseItems.battery', 'purchaseItems.lubricant', 'supplier')->findOrFail($id);
@@ -123,8 +103,6 @@ class PurchaseController extends Controller
 
         return view('admin.purchases.update', compact('purchase', 'suppliers', 'productType', 'productTypes', 'products'));
     }
-
-    public function editBattery($id) {}
 
     // In your controller
     public function getProductsByType($type)
@@ -211,6 +189,13 @@ class PurchaseController extends Controller
         }
 
         return response()->json(['success' => false, 'message' => 'Item not found'], 404);
+    }
+
+    public function viewPurchaseItems(Purchase $purchase)
+    {
+        $purchaseItems = PurchaseItem::where('purchase_id', $purchase->id)->get();
+        // Pass data to the view
+        return view('admin/purchases.view-purchase-items', compact('purchaseItems', 'purchase'));
     }
 
 

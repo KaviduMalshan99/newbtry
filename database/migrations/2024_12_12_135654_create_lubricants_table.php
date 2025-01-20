@@ -14,12 +14,14 @@ return new class extends Migration
         Schema::create('lubricants', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('brand');
-            $table->decimal('purchase_price', 10, 2);
-            $table->decimal('sale_price', 10, 2);
-            $table->integer('stock_quantity');
-            $table->string('type', 50);
-            $table->string('unit');
+            $table->string('brand_id');
+            $table->decimal('purchase_price', 10, 2)->nullable();
+            $table->decimal('sale_price', 10, 2)->nullable();
+            $table->integer('stock_quantity')->nullable();
+            $table->string('type', 50)->nullable();
+            $table->string('unit')->nullable();
+            $table->string('volume', 50)->nullable();
+            $table->string('total_count', 50)->nullable();
             $table->string('image')->nullable(); // New image column
             $table->timestamps();
         });
