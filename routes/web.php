@@ -731,6 +731,7 @@ Route::get('/mainpos', [MainPosController::class, 'mainpos'])->name('mainpos.ind
 
 
 
+Route::get('/lubricant-dashboard', [MainPosController::class, 'lubricantdashboard'])->name('dashboard.lubricant');
 
 
 
