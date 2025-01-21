@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotel Booking Invoice</title>
+    <title>Premiun Battery Invoice</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -110,7 +110,7 @@
         <!-- Header Section -->
         <div class="header">
             <div class="logo">
-                <img src="{{ Storage::url($companyDetails->company_logo ?? '') }}" alt="Hotel Logo"
+                <img src="{{ Storage::url($companyDetails->company_logo ?? '') }}" alt="Premium Battery Logo"
                     style="width: 100px; height: auto;">
             </div>
             <div class="company-info">
