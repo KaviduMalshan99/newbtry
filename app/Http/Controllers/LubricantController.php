@@ -59,7 +59,7 @@ class LubricantController extends Controller
         ]);
 
         // Redirect with success message
-        return redirect()->route('POS.lubricants')->with('success', 'Lubricant created successfully.');
+        return redirect()->route('POS.lubricant')->with('success', 'Lubricant created successfully.');
 
     }
 
