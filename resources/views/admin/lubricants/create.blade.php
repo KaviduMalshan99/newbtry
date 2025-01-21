@@ -18,9 +18,9 @@
                 <div class="form-group my-2">
                     <label for="brand_id" class="pb-2">Brand</label>
                     <select name="brand_id" id="brand_id" class="form-control" required>
-                        <option value="" disabled {{ old('brand_id', $battery->brand_id ?? '') == '' ? 'selected' : '' }}>Select a Brand</option>
+                        <option value="" disabled {{ old('brand_id') == '' ? 'selected' : '' }}>Select a Brand</option>
                         @foreach($brands as $brand)
-                            <option value="{{ $brand->brand_id }}" {{ old('brand_id', $battery->brand_id ?? '') == $brand->id ? 'selected' : '' }}>
+                            <option value="{{ $brand->brand_id }}" {{ old('brand_id') == $brand->brand_id ? 'selected' : '' }}>
                                 {{ $brand->brand_id }} - {{ $brand->brand_name }}
                             </option>
                         @endforeach
@@ -29,6 +29,7 @@
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
+
             </div>
             {{-- <div class="col-sm-6"> <div class="form-group my-2">
                 <label for="purchase_price" class="pb-2">Purchase Price</label>
@@ -36,7 +37,7 @@
             </div></div> --}}
 
             <div class="col-sm-6">
-                
+
                 {{-- <div class="form-group my-2">
                 <label for="type" class="pb-2">Type</label>
                 <input type="text" class="form-control" name="type" required>
@@ -115,7 +116,7 @@
                 <button type="submit" class="btn btn-primary my-3">Save</button>
             </div>
         </div>
-            
+
             </form>
         </div>
         </div>
