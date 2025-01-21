@@ -61,7 +61,7 @@ class AuthController extends Controller
                 'email' => $user->email
             ]);
 
-            return redirect()->route('dashboard.index'); // Redirect to admin dashboard
+            return redirect()->route('index'); // Redirect to admin dashboard
         }
 
         // If login fails, redirect back with an error
@@ -79,5 +79,4 @@ class AuthController extends Controller
 
         return redirect()->route('login'); // Redirect to login page
     }
-
 }
