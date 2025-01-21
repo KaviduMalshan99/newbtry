@@ -60,24 +60,24 @@ class AuthController extends Controller
                 'name' => $user->name,
                 'email' => $user->email
             ]);
-            
-            return redirect()->route('admin.POS'); // Redirect to admin dashboard
+
+            return redirect()->route('dashboard.index'); // Redirect to admin dashboard
         }
-    
+
         // If login fails, redirect back with an error
         return back()->withErrors(['auth.login' => 'Invalid credentials']);
     }
-    
+
 
     // Handle Logout
     public function logout()
     {
         Auth::logout();
-        
+
         // Clear session data
         session()->flush();
-        
+
         return redirect()->route('auth.login'); // Redirect to login page
     }
-    
+
 }
