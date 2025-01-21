@@ -230,7 +230,7 @@
 
         <!-- Footer Section -->
         <div class="footer">
-            <p>Thank you for choosing New York Guest House & Restaurant. We hope you had a pleasant stay!</p>
+            <p>Thank you for choosing Premium Battery. We hope you had a pleasant stay!</p>
 
         </div>
     </div>
