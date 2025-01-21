@@ -26,6 +26,7 @@ use App\Models\OldBattery;
 use App\Models\RepairBattery;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainPosController;
+use App\Http\Controllers\usersDetails;
 
 
 // Redirect to Dashboard if Authenticated, Otherwise Login
@@ -63,6 +64,16 @@ Route::get('/', function () {
 
 
 });
+
+
+
+// admin reg
+
+
+Route::get('/adminregister', [AdminController::class, 'showRegistrationForm'])->name('registration');
+
+// Handle Registration Form Submission
+Route::post('/adminregister', [AdminController::class, 'register'])->name('register.submit');
 
 
 
@@ -752,3 +763,23 @@ use App\Http\Controllers\CompanyDetails;
 
 Route::get('/company-details', [CompanyDetails::class, 'showLatest'])->name('company.details');
 
+
+
+// users  list   usersDetails
+
+
+// In routes/web.php
+
+Route::prefix('customer_management/index')->group(function () {
+    Route::get('/', [usersDetails::class, 'index'])->name('customer_management.index');
+    Route::post('/update/{id}', [usersDetails::class, 'updateUserType'])->name('update.user.type');
+});
+
+
+
+ // Route::get('/create', [usersDetails::class, 'create'])->name('customer_management.index');
+    // Route::post('/', [usersDetails::class, 'store'])->name('customer_management.index');
+    // Route::get('/{id}', [usersDetails::class, 'show'])->name('customer_management.index');
+    // Route::get('/{id}/edit', [usersDetails::class, 'edit'])->name('customer_management.index');
+    // Route::put('/{id}', [usersDetails::class, 'update'])->name('customer_management.index');
+    // Route::delete('/{id}', [usersDetails::class, 'destroy'])->name('customer_management.index');

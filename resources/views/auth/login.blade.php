@@ -44,6 +44,16 @@
                         <input class="form-control" type="password" id="password" name="password" required="" placeholder="*********">
                         <div class="show-hide"><span class="show">                         </span></div>
                      </div>
+                     <div class="form-group" >
+                        <label class="col-form-label">Select User Type</label>
+                        <select class="form-select" aria-label="Default select example" required style="background-color: #dceffc;">
+                           
+                            <option selected value="User" >User</option>
+                            <option value="Cashier">Cashier</option>
+                            <option value="Admin">Admin</option>
+                            <option value="SuperAdmin">SuperAdmin</option>
+                          </select>
+                     </div>
                      <div class="form-group mb-0">
                         <div class="checkbox p-0">
                            <input id="checkbox1" type="checkbox">
