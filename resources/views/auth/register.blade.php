@@ -16,7 +16,7 @@
       <div class="col-xl-12 p-0">
          <div class="login-card">
             <div>
-               <div><a class="logo" href="{{ route('index') }}"><img class="img-fluid for-light" src="{{asset('assets/images/logo/login.png')}}" alt="looginpage"><img class="img-fluid for-dark" src="{{asset('assets/images/logo/logo_dark.png')}}" alt="looginpage"></a></div>
+               {{-- <div><a class="logo" href="{{ route('index') }}"><img class="img-fluid for-light" src="{{asset('assets/images/logo/login.png')}}" alt="looginpage"><img class="img-fluid for-dark" src="{{asset('assets/images/logo/logo_dark.png')}}" alt="looginpage"></a></div> --}}
                <div class="login-main">
                   <form class="theme-form"  action="{{ route('register.submit') }}" method="POST">
                     @csrf
@@ -56,7 +56,7 @@
                         </div>
                         <button class="btn btn-primary btn-block" type="submit">Create Account</button>
                      </div>
-                     <h6 class="text-muted mt-4 or">Or signup with</h6>
+                     {{-- <h6 class="text-muted mt-4 or">Or signup with</h6> --}}
                      
                      <p class="mt-4 mb-0">Already have an account?<a class="ms-2" href="{{ route('login') }}">Sign in</a></p>
                   </form>

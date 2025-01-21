@@ -728,7 +728,7 @@ Route::post('/create-customer', [PosController::class, 'createCustomer'])->name(
 Route::post('/show', [PosController::class, 'show'])->name('show');
 
 
-
+// lubricnt dashbord
 // mainController
 
 // Route::prefix('admin/POS')->group(function () {
@@ -744,3 +744,11 @@ Route::get('/mainpos', [MainPosController::class, 'mainpos'])->name('mainpos.ind
 
 
 Route::get('/lubricant-dashboard', [MainPosController::class, 'lubricantdashboard'])->name('dashboard.lubricant');
+
+
+// company detail
+
+use App\Http\Controllers\CompanyDetails;
+
+Route::get('/company-details', [CompanyDetails::class, 'showLatest'])->name('company.details');
+
