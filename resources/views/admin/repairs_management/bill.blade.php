@@ -147,7 +147,7 @@
             <table>
                 <tr>
                     <td class="label">Battery Brand & Type:</td>
-                    <td>{{ $repair->repairBattery->brand }} {{ $repair->repairBattery->type }}</td>
+                    <td>{{ $repair->repairBattery->brand->brand_name }} | {{ $repair->repairBattery->type }}</td>
                 </tr>
                 <tr>
                     <td class="label">Model Number:</td>
@@ -238,7 +238,7 @@
 
         <!-- Footer Section -->
         <div class="footer">
-            <p>Thank you for choosing New York Guest House & Restaurant. We hope you had a pleasant stay!</p>
+            <p>Thank you for choosing Premium Battery. We hope you had a pleasant stay!</p>
 
         </div>
     </div>
