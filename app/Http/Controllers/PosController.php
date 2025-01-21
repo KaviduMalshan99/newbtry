@@ -351,126 +351,145 @@ class PosController extends Controller
 
 
 
-public function storeOrderLubricant(Request $request)
-{
-    // Validate the incoming request
-    $validatedData = $request->validate([
-        'order_type' => 'required|string',
-        'measurement_type' => 'required|string',
-        'unit' => 'required|integer|min:1',
-        'total_items' => 'required|string',
-        'all_id' => 'required|string',
-        'total_price' => 'required|numeric',
-        'paid_amount' => 'required|numeric',
-        'due_amount' => 'required|numeric',
-        'payment_type' => 'required|string',
-        'customer_id' => 'nullable|integer',
-    ]);
-
-    try {
-        // Use a database transaction to ensure atomicity
-        DB::beginTransaction();
-
-        // Generate the order_id (e.g., LO0001, LO0002)
-        $latestOrder = DB::table('lubricant_orders')->latest('id')->first();
-        $nextOrderId = $latestOrder ? ('LO' . str_pad($latestOrder->id + 1, 4, '0', STR_PAD_LEFT)) : 'LO0001';
-
-        // Insert data into the lubricant_orders table
-        $orderId = DB::table('lubricant_orders')->insertGetId([
-            'order_id' => $nextOrderId,
-            'coustomer_id' => $request->customer_id,
-            'order_type' => $request->order_type,
-            'items' => $request->total_items,
-            'all_id' => $request->all_id,
-            'lubricant_discount' => 0, // Default discount
-            'subtotal' => $request->subtotal ?? 0, // Optional subtotal
-            'total_price' => $request->total_price,
-            'paid_amount' => $request->paid_amount,
-            'due_amount' => $request->due_amount,
-            'payment_type' => $request->payment_type,
-            'payment_status' => $request->due_amount > 0 ? 'Pending' : 'Paid',
-            'unit' => $request->unit,
-            'mesurement' => $request->unit,
-            'mesurement_type' => $request->measurement_type,
-            'created_at' => now(),
-            'updated_at' => now(),
+    public function storeOrderLubricant(Request $request)
+    {
+        // Validate the incoming request
+        $validatedData = $request->validate([
+            'order_type' => 'required|string',
+            'measurement_type' => 'required|string',
+            'unit' => 'required|integer|min:1',
+            'total_items' => 'required|string',
+            'all_id' => 'required|string',
+            'total_price' => 'required|numeric',
+            'paid_amount' => 'required|numeric',
+            'due_amount' => 'required|numeric',
+            'payment_type' => 'required|string',
+            'customer_id' => 'nullable|integer',
         ]);
 
-        // Insert data into the lubricant_purchase table
-        DB::table('lubricant_purchase')->insert([
-            'lubricant_orders_id' => $orderId,
-            'total_price' => $request->total_price,
-            'paid_amount' => $request->paid_amount,
-            'due_amount' => $request->due_amount,
-            'payment_type' => $request->payment_type,
-            'payment_status' => $request->due_amount > 0 ? 'Pending' : 'Paid',
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        try {
+            // Use a database transaction to ensure atomicity
+            DB::beginTransaction();
 
-        // Commit the transaction
-        DB::commit();
+            // Generate the order_id (e.g., LO0001, LO0002)
+            $latestOrder = DB::table('lubricant_orders')->latest('id')->first();
+            $nextOrderId = $latestOrder ? ('LO' . str_pad($latestOrder->id + 1, 4, '0', STR_PAD_LEFT)) : 'LO0001';
 
-        // Redirect with success message
-        return redirect()->route('POS.lubricant_order')->with('success', 'Order placed successfully!');
-    } catch (\Exception $e) {
-        // Rollback the transaction in case of an error
-        DB::rollBack();
-        return redirect()->back()->with('error', 'Failed to place order: ' . $e->getMessage());
-    }
-}
-
-
-
-public function storeLubricantOrderItems($orderId, $allIdsString)
-{
-    try {
-        // Split the comma-separated IDs into an array
-        $allIds = explode(',', $allIdsString);
-
-        // Validate IDs against the lubricants table
-        $validIds = DB::table('lubricants')
-            ->whereIn('id', $allIds)
-            ->pluck('id')
-            ->toArray();
-
-        // Insert valid IDs into lubricant_order_items table
-        foreach ($validIds as $lubricantId) {
-            DB::table('lubricant_order_items')->insert([
-                'lubricant_order_id' => $orderId,
-                'lubricant_id' => $lubricantId,
+            // Insert data into the lubricant_orders table
+            $orderId = DB::table('lubricant_orders')->insertGetId([
+                'order_id' => $nextOrderId,
+                'coustomer_id' => $request->customer_id,
+                'order_type' => $request->order_type,
+                'items' => $request->total_items,
+                'all_id' => $request->all_id,
+                'lubricant_discount' => 0, // Default discount
+                'subtotal' => $request->subtotal ?? 0, // Optional subtotal
+                'total_price' => $request->total_price,
+                'paid_amount' => $request->paid_amount,
+                'due_amount' => $request->due_amount,
+                'payment_type' => $request->payment_type,
+                'payment_status' => $request->due_amount > 0 ? 'Pending' : 'Paid',
+                'unit' => $request->unit,
+                'mesurement' => $request->unit,
+                'mesurement_type' => $request->measurement_type,
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
+
+            // Insert data into the lubricant_purchase table
+            DB::table('lubricant_purchase')->insert([
+                'lubricant_orders_id' => $orderId,
+                'total_price' => $request->total_price,
+                'paid_amount' => $request->paid_amount,
+                'due_amount' => $request->due_amount,
+                'payment_type' => $request->payment_type,
+                'payment_status' => $request->due_amount > 0 ? 'Pending' : 'Paid',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            // Commit the transaction
+            DB::commit();
+
+            // Redirect with success message
+            return redirect()->route('POS.lubricant_order')->with('success', 'Order placed successfully!');
+        } catch (\Exception $e) {
+            // Rollback the transaction in case of an error
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to place order: ' . $e->getMessage());
         }
-
-        return response()->json(['message' => 'Lubricant order items processed successfully.']);
-    } catch (\Exception $e) {
-        return response()->json(['error' => 'Failed to process order items: ' . $e->getMessage()], 500);
     }
-}
-
-
-// public function loadProductsByBrand($brandId)
-// {
-//     // Fetch the brand by its ID
-//     $brand = Brand::findOrFail($brandId);
-
-//     // Get products based on brand type
-//     if ($brand->type == 'battery') {
-//         $products = Battery::where('brand_id', $brandId)
-//             ->where('stock_quantity', '>', 0)
-//             ->get();
-//     } elseif ($brand->type == 'lubricant') {
-//         $products = Lubricant::where('brand_id', $brandId)->get();
-//     } else {
-//         $products = collect(); // Return empty collection for unknown types
-//     }
-
-//     // Return the partial view with the fetched products
-//     return view('admin.POS.partials.product-list', compact('products'));
-// }
 
 
 
+    public function storeLubricantOrderItems($orderId, $allIdsString)
+    {
+        try {
+            // Split the comma-separated IDs into an array
+            $allIds = explode(',', $allIdsString);
+
+            // Validate IDs against the lubricants table
+            $validIds = DB::table('lubricants')
+                ->whereIn('id', $allIds)
+                ->pluck('id')
+                ->toArray();
+
+            // Insert valid IDs into lubricant_order_items table
+            foreach ($validIds as $lubricantId) {
+                DB::table('lubricant_order_items')->insert([
+                    'lubricant_order_id' => $orderId,
+                    'lubricant_id' => $lubricantId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
+
+            return response()->json(['message' => 'Lubricant order items processed successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to process order items: ' . $e->getMessage()], 500);
+        }
+    }
+
+
+    // public function loadProductsByBrand($brandId)
+    // {
+    //     // Fetch the brand by its ID
+    //     $brand = Brand::findOrFail($brandId);
+
+    //     // Get products based on brand type
+    //     if ($brand->type == 'battery') {
+    //         $products = Battery::where('brand_id', $brandId)
+    //             ->where('stock_quantity', '>', 0)
+    //             ->get();
+    //     } elseif ($brand->type == 'lubricant') {
+    //         $products = Lubricant::where('brand_id', $brandId)->get();
+    //     } else {
+    //         $products = collect(); // Return empty collection for unknown types
+    //     }
+
+    //     // Return the partial view with the fetched products
+    //     return view('admin.POS.partials.product-list', compact('products'));
+    // }
+
+
+    // Show list of lubricant orders
+    public function batteryOrder()
+    {
+        // // Fetch all lubricant orders along with customer details
+        // $lubricantOrders = DB::table('battery_orders')
+        //     ->join('customers', 'battery_orders.coustomer_id', '=', 'customers.id')
+        //     ->select(
+        //         'lubricant_orders.*',
+        //         'customers.first_name',
+        //         'customers.last_name',
+        //         'customers.phone_number',
+        //         'customers.email'
+        //     )
+        //     ->orderBy('lubricant_orders.id', 'desc')
+        //     ->paginate(15000000);
+
+        $batteryOrders = BatteryOrder::with('customer', 'battery', 'repairBattery', 'oldBattery')->orderBy('created_at', 'desc')->paginate(10000);
+        // Pass data to the view
+        return view('admin.POS.battery_order', compact('batteryOrders'));
+    }
 }

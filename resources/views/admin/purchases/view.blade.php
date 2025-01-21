@@ -71,6 +71,9 @@
                                                             href="{{ route('purchases.purchase-items', $purchase->id) }}"><i
                                                                 class="icon-receipt"></i></a></li>
 
+                                                    <li class="btn btn-sm"><a
+                                                            href="{{ route('purchases.grn', $purchase->id) }}"><i
+                                                                class="icon-printer"></i></a></li>
 
                                                     <form id="deleteForm{{ $purchase->id }}"
                                                         action="{{ route('purchases.destroy', $purchase->id) }}"
