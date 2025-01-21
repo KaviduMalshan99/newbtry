@@ -794,3 +794,7 @@ Route::group(['prefix' => 'profile'], function () {
     Route::get('/', [ProfileDetails::class, 'show'])->name('profile.show');
     Route::post('/update', [ProfileDetails::class, 'update'])->name('profile.update');
 });
+
+
+
+// http://127.0.0.1:8000/adminregister
