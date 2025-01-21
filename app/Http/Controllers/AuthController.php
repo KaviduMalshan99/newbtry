@@ -39,7 +39,7 @@ class AuthController extends Controller
         ]);
 
         // After registration, redirect to login page
-        return redirect()->route('auth.login');
+        return redirect()->route('login');
     }
 
     // Show Login Form
@@ -77,7 +77,7 @@ class AuthController extends Controller
         // Clear session data
         session()->flush();
 
-        return redirect()->route('auth.login'); // Redirect to login page
+        return redirect()->route('login'); // Redirect to login page
     }
 
 }
