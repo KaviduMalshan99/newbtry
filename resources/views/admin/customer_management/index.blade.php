@@ -59,7 +59,7 @@
                                             <form action="{{ route('update.user.type', ['id' => $user->id]) }}" method="POST">
                                                 @csrf
                                                 @method('POST')
-                                                <select name="user_type" class="form-control btn btn-outline-info">
+                                                <select name="user_type" class="form-control btn btn-outline-info float-start">
                                                     <option  value="User" {{ $user->user_type == 'User' ? 'selected' : '' }}>User</option>
                                                     <option value="Cashier" {{ $user->user_type == 'Cashier' ? 'selected' : '' }}>Cashier</option>
                                                     <option value="Admin" {{ $user->user_type == 'Admin' ? 'selected' : '' }}>Admin</option>

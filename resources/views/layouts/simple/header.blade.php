@@ -184,18 +184,21 @@
                         </div>
                     </div>
                     <ul class="profile-dropdown onhover-show-div">
-                        <li><a href="#"><i data-feather="user"></i><span>Account </span></a></li>
+                        
+                        <li><a href="{{ route('profile.show') }}"><i data-feather="user"></i><span>Account </span></a></li>
                         {{-- <li><a href="#"><i data-feather="mail"></i><span>Inbox</span></a></li>
-                        <li><a href="#"><i data-feather="file-text"></i><span>Taskboard</span></a></li>
-                        <li><a href="#"><i data-feather="settings"></i><span>Settings</span></a></li> --}}
-                        <a href="{{ route('logout') }}" 
+                        <li><a href="#"><i data-feather="file-text"></i><span>Taskboard</span></a><a href="#"><i data-feather="settings"></i><span>Settings</span></a></li>
+                        --}}
+                        <li><i data-feather="user"></i><span> <a href="{{ route('logout') }}" 
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 Logout
-                            </a>
+                            </a></span></li>
+                       
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
+                       
 
 
                     </ul>

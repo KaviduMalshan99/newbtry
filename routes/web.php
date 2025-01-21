@@ -783,3 +783,14 @@ Route::prefix('customer_management/index')->group(function () {
     // Route::get('/{id}/edit', [usersDetails::class, 'edit'])->name('customer_management.index');
     // Route::put('/{id}', [usersDetails::class, 'update'])->name('customer_management.index');
     // Route::delete('/{id}', [usersDetails::class, 'destroy'])->name('customer_management.index');
+
+
+
+    // profile  
+
+    use App\Http\Controllers\ProfileDetails;
+
+Route::group(['prefix' => 'profile'], function () {
+    Route::get('/', [ProfileDetails::class, 'show'])->name('profile.show');
+    Route::post('/update', [ProfileDetails::class, 'update'])->name('profile.update');
+});
