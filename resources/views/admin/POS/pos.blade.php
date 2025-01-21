@@ -864,7 +864,7 @@
                         subtotal += quantity * price
                     });
 
-                    subtotal -= discount - oldBatteryDiscount;
+                    subtotal -= (discount + oldBatteryDiscount);
 
                     const formattedSubtotal = formatPrice(subtotal);
                     const formattedFee = formatPrice(fee);
