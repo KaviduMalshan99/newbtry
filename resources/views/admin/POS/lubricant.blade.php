@@ -49,7 +49,7 @@
                                 </style>
 
                                 <div class="row  mx-5 px-5">
-                                
+
                                 <div class="col-sm-3"><a href="{{ route('lubricants.create') }}"><button class="btn btn-pill btn-outline-primary" type="button">New Lubricant</button></a></div>
                                 <div class="col-sm-3"><a href="{{ route('lubricants.index') }}"><button class="btn btn-pill btn-outline-secondary" type="button">View Lubricant</button></a></div>
                                 <div class="col-sm-3"><a href="{{ route('lubricant_purchases.index') }}"><button class="btn btn-pill btn-outline-success" type="button">View All Purchase </button></a></div>
@@ -59,9 +59,9 @@
                                     </button> </a>
                                 </div>
                             </div>
-                                    
-                                        
-                                           
+
+
+
                             </div>
                         </div>
                     </div>
@@ -479,7 +479,7 @@
                                         </div>
 
 
-                                     
+
 
 
 

@@ -350,7 +350,7 @@ class PosController extends Controller
     }
 
 
-    
+
 public function storeOrderLubricant(Request $request)
 {
     // Validate the incoming request
@@ -412,7 +412,7 @@ public function storeOrderLubricant(Request $request)
         DB::commit();
 
         // Redirect with success message
-        return redirect()->back()->with('success', 'Order placed successfully!');
+        return redirect()->route('POS.lubricant_order')->with('success', 'Order placed successfully!');
     } catch (\Exception $e) {
         // Rollback the transaction in case of an error
         DB::rollBack();
@@ -436,7 +436,7 @@ public function storeLubricantOrderItems($orderId, $allIdsString)
 
         // Insert valid IDs into lubricant_order_items table
         foreach ($validIds as $lubricantId) {
-            DB::table('lubricant_order_items')->insert([  
+            DB::table('lubricant_order_items')->insert([
                 'lubricant_order_id' => $orderId,
                 'lubricant_id' => $lubricantId,
                 'created_at' => now(),
