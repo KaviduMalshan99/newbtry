@@ -786,7 +786,7 @@ Route::prefix('customer_management/index')->group(function () {
 
 
 
-    // profile  
+    // profile
 
     use App\Http\Controllers\ProfileDetails;
 
