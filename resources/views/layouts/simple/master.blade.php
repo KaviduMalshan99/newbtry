@@ -171,8 +171,12 @@
     @include('layouts.simple.script')
     <!-- Plugin used-->
     @else
-
     <p>Please <a href="{{ route('login') }}">log in</a> to access your account.</p>
+
+    <script>
+        window.location.href = "{{ route('login') }}";
+    </script>
+
     @endauth
 </body>
 
