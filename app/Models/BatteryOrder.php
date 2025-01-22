@@ -14,6 +14,7 @@ class BatteryOrder extends Model
     protected $fillable = [
         'order_id',
         'customer_id',
+        'prapered_by_user_id',
         'order_type',
         'order_date',
         'items',
@@ -58,5 +59,10 @@ class BatteryOrder extends Model
     public function oldBattery()
     {
         return $this->belongsTo(OldBattery::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'prapered_by_user_id');
     }
 }

@@ -10,6 +10,7 @@ use App\Models\Company;
 use App\Models\Supplier;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class BatteryPurchaseController extends Controller
@@ -70,6 +71,7 @@ class BatteryPurchaseController extends Controller
             'paid_amount' => $paid_amount,
             'due_amount' => $due_amount,
             'payment_type' => $payment_type,
+            'prapered_by_user_id' => Auth::id(),
         ]);
 
         // Process each item in the purchase
@@ -186,6 +188,7 @@ class BatteryPurchaseController extends Controller
                 'due_amount' => $totalPrice - $totalPaid,
                 'payment_type' => $request->payment_type,
                 'payment_status' => $paymentStatus,
+                'prapered_by_user_id' => Auth::id(),
             ]);
 
             // Get existing item IDs

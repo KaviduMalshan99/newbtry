@@ -83,6 +83,7 @@
                                         <th>Battery Type</th>
                                         <th>Battery Condition</th>
                                         <th>Battery Value</th>
+                                        <th>Prepared by</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -95,6 +96,7 @@
                                             <td>{{ $oldBattery->old_battery_type }}</td>
                                             <td>{{ $oldBattery->old_battery_condition }}</td>
                                             <td>RS : {{ $oldBattery->old_battery_value }}</td>
+                                            <td>{{ $oldBattery->user->name }}</ <td>
                                             <td>
                                                 <ul
                                                     class="action d-flex justify-content-center align-items-center gap-1 p-0 m-0">

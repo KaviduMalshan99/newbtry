@@ -10,6 +10,7 @@ use App\Models\OldBattery;
 use App\Models\Replacement;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -221,6 +222,20 @@ class ReplacementController extends Controller
             $customerOrderItems = json_decode($validatedData['customer_order_items'], true);
             $items = json_decode($validatedData['items'], true);
 
+            // Check if items is an array and process each item to remove 'data-name' if it exists
+            if (is_array($items)) {
+                foreach ($items as &$item) {
+                    // Remove the 'data-name' key if it exists
+                    if (isset($item['data-name'])) {
+                        unset($item['data-name']);
+                    }
+                }
+                // Re-encode the items back into JSON
+                $validatedData['items'] = json_encode($items);
+            } else {
+                return response()->json(['error' => 'Invalid items data.'], 400);
+            }
+
             // Insert a new replacement record
             $replacement = Replacement::create([
                 'order_id' => $validatedData['order_id'],
@@ -242,7 +257,8 @@ class ReplacementController extends Controller
                 'old_battery_discount_value' => $validatedData['old_battery_discount_value'],
                 'payment_type' => $validatedData['payment_type'],
                 'payment_status' => $paymentStatus,
-                'refund_payment_status' => $refundStatus
+                'refund_payment_status' => $refundStatus,
+                'prapered_by_user_id' =>  Auth::id(),
             ]);
 
             // Fetch the order

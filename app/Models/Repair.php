@@ -12,6 +12,7 @@ class Repair extends Model
     protected $fillable = [
         'customer_id',
         'repair_battery_id',
+        'prapered_by_user_id',
         'repair_order_start_date',
         'repair_order_end_date',
         'diagnostic_report',
@@ -41,5 +42,10 @@ class Repair extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'prapered_by_user_id');
     }
 }

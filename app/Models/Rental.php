@@ -12,6 +12,7 @@ class Rental extends Model
     protected $fillable = [
         'customer_id',
         'old_battery_id',
+        'prapered_by_user_id',
         'rental_start_date',
         'rental_end_date',
         'actual_return_date',
@@ -54,5 +55,10 @@ class Rental extends Model
         } while (self::where('public_id', $publicId)->exists());
 
         return $publicId;
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'prapered_by_user_id');
     }
 }

@@ -85,6 +85,7 @@
                                         <th>Delivery Status</th>
                                         <th>Repair Status</th>
                                         <th>Payment Status</th>
+                                        <th>Prepared By</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -101,6 +102,7 @@
                                             <td>{{ $repair->delivery_status }}</td>
                                             <td>{{ $repair->repair_status }}</td>
                                             <td>{{ $repair->payment_status }}</td>
+                                            <td>{{ $repair->user->name }}</td>
                                             <td>
                                                 <ul
                                                     class="action d-flex justify-content-center align-items-center gap-1 p-0 m-0">

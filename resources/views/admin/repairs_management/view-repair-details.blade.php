@@ -80,7 +80,7 @@
                                     </div>
 
                                     <div class="col-md-8 mb-4">
-                                        <form id="repairStatusUpdateForm"
+                                        <form id="repairDeliveryStatusUpdateForm"
                                             action="{{ route('repairs.updateDeliveryStatus', $repair->id) }}"
                                             method="POST">
                                             @csrf <!-- Laravel's CSRF protection -->
@@ -100,7 +100,7 @@
 
                                     </div>
                                     <div class="col-md-1 mb-4">
-                                        <button form="repairStatusUpdateForm" type="submit"
+                                        <button form="repairDeliveryStatusUpdateForm" type="submit"
                                             class="btn btn-secondary rounded font-sm mr-5 text-body hover-up">
                                             Apply
                                         </button>

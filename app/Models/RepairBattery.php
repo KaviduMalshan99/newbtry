@@ -12,6 +12,7 @@ class RepairBattery extends Model
     protected $fillable = [
         'type',
         'brand_id',
+        'prapered_by_user_id',
         'model_number',
         'purchase_price',
         'selling_price',
@@ -28,5 +29,10 @@ class RepairBattery extends Model
     public function brand()
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'prapered_by_user_id');
     }
 }

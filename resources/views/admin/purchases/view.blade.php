@@ -8,6 +8,38 @@
 @section('style')
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/datatables.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/datatable-extension.css') }}">
+    <style>
+        .action {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            /* Adjust spacing between buttons */
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        .action .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 30px;
+            height: 30px;
+            padding: 0;
+            border: none;
+            background-color: transparent;
+        }
+
+        .action .btn i {
+            font-size: 16px;
+            /* Adjust icon size */
+        }
+
+        .action form {
+            margin: 0;
+        }
+    </style>
 @endsection
 
 @section('breadcrumb-title')
@@ -49,6 +81,7 @@
                                         <th>Supplier Name</th>
                                         <th>Total Price</th>
                                         <th>Payment Status</th>
+                                        <th>Prepared By</th>
                                         <th>Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -60,6 +93,7 @@
                                             <td>{{ $purchase->supplier->name }}</td>
                                             <td>{{ number_format($purchase->total_price, 2) }}</td>
                                             <td>{{ $purchase->payment_status }}</td>
+                                            <td>{{ $purchase->user->name }}</td>
                                             <td>{{ $purchase->created_at->format('d.m.Y') }}</td>
                                             <td>
                                                 <ul class="action">

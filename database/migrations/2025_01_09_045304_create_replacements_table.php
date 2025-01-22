@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('order_id'); // Foreign Key: Order ID
             $table->unsignedBigInteger('bought_old_battery_id')->nullable(); // Foreign Key: Battery  ID
             $table->unsignedBigInteger('old_battery_id')->nullable(); // Foreign Key: Old Battery ID
+            $table->foreignId('prapered_by_user_id')->constrained('users')->onDelete('cascade');
             $table->enum('replacement_reason', ['Defective', 'Mismatch', 'Warranty Claim']); // Reason for Replacement
             $table->date('replacement_date'); // Date of Replacement
             $table->decimal('bought_old_battery_price', 10, 2)->nullable(); // Price of Old Battery

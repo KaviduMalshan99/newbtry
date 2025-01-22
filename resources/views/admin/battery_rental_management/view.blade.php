@@ -84,6 +84,7 @@
                                         <th>Rental End Date</th>
                                         <th>Payment Status</th>
                                         <th>Battery</th>
+                                        <th>Prepared By</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -100,6 +101,7 @@
                                             <td>{{ $rental->payment_status }}</td>
                                             <td>{{ $rental->oldBattery->isActive ? 'Received' : 'Not Received' }}
                                             </td>
+                                            <td>{{ $rental->user->name }}</td>
                                             <td>
                                                 <ul
                                                     class="action d-flex justify-content-center align-items-center gap-1 p-0 m-0">
