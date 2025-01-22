@@ -261,7 +261,7 @@ class DashboardController extends Controller
         // Calculate cashback (total of discounts)
         $totalCashback = LubricantOrder::whereMonth('created_at', $today->month)
             ->whereYear('created_at', $today->year)
-            ->sum(DB::raw('COALESCE(battery_discount, 0)'));
+            ->sum(DB::raw('COALESCE(lubricant_discount, 0)'));
 
         // Get daily earnings and expenses for the chart
         $dailyData = LubricantOrder::select(

@@ -15,16 +15,24 @@ class LubricantOrder extends Model
      * @var array
      */
     protected $fillable = [
+        'order_id',
+        'customer_id',
         'order_type',
-        'measurement_type',
-        'unit',
-        'total_items',
+        'items',
         'all_id',
+        'lubricant_discount',
+        'subtotal',
         'total_price',
         'paid_amount',
         'due_amount',
         'payment_type',
+        'payment_status',
+        'unit',
+        'measurement',
+        'measurement_type',
     ];
+
+
 
     /**
      * Get the customer associated with the lubricant order.
