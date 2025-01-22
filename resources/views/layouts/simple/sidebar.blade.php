@@ -78,9 +78,11 @@
 
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="8" r="4"></circle>
+                                <path d="M6 20c0-2.21 1.79-4 4-4h4c2.21 0 4 1.79 4 4"></path>
                             </svg>
+                            
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
                             </svg><span>Customers</span></a>
@@ -95,9 +97,12 @@
 
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="8" r="4"></circle>
+                                <path d="M6 20c0-2.21 1.79-4 4-4h4c2.21 0 4 1.79 4 4"></path>
+                                <rect x="3" y="13" width="18" height="7" rx="2" ry="2"></rect>
                             </svg>
+                            
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
                             </svg><span>Supplier</span></a>
@@ -315,9 +320,12 @@
                             </li>
                             <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                                     href="#">
-                                    <svg class="stroke-icon">
-                                        <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-form') }}"></use>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="4" y="7" width="16" height="10" rx="2" ry="2"></rect>
+                                        <line x1="20" y1="12" x2="20" y2="12"></line>
+                                        <path d="M4 8h16"></path>
                                     </svg>
+                                    
                                     <svg class="fill-icon">
                                         <use href="{{ asset('assets/svg/icon-sprite.svg#fill-form') }}"> </use>
                                     </svg><span>Battery</span></a>
@@ -345,9 +353,13 @@
         
                             <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                                     href="#">
-                                    <svg class="stroke-icon">
-                                        <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-table') }}"></use>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="6" y="4" width="12" height="16" rx="2" ry="2"></rect>
+                                        <path d="M12 1v3"></path>
+                                        <circle cx="12" cy="18" r="3"></circle>
+                                        <path d="M9 18h6"></path>
                                     </svg>
+                                    
                                     <svg class="fill-icon">
                                         <use href="{{ asset('assets/svg/icon-sprite.svg#fill-table') }}"></use>
                                     </svg><span>Lubricant</span></a>
@@ -374,9 +386,11 @@
         
                             <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                                     href="#">
-                                    <svg class="stroke-icon">
-                                        <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-table') }}"></use>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="M8 12l4-4l4 4"></path>
                                     </svg>
+                                    
                                     <svg class="fill-icon">
                                         <use href="{{ asset('assets/svg/icon-sprite.svg#fill-table') }}"></use>
                                     </svg><span>Brand</span></a>
