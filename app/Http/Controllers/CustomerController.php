@@ -6,6 +6,7 @@ use App\Models\BatteryOrder;
 use App\Models\Customer;
 use App\Models\Repair;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Log;
 
 class CustomerController extends Controller
@@ -25,6 +26,9 @@ class CustomerController extends Controller
             'address' => 'required|string|max:255',
 
         ]);
+
+        // Add the logged-in user's ID
+        $validated['prapered_by_user_id'] = Auth::id();
 
         // Add purchase history to the data
         // $validated['purchase_history'] = json_encode([
@@ -116,6 +120,7 @@ class CustomerController extends Controller
             'email' => $request->input('email'),
             'phone_number' => $request->input('phone_number'),
             'address' => $request->input('address'),
+            'prapered_by_user_id' => Auth::id(),
         ]);
 
         return redirect()->route('customers.index')->with('success', 'Customer updated successfully.');

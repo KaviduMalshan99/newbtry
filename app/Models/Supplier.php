@@ -9,5 +9,10 @@ class Supplier extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'phone_number', 'email', 'address', 'product_type'];
+    protected $fillable = ['name', 'phone_number', 'email', 'address', 'product_type', 'prapered_by_user_id'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'prapered_by_user_id');
+    }
 }

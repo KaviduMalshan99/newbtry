@@ -16,6 +16,7 @@ class Customer extends Model
      */
     protected $fillable = [
         'first_name',
+        'prapered_by_user_id',
         'last_name',
         'phone_number',
         'email',
@@ -35,5 +36,10 @@ class Customer extends Model
     public function rentals()
     {
         return $this->hasMany(Rental::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'prapered_by_user_id');
     }
 }

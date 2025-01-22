@@ -134,7 +134,8 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <h4>{{ number_format($suppliersCount) }}</h4><span class="f-light">Suppliers</span>
+                                        <h4>{{ number_format($suppliersCount) }}</h4><span class="f-light">Total Supplier
+                                            Count</span>
                                     </div>
                                 </div>
                                 <div class="font-warning f-w-500"><i
@@ -156,8 +157,8 @@
                                             </div>
                                         </div>
                                         <div>
-                                            <h4>{{ number_format($batteryCount) }}</h4><span
-                                                class="f-light">Batteries</span>
+                                            <h4>{{ number_format($batteryCount) }}</h4><span class="f-light">Total Battery
+                                                Count</span>
                                         </div>
                                     </div>
                                     <div class="font-success f-w-500"><i
@@ -176,7 +177,7 @@
 
                                 <div>
                                     <h4 class="mb-1">{{ number_format($batteryOrdersCount) }}</h4><span
-                                        class="f-light">New Battery Orders</span>
+                                        class="f-light">Battery Orders</span>
                                 </div>
                                 <div class="order-chart">
                                     <div id="orderchart"></div>
