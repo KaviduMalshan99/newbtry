@@ -112,9 +112,12 @@
 
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6 2L3 6v13a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V6l-3-4z"></path>
+                                <path d="M3 6h18"></path>
+                                <path d="M16 10a4 4 0 0 1-8 0"></path>
                             </svg>
+                            
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
                             </svg><span>Purchase</span></a>
@@ -129,9 +132,13 @@
 
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 7l-4 4"></path>
+                                <path d="M14.5 2.5a2.121 2.121 0 0 1 3 0l4 4a2.121 2.121 0 0 1 0 3L16 17a2 2 0 0 1-2.83 0L8 11.83a2 2 0 0 1 0-2.83l6.5-6.5z"></path>
+                                <path d="M4 20l1.5-1.5"></path>
+                                <path d="M2 22l1.5-1.5"></path>
                             </svg>
+                            
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
                             </svg><span>Repair</span></a>
@@ -146,9 +153,13 @@
 
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="7" width="16" height="10" rx="2" ry="2"></rect>
+                                <line x1="22" y1="11" x2="22" y2="13"></line>
+                                <path d="M6 10v4"></path>
+                                <path d="M10 10v4"></path>
                             </svg>
+                            
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
                             </svg><span>Old Battery</span></a>
@@ -163,9 +174,14 @@
 
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 10l9-7 9 7"></path>
+                                <path d="M9 21V11h6v10"></path>
+                                <circle cx="16" cy="17" r="2"></circle>
+                                <path d="M18 15l2-2"></path>
+                                <path d="M20 17l-2-2"></path>
                             </svg>
+                            
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
                             </svg><span>Rental</span></a>
@@ -180,9 +196,13 @@
 
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M8 21h8a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2z"></path>
+                                <path d="M8 10V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v5"></path>
+                                <line x1="12" y1="14" x2="12" y2="18"></line>
+                                <line x1="10" y1="16" x2="14" y2="16"></line>
                             </svg>
+                            
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
                             </svg><span>Reports</span></a>
@@ -204,9 +224,14 @@
 
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="#">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="10" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 10V6h10v4"></path>
+                                <line x1="7" y1="6" x2="17" y2="6"></line>
+                                <line x1="9" y1="14" x2="9" y2="16"></line>
+                                <line x1="15" y1="14" x2="15" y2="16"></line>
                             </svg>
+                            
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
                             </svg><span>POS</span></a>
@@ -222,9 +247,17 @@
 
                     <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                             href="{{ route('company.create') }}">
-                            <svg class="stroke-icon">
-                                <use href="{{ asset('assets/svg/icon-sprite.svg#stroke-ecommerce') }}"></use>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="18"></rect>
+                                <rect x="14" y="6" width="7" height="15"></rect>
+                                <line x1="6.5" y1="9" x2="6.5" y2="9"></line>
+                                <line x1="6.5" y1="13" x2="6.5" y2="13"></line>
+                                <line x1="17.5" y1="9" x2="17.5" y2="9"></line>
+                                <line x1="17.5" y1="13" x2="17.5" y2="13"></line>
+                                <line x1="6.5" y1="17" x2="6.5" y2="17"></line>
+                                <line x1="17.5" y1="17" x2="17.5" y2="17"></line>
                             </svg>
+                            
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
                             </svg><span>Company</span></a>
