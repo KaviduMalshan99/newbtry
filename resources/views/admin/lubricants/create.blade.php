@@ -78,6 +78,18 @@
 
         <div class="row">
 
+            <div class="col-sm-6"> <div class="form-group my-2">
+                <label for="purchase_price" class="pb-2">Purchase Price</label>
+                <input type="number" class="form-control" name="purchase_price" required>
+            </div></div>
+
+            <div class="col-sm-6">
+                <div class="form-group my-2">
+                    <label for="sale_price" class="pb-2">Sale Price</label>
+                    <input type="number" class="form-control" name="sale_price" required>
+                </div>
+            </div>
+
             {{-- <div class="col-sm-6">
                 <div class="form-group my-3">
                     <label for="sale_price" class="pb-2">Sale Price</label>
@@ -109,7 +121,7 @@
 
         <div class="row">
             <div class="col-sm-12 ms-4">
-                <div class="form-group my-3">
+                <div class="form-group my-2">
                     <label for="image" class="pb-2">Lubricant Image</label>
                     <input type="file" class="form-control" name="image" required>
                 </div>
