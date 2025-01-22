@@ -26,7 +26,9 @@ use App\Models\OldBattery;
 use App\Models\RepairBattery;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainPosController;
-use App\Http\Controllers\usersDetails;
+use App\Http\Controllers\usersDetails;  
+
+use App\Http\Controllers\LubricantposController;
 
 
 // Redirect to Dashboard if Authenticated, Otherwise Login
@@ -720,6 +722,30 @@ Route::get('/admin/POS/lubricant-order', [LubricantController::class, 'lubricant
 Route::get('/admin/POS/lubricant-bill', [LubricantController::class, 'lubricant_bill'])->name('POS.lubricant_bill');
 
 Route::get('/admin/POS/lubricant-bill/{id}', [LubricantController::class, 'lubricant_bill'])->name('POS.lubricant_bill');
+
+
+
+// change lubricnt  pos
+
+// Route::get('/admin/POS', [LubricantposController::class, 'index'])->name('POS.index');
+
+// Route::get('/admin/POS/lubricant', [LubricantposController::class, 'lubricant'])->name('POS.lubricant');
+
+
+// Route::get('/admin/POS/lubricant-order', [LubricantController::class, 'lubricant_order'])->name('POS.lubricant_order');
+
+Route::get('/admin/POS/lubricant-bill', [LubricantController::class, 'lubricant_bill'])->name('POS.lubricant_bill');
+
+Route::get('/admin/POS/lubricant-bill/{id}', [LubricantController::class, 'lubricant_bill'])->name('POS.lubricant_bill');
+
+
+
+
+// end
+
+
+
+
 
 
 
