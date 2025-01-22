@@ -12,11 +12,11 @@
 @endsection
 
 @section('breadcrumb-title')
-<h3>Bootstrap Basic Tables</h3>
+<h3>Batteries</h3>
 @endsection
 
 @section('breadcrumb-items')
-<li class="breadcrumb-item">Bootstrap Tables</li>
+<li class="breadcrumb-item">Batteries Update</li>
 
 @endsection
 

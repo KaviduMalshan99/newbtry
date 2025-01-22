@@ -1,130 +1,68 @@
+@extends('layouts.simple.master')
+@section('title', 'Add Lubricant')
 
-
-
-
-@section('style')
-<link rel="stylesheet" type="text/css" href="{{ asset('assets/css/vendors/animate.css') }}">
-@endsection
-
-{{-- 
 @section('content')
 <div class="container">
-    <h1>Batteries</h1>
-    <a href="{{ route('batteries.create') }}" class="btn btn-primary mb-3">Add New Battery</a>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Type</th>
-                <th>Brand</th>
-                <th>Model Number</th>
-                <th>Purchase Price</th>
-                <th>Sale Price</th>
-                <th>Stock Quantity</th>
-                <th>Rental Price/Day</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($batteries as $battery)
-            <tr>
-                <td>{{ $battery->id }}</td>
-                <td>{{ $battery->type }}</td>
-                <td>{{ $battery->brand }}</td>
-                <td>{{ $battery->model_number }}</td>
-                <td>{{ $battery->purchase_price }}</td>
-                <td>{{ $battery->sale_price }}</td>
-                <td>{{ $battery->stock_quantity }}</td>
-                <td>{{ $battery->rental_price_per_day }}</td>
-                <td>
-                    <a href="{{ route('batteries.edit', $battery) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ route('batteries.destroy', $battery) }}" method="POST" class="d-inline">
-                        @csrf
-                        @method('DELETE')
-                        <button class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
-@endsection --}}
-
-
-
-@extends('layouts.simple.master')
-@section('title', 'Bootstrap Basic Tables')
-
-@section('css')
-@endsection
-
-@section('style')
-@endsection
-
-@section('breadcrumb-title')
-<h3>Bootstrap Basic Tables</h3>
-@endsection
-
-{{-- @section('breadcrumb-items')
-<li class="breadcrumb-item">Bootstrap Tables</li>
-
-@endsection --}}
-
-@section('content')
- <div class="container-fluid basic_table">
-            <div class="row">
-              <div class="col-sm-12">
-                <div class="card">
-                  
-
-
-                    <div class="container  card-body">
-                        <!-- Form to create or update battery -->
-                        <form action="{{ route('lubricants.store') }}" method="POST">
-                            @csrf
-                            <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" name="name" class="form-control" required>
-                            </div>
-                    
-                            <div class="form-group">
-                                <label for="brand">Brand</label>
-                                <input type="text" name="brand" class="form-control" required>
-                            </div>
-                    
-                            <div class="form-group">
-                                <label for="purchase_price">Purchase Price</label>
-                                <input type="number" name="purchase_price" class="form-control" step="0.01" required>
-                            </div>
-                    
-                            <div class="form-group">
-                                <label for="sale_price">Sale Price</label>
-                                <input type="number" name="sale_price" class="form-control" step="0.01" required>
-                            </div>
-                    
-                            <div class="form-group">
-                                <label for="stock_quantity">Stock Quantity</label>
-                                <input type="number" name="stock_quantity" class="form-control" required>
-                            </div>
-                    
-                            <div class="form-group">
-                                <label for="unit">Unit</label>
-                                <input type="text" name="unit" class="form-control" required>
-                            </div>
-                    
-                            <button type="submit" class="btn btn-success">Create Lubricant</button>
-                        </form>
-                    </div>
-
-
-                </div>
-              </div>
-            </div>
+    <h3 class="my-3 pb-3">Add New Lubricant</h3>
+    <form action="{{ route('lubricants.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <div class="form-group my-3 ">
+            <label for="name" class="pb-2">Lubricant Name</label>
+            <input type="text" class="form-control" name="name" required>
         </div>
-             
-         
-@endsection
 
-@section('script')
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group my-2">
+                    <label for="brand" class="pb-2">Brand</label>
+                    <input type="text" class="form-control" name="brand" required>
+                </div>
+            </div>
+            <div class="col-sm-6"> <div class="form-group my-2">
+                <label for="purchase_price" class="pb-2">Purchase Price</label>
+                <input type="number" class="form-control" name="purchase_price" required>
+            </div></div>
+        </div>
+
+       
+
+        <div class="row">
+            
+            <div class="col-sm-6">
+                <div class="form-group my-3">
+                    <label for="sale_price" class="pb-2">Sale Price</label>
+                    <input type="number" class="form-control" name="sale_price" required>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group my-3">
+                    <label for="stock_quantity" class="pb-2">Stock Quantity</label>
+                    <input type="number" class="form-control" name="stock_quantity" required>
+                </div>
+            </div>
+
+        </div>
+        
+
+        <div class="row">
+            <div class="col-sm-6"><div class="form-group my-3">
+                <label for="type" class="pb-2">Type</label>
+                <input type="text" class="form-control" name="type" required>
+            </div> </div>
+            <div class="col-sm-6"> <div class="form-group my-3">
+                <label for="unit" class="pb-2">Unit</label>
+                <input type="text" class="form-control" name="unit" required>
+            </div> </div>
+        </div>
+        
+    
+       
+        <div class="form-group my-3">
+            <label for="image" class="pb-2">Lubricant Image</label>
+            <input type="file" class="form-control" name="image" required>
+        </div>
+        <button type="submit" class="btn btn-primary my-3">Save</button>
+    </form>
+</div>
 @endsection
