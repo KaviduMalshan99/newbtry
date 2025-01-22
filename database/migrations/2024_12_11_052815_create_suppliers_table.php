@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('suppliers', function (Blueprint $table) {
-            $table->id(); 
-            $table->string('name'); 
-            $table->string('phone_number'); 
-            $table->string('email')->nullable(); 
-            $table->string('address'); 
+            $table->id();
+            $table->foreignId('prapered_by_user_id')->constrained('users')->onDelete('cascade');
+            $table->string('name');
+            $table->string('phone_number');
+            $table->string('email')->nullable();
+            $table->string('address');
             $table->json('product_type');
             $table->timestamps();
         });

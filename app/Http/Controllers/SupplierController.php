@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class SupplierController extends Controller
 {
@@ -39,15 +40,15 @@ class SupplierController extends Controller
             'product_type.*' => 'in:batteries,lubricants', // Validate each value
         ]);
 
-
         // Create a new supplier
-    Supplier::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'phone_number' => $request->phone_number,
-        'address' => $request->address,
-        'product_type' => json_encode($request->product_type), // Store product types as JSON
-    ]);
+        Supplier::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number,
+            'address' => $request->address,
+            'product_type' => json_encode($request->product_type), // Store product types as JSON
+            'prapered_by_user_id' => Auth::id(), // Add the logged-in user's ID
+        ]);
 
         // Redirect with a success message
         return redirect()->route('suppliers.create')->with('success', 'Supplier added successfully!');
@@ -69,7 +70,7 @@ class SupplierController extends Controller
             'phone_number' => 'required|string|max:15|unique:suppliers,phone_number,' . $id,
             'address' => 'required|string|max:255',
             'product_type' => 'required|array', // Expect an array for product types
-        'product_type.*' => 'in:batteries,lubricants', // Validate each value
+            'product_type.*' => 'in:batteries,lubricants', // Validate each value
         ]);
 
         $supplier = Supplier::findOrFail($id);
@@ -79,6 +80,7 @@ class SupplierController extends Controller
             'phone_number' => $request->phone_number,
             'address' => $request->address,
             'product_type' => json_encode($request->product_type), // Store product types as JSON
+            'prapered_by_user_id' => Auth::id(), // Add the logged-in user's ID
         ]);
 
         return redirect()->route('suppliers.show', "view")

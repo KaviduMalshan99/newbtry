@@ -48,6 +48,7 @@
                                         <th>Address</th>
                                         <th>Product Type</th>
                                         <th>Date</th>
+                                        <th>Prapered By</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -65,6 +66,7 @@
                                                 @endforeach
                                             </td>
                                             <td>{{ $supplier->created_at->format('d.m.Y') }}</td>
+                                            <td>{{ $supplier->user->name }}</td>
                                             <td>
                                                 <ul class="action">
                                                     <li class="edit btn btn-sm"> <a

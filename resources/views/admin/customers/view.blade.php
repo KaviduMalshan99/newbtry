@@ -83,6 +83,7 @@
                                         <th>Email</th>
                                         <th>Address</th>
                                         <th>Date</th>
+                                        <th>Prapered By</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -95,6 +96,7 @@
                                             <td>{{ $customer->email ?? 'N/A' }}</td>
                                             <td>{{ $customer->address }}</td>
                                             <td>{{ $customer->created_at->format('d.m.Y') }}</td>
+                                            <td>{{ $customer->user->name }}</td>
                                             <td>
                                                 <ul
                                                     class="action d-flex justify-content-center align-items-center gap-1 p-0 m-0">

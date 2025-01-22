@@ -12,14 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->id(); 
+            $table->id();
+            $table->foreignId('prapered_by_user_id')->constrained('users')->onDelete('cascade');
             $table->string('first_name');
-            $table->string('last_name'); 
-            $table->string('phone_number'); 
-            $table->string('email')->nullable(); 
-            $table->string('address'); 
-            $table->json('purchase_history')->nullable(); 
-            $table->timestamps(); 
+            $table->string('last_name');
+            $table->string('phone_number');
+            $table->string('email')->nullable();
+            $table->string('address');
+            $table->json('purchase_history')->nullable();
+            $table->timestamps();
         });
     }
 
