@@ -17,6 +17,7 @@ class CreateBatteryOrderTable extends Migration
         Schema::create('battery_orders', function (Blueprint $table) {
             $table->id();
             $table->string('order_id')->unique();
+            $table->foreignId('prapered_by_user_id')->constrained('users')->onDelete('cascade');
             $table->unsignedBigInteger('customer_id');
             $table->enum('order_type', ['New Order', 'Old Battery', 'Repair'])->default('New Order');
             $table->date('order_date');

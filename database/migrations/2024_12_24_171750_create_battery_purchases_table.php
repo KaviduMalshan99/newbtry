@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('battery_purchases', function (Blueprint $table) {
             $table->id();
             $table->foreignId('supplier_id')->constrained('suppliers')->onDelete('cascade');
+            $table->foreignId('prapered_by_user_id')->constrained('users')->onDelete('cascade');
             $table->decimal('total_price', 10, 2);
             $table->decimal('paid_amount', 10, 2)->default(0); // New column
             $table->decimal('due_amount', 10, 2)->default(0);  // New column

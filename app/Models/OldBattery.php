@@ -12,6 +12,7 @@ class OldBattery extends Model
     protected $fillable = [
         'battery_order_id',
         'customer_id',
+        'prapered_by_user_id',
         'old_battery_type',
         'old_battery_condition',
         'old_battery_value',
@@ -33,5 +34,10 @@ class OldBattery extends Model
     public function rentals()
     {
         return $this->hasMany(Rental::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'prapered_by_user_id');
     }
 }

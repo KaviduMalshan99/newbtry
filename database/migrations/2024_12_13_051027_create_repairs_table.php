@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id(); // Repair ID
             $table->foreignId('customer_id')->constrained()->cascadeOnDelete(); // Foreign Key to Customers
             $table->foreignId('repair_battery_id')->constrained('repair_batteries')->cascadeOnDelete(); // Foreign Key to Repair Batteries
+            $table->foreignId('prapered_by_user_id')->constrained('users')->onDelete('cascade');
             $table->date('repair_order_start_date');
             $table->date('repair_order_end_date')->nullable();
             $table->text('diagnostic_report')->nullable();

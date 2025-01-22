@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Models\OldBattery;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OldBatteryController extends Controller
 {
@@ -29,6 +30,9 @@ class OldBatteryController extends Controller
             'notes' => 'nullable|string|max:500',
         ]);
 
+        // Add the logged-in user's ID
+        $validatedData['prapered_by_user_id'] = Auth::id();
+
         // Store the data in the database
         $oldBattery = OldBattery::create([
             'customer_id' => $validatedData['customer_id'],
@@ -37,6 +41,7 @@ class OldBatteryController extends Controller
             'old_battery_value' => $validatedData['old_battery_value'],
             'battery_status' => 'Direct', // Assuming 'Direct' as the default value
             'notes' => $validatedData['notes'],
+            'prapered_by_user_id' => $validatedData['prapered_by_user_id'],
         ]);
 
         // Redirect back with a success message
@@ -82,6 +87,7 @@ class OldBatteryController extends Controller
             'old_battery_condition' => $validatedData['old_battery_condition'],
             'old_battery_value' => $validatedData['old_battery_value'],
             'notes' => $validatedData['notes'],
+            'prepared_by_user_id' => Auth::id(), // Update prepared_by_user_id to the current authenticated user's ID
         ]);
 
         // Redirect back with a success message

@@ -9,6 +9,7 @@ use App\Models\Repair;
 use App\Models\RepairBattery;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class RepairController extends Controller
@@ -46,6 +47,8 @@ class RepairController extends Controller
             'purchase_price' => 'nullable|numeric',
         ]);
 
+        $validated['prapered_by_user_id'] = Auth::id();
+
         // Create or find the battery
         $battery = RepairBattery::firstOrCreate([
             'type' => $validatedData['type'],
@@ -56,6 +59,7 @@ class RepairController extends Controller
             'selling_price' => $validatedData['selling_price'] ?? null,
             'purchase_price' => $validatedData['purchase_price'] ?? null,
             'isActive' => true,
+            'prapered_by_user_id' => $validated['prapered_by_user_id'],
         ]);
 
         // Insert the repair record
@@ -67,6 +71,7 @@ class RepairController extends Controller
             'repair_order_end_date' => $validatedData['repair_order_end_date'] ?? null,
             'advance_amount' => $validatedData['advance_amount'],
             'repair_status' => 'In Progress', // Default status
+            'prapered_by_user_id' => $validated['prapered_by_user_id'],
         ]);
 
         // Redirect to a specific page with a success message
@@ -109,6 +114,8 @@ class RepairController extends Controller
             'purchase_price' => 'nullable|numeric',
         ]);
 
+        $validated['prapered_by_user_id'] = Auth::id();
+
         // Update or create the associated battery
         $battery = RepairBattery::updateOrCreate(
             [
@@ -122,6 +129,7 @@ class RepairController extends Controller
                 'stock_quantity' => $validatedData['stock_quantity'] ?? 0,
                 'selling_price' => $validatedData['selling_price'] ?? 0,
                 'purchase_price' => $validatedData['purchase_price'] ?? 0,
+                'prapered_by_user_id' => $validated['prapered_by_user_id'],
             ]
         );
 
@@ -132,6 +140,7 @@ class RepairController extends Controller
             'repair_order_end_date' => $validatedData['repair_order_end_date'] ?? null,
             'diagnostic_report' => $validatedData['diagnostic_report'] ?? null,
             'advance_amount' => $validatedData['advance_amount'],
+            'prapered_by_user_id' => $validated['prapered_by_user_id'],
         ]);
 
         // Redirect with a success message
@@ -157,6 +166,8 @@ class RepairController extends Controller
             'payable_amount' => 'nullable|numeric',
         ]);
 
+        $validated['prapered_by_user_id'] = Auth::id();
+
         $totalPrice = $validatedData['total_cost'];
         $paid_amount = $validatedData['paid_amount'];
         $payable_amount = $validatedData['payable_amount'];
@@ -181,6 +192,7 @@ class RepairController extends Controller
             'due_amount' => $totalPrice - $totalPaid - $validatedData['advance_amount'],
             'payment_type' => $validatedData['payment_type'],
             'payment_status' => $paymentStatus,
+            'prapered_by_user_id' => $validated['prapered_by_user_id'],
         ]);
 
         // Redirect with a success message
@@ -221,10 +233,10 @@ class RepairController extends Controller
 
         // Validate incoming data
         $validatedData = $request->validate([
-            'delivery_status' => 'nullable|string',
+            'repair_delivery_status' => 'nullable|string',
         ]);
         $repair->update([
-            'delivery_status' => $validatedData['delivery_status'],
+            'delivery_status' => $validatedData['repair_delivery_status'],
         ]);
 
         return redirect()->route('repairs.view-repair-details', $id)->with('success', 'Delivery status updated successfully!');

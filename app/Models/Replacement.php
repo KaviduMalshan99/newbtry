@@ -12,6 +12,7 @@ class Replacement extends Model
     protected $fillable = [
         'order_id',
         'bought_old_battery_id',
+        'prapered_by_user_id',
         'old_battery_id',
         'replacement_reason',
         'replacement_date',
@@ -51,5 +52,9 @@ class Replacement extends Model
     public function boughtOldBattery()
     {
         return $this->belongsTo(Battery::class, 'bought_old_battery_id');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'prapered_by_user_id');
     }
 }

@@ -936,6 +936,10 @@
                 const orderDetailsWrappers = document.querySelectorAll(".order-details-wrapper");
                 orderDetailsWrappers.forEach(wrapper => {
                     const batteryId = wrapper.querySelector(".battery-id")?.getAttribute("data-id");
+                    if (!batteryId) {
+                        console.error("Invalid battery_id detected");
+                        return;
+                    }
                     const quantity = wrapper.querySelector(".input-touchspin")?.value || 0;
                     const priceText = wrapper.querySelector(".txt-primary")?.textContent || "0";
                     const price = priceText.replace("RS", "").replace(/,/g, "").trim();

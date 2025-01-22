@@ -48,6 +48,7 @@
                                         <th>Due Amount</th>
                                         <th>Payment Type</th>
                                         <th>Payment Status</th>
+                                        <th>Prepared By</th>
                                         <th>Actions</th>
                                     </tr>
                                 </thead>
@@ -66,6 +67,7 @@
                                             <td>{{ $order->due_amount }}</td>
                                             <td>{{ $order->payment_type }}</td>
                                             <td>{{ $order->payment_status }}</td>
+                                            <td>{{ $order->user->name }}</td>
                                             {{-- Add actions or other columns as needed --}}
                                             <td>
                                                 <div class="row">

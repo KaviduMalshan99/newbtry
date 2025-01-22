@@ -927,6 +927,12 @@
                     if (target.classList.contains("add-btn")) {
                         const productWrapper = target.closest(".our-product-wrapper");
 
+                        // Ensure productWrapper is valid
+                        if (!productWrapper) {
+                            console.error("Product wrapper not found!");
+                            return;
+                        }
+
                         // Extract product details from data attributes
                         const name = productWrapper.getAttribute("data-name");
                         const id = productWrapper.getAttribute("dataId");

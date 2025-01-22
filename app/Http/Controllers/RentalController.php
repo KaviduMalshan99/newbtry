@@ -8,6 +8,7 @@ use App\Models\OldBattery;
 use App\Models\Rental;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RentalController extends Controller
 {
@@ -51,6 +52,7 @@ class RentalController extends Controller
             'payment_status' => $totalCost == ($request->advance_amount ?? 0) ? 'Completed' : 'Pending',
             'total_cost' => $totalCost,
             'notes' => $request->notes,
+            'prapered_by_user_id' =>  Auth::id(),
         ]);
 
         $oldBattery = OldBattery::find($request->old_battery_id);
@@ -99,6 +101,7 @@ class RentalController extends Controller
             'payment_status' => $validatedData['rental_cost'] == $validatedData['advance_amount'] ? 'Completed' : 'Pending',
             'total_cost' => $validatedData['rental_cost'],
             'notes' => $validatedData['notes'],
+            'prapered_by_user_id' =>  Auth::id(),
         ]);
 
         $newOldBattery = OldBattery::find($rental->old_battery_id);
@@ -167,6 +170,7 @@ class RentalController extends Controller
             'paid_amount' => $totalPaid,
             'payment_type' => $validatedData['payment_type'],
             'payment_status' => $paymentStatus,
+            'prapered_by_user_id' =>  Auth::id(),
         ]);
 
         $oldBattery = OldBattery::find($rental->old_battery_id);

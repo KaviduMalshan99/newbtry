@@ -11,6 +11,7 @@ class BatteryPurchase extends Model
 
     protected $fillable = [
         'supplier_id',
+        'prapered_by_user_id',
         'total_price',
         'paid_amount',
         'due_amount',
@@ -27,5 +28,10 @@ class BatteryPurchase extends Model
     public function batteryPurchaseItems()
     {
         return $this->hasMany(BatteryPurchaseItem::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'prapered_by_user_id');
     }
 }

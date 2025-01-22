@@ -13,6 +13,7 @@ use App\Models\RepairBattery;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 use function Laravel\Prompts\alert;
@@ -57,6 +58,7 @@ class PosController extends Controller
             'phone_number' => 'required|string|max:15|unique:customers',
             'email' => 'nullable|email|max:255',
             'address' => 'required|string|max:255',
+            'prapered_by_user_id' =>  Auth::id(),
         ]);
 
         try {
@@ -122,6 +124,7 @@ class PosController extends Controller
             $batteryOrder->payment_type = $validatedData['payment_type'];
             $batteryOrder->order_date = $request->input('order_date', now());
             $batteryOrder->payment_status = $paymentStatus;
+            $batteryOrder->prapered_by_user_id = Auth::id();
 
             // Save the order
             $batteryOrder->save();
@@ -296,6 +299,7 @@ class PosController extends Controller
                 'old_battery_value' => $validated['old_battery_value'],
                 'battery_status' => $request->battery_status ?? 'Replace', // Default to Direct if not provided
                 'notes' => $validated['notes'],
+                'prapered_by_user_id' =>  Auth::id(),
             ]);
 
             // Return a JSON response for success

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('type');
             $table->unsignedBigInteger('brand_id');
+            $table->foreignId('prapered_by_user_id')->constrained('users')->onDelete('cascade');
             $table->string('model_number');
             $table->decimal('purchase_price', 10, 2)->nullable();
             $table->decimal('selling_price', 10, 2)->nullable();

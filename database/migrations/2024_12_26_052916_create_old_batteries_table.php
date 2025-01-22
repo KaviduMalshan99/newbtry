@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('old_batteries', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('prapered_by_user_id')->constrained('users')->onDelete('cascade');
             $table->unsignedBigInteger('battery_order_id')->nullable();
             $table->unsignedBigInteger('customer_id');
             $table->string('old_battery_type');

@@ -267,6 +267,7 @@
 
         <!-- Footer Section -->
         <div class="footer">
+            <p class="prepared-by">Prepared By: {{ $batteryOrder->user->name }}</p>
             <p>Thank you for choosing Premium Battery. We hope you had a pleasant stay!</p>
 
         </div>

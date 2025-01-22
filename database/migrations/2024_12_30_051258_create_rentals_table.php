@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->constrained('customers')->onDelete('cascade'); // Foreign Key to Customers
             $table->foreignId('old_battery_id')->constrained('old_batteries')->onDelete('cascade'); // Foreign Key to Old Batteries
+            $table->foreignId('prapered_by_user_id')->constrained('users')->onDelete('cascade');
             $table->date('rental_start_date');
             $table->date('rental_end_date')->nullable(); // Planned End Date
             $table->date('actual_return_date')->nullable(); // Actual Return Date
