@@ -80,13 +80,13 @@
 
             <div class="col-sm-6"> <div class="form-group my-2">
                 <label for="purchase_price" class="pb-2">Purchase Price</label>
-                <input type="number" class="form-control" name="purchase_price" required>
+                <input type="number" class="form-control" placeholder="Enter Purchase Price" name="purchase_price" required>
             </div></div>
 
             <div class="col-sm-6">
                 <div class="form-group my-2">
                     <label for="sale_price" class="pb-2">Sale Price</label>
-                    <input type="number" class="form-control" name="sale_price" required>
+                    <input type="number" class="form-control" placeholder="Enter  Sale Price " name="sale_price" required>
                 </div>
             </div>
 
