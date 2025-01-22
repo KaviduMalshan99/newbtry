@@ -54,6 +54,9 @@
                                 <button id="replacementBatteryBtn" class="btn btn-pill btn-outline-info" type="button">
                                     Replacement Battery
                                 </button>
+                                <button id="batteryOrdersBtn" class="btn btn-pill btn-outline-warning" type="button">
+                                    All Battery Orders
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -255,7 +258,8 @@
 
 
             <div class="col-xxl-3 col-md-4 customer-sidebar-left">
-                <div class="md-sidebar h-100"><a class="btn btn-primary md-sidebar-toggle" href="javascript:void(0)">Order
+                <div class="md-sidebar h-100"><a class="btn btn-primary md-sidebar-toggle"
+                        href="javascript:void(0)">Order
                         Details</a>
                     <div class="md-sidebar-aside custom-scrollbar responsive-order-details">
                         <div class="card customer-sticky">
@@ -553,6 +557,10 @@
 
             document.getElementById('replacementBatteryBtn').addEventListener('click', function() {
                 window.location.href = "{{ route('replacements.index') }}";
+            });
+
+            document.getElementById('batteryOrdersBtn').addEventListener('click', function() {
+                window.location.href = "{{ route('POS.batteryOrder') }}";
             });
 
             document.getElementById('viewAllBrands').addEventListener('click', function() {

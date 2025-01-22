@@ -61,8 +61,6 @@ Route::middleware('auth')->group(function () {
 // Redirecting after registration, login, and logout actions
 Route::get('/', function () {
     return redirect()->route('login');
-
-
 });
 
 
@@ -616,6 +614,7 @@ Route::get('/admin/POS/batteries', [PosController::class, 'show'])->name('POS.sh
 Route::get('/products-by-brand/{brandId}', [PosController::class, 'loadProductsByBrand'])->name('POS.loadProductsByBrand');
 Route::get('/repair-products-by-brand/{brandId}', [PosController::class, 'loadRepairProductsByBrand'])->name('POS.loadRepairProductsByBrand');
 Route::get('/admin/POS/{batteryOrder}/bill', [PosController::class, 'generateBill'])->name('POS.bill');
+Route::get('/admin/POS/battery-order', [PosController::class, 'batteryOrder'])->name('POS.batteryOrder');
 
 // Define the route for placing an order via POST request
 // Route::post('/admin/POS/place-order', [PosController::class, 'placeOrder'])->name('POS.place');
@@ -777,18 +776,18 @@ Route::prefix('customer_management/index')->group(function () {
 
 
 
- // Route::get('/create', [usersDetails::class, 'create'])->name('customer_management.index');
-    // Route::post('/', [usersDetails::class, 'store'])->name('customer_management.index');
-    // Route::get('/{id}', [usersDetails::class, 'show'])->name('customer_management.index');
-    // Route::get('/{id}/edit', [usersDetails::class, 'edit'])->name('customer_management.index');
-    // Route::put('/{id}', [usersDetails::class, 'update'])->name('customer_management.index');
-    // Route::delete('/{id}', [usersDetails::class, 'destroy'])->name('customer_management.index');
+// Route::get('/create', [usersDetails::class, 'create'])->name('customer_management.index');
+// Route::post('/', [usersDetails::class, 'store'])->name('customer_management.index');
+// Route::get('/{id}', [usersDetails::class, 'show'])->name('customer_management.index');
+// Route::get('/{id}/edit', [usersDetails::class, 'edit'])->name('customer_management.index');
+// Route::put('/{id}', [usersDetails::class, 'update'])->name('customer_management.index');
+// Route::delete('/{id}', [usersDetails::class, 'destroy'])->name('customer_management.index');
 
 
 
-    // profile
+// profile
 
-    use App\Http\Controllers\ProfileDetails;
+use App\Http\Controllers\ProfileDetails;
 
 Route::group(['prefix' => 'profile'], function () {
     Route::get('/', [ProfileDetails::class, 'show'])->name('profile.show');

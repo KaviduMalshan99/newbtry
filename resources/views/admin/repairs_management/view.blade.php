@@ -122,6 +122,12 @@
                                                             <i class="icon-pencil-alt"></i>
                                                         </a>
                                                     </li>
+                                                    <li class="btn btn-sm">
+                                                        <a href="{{ route('repairs.bill', $repair->id) }}"
+                                                            class="text-decoration-none">
+                                                            <i class="icon-printer"></i>
+                                                        </a>
+                                                    </li>
                                                     <li>
                                                         <form id="deleteForm{{ $repair->id }}"
                                                             action="{{ route('repairs.destroy', $repair->id) }}"

@@ -115,10 +115,17 @@
                                                             <i class="icon-receipt"></i>
                                                         </a>
                                                     </li>
+
                                                     <li class="btn btn-sm">
                                                         <a href="{{ route('rentals.completedRental', $rental->id) }}"
                                                             class="text-decoration-none">
                                                             <i class="icon-pencil-alt"></i>
+                                                        </a>
+                                                    </li>
+                                                    <li class="btn btn-sm">
+                                                        <a href="{{ route('rentals.bill', $rental->id) }}"
+                                                            class="text-decoration-none">
+                                                            <i class="icon-printer"></i>
                                                         </a>
                                                     </li>
                                                     <li>

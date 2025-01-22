@@ -110,6 +110,12 @@
                                                             <i class="icon-receipt"></i>
                                                         </a>
                                                     </li>
+                                                    <li class="btn btn-sm">
+                                                        <a href="{{ route('oldBatteries.bill', $oldBattery->id) }}"
+                                                            class="text-decoration-none">
+                                                            <i class="icon-printer"></i>
+                                                        </a>
+                                                    </li>
                                                     <li>
                                                         <form id="deleteForm{{ $oldBattery->id }}"
                                                             action="{{ route('oldBatteries.destroy', $oldBattery->id) }}"
