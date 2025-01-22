@@ -8,7 +8,7 @@
     <h3 class="my-3 pb-3">Add New Lubricant</h3>
     <form action="{{ route('lubricants.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        <div class="form-group my-3 ">
+        <div class="form-group my-2 ">
             <label for="name" class="pb-2">Lubricant Name</label>
             <input type="text" class="form-control" name="name" required>
         </div>
@@ -59,14 +59,14 @@
         <div class="row">
 
             <div class="col-sm-6">
-                <div class="form-group my-3">
+                <div class="form-group my-2">
                     <label for="volume" class="pb-2">Volume</label>
                     <input type="text" class="form-control" name="volume" placeholder="Enter volume (e.g., 50000 ml)" required>
                 </div>
             </div>
 
             <div class="col-sm-6">
-                <div class="form-group my-3">
+                <div class="form-group my-2">
                     <label for="total" class="pb-2">Total Quantity</label>
                     <input type="text" class="form-control" name="total_count" placeholder="Enter total quantity (e.g., 20 bottles, 5 drums)" required>
                 </div>
@@ -121,7 +121,7 @@
 
         <div class="row">
             <div class="col-sm-12 ms-4">
-                <div class="form-group my-2">
+                <div class="form-group ">
                     <label for="image" class="pb-2">Lubricant Image</label>
                     <input type="file" class="form-control" name="image" required>
                 </div>
