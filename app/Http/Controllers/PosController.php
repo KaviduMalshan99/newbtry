@@ -369,17 +369,17 @@ class PosController extends Controller
             'payment_type' => 'required|string',
             'customer_id' => 'nullable|integer',
         ]);
-    
+
         try {
             // Use a database transaction to ensure atomicity
             DB::beginTransaction();
-    
+
             // Generate the order_id (e.g., LO0001, LO0002)
             $latestOrder = DB::table('lubricant_orders')->latest('id')->first();
-            $nextOrderId = $latestOrder 
-                ? ('LO' . str_pad($latestOrder->id + 1, 4, '0', STR_PAD_LEFT)) 
+            $nextOrderId = $latestOrder
+                ? ('LO' . str_pad($latestOrder->id + 1, 4, '0', STR_PAD_LEFT))
                 : 'LO0001';
-    
+
             // Insert data into the lubricant_orders table
             $orderId = DB::table('lubricant_orders')->insertGetId([
                 'order_id' => $nextOrderId,
@@ -400,8 +400,8 @@ class PosController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-            
-    
+
+
             // Insert data into the lubricant_purchase table
             // DB::table('lubricant_purchase')->insert([
             //     'lubricant_orders_id' => $orderId,
@@ -413,28 +413,28 @@ class PosController extends Controller
             //     'created_at' => now(),
             //     'updated_at' => now(),
             // ]);
-    
+
             // Process and store lubricant order items
             // $this->storeLubricantOrderItems($orderId, $validatedData['all_id']);
-    
+
             // Commit the transaction
             DB::commit();
-    
-            return redirect()->back()->with('success', 'Order placed successfully!');
+
+            return redirect()->route('POS.lubricant_order')->with('success', 'Order placed successfully!');
         } catch (\Exception $e) {
             // Rollback the transaction in case of an error
             DB::rollBack();
             return redirect()->back()->with('error', 'Failed to place order: ' . $e->getMessage());
         }
     }
-    
-    
-    
+
+
+
         // public function loadProductsByBrand($brandId)
         // {
         //     // Fetch the brand by its ID
         //     $brand = Brand::findOrFail($brandId);
-    
+
         //     // Get products based on brand type
         //     if ($brand->type == 'battery') {
         //         $products = Battery::where('brand_id', $brandId)
@@ -445,11 +445,11 @@ class PosController extends Controller
         //     } else {
         //         $products = collect(); // Return empty collection for unknown types
         //     }
-    
+
         //     // Return the partial view with the fetched products
         //     return view('admin.POS.partials.product-list', compact('products'));
         // }
-    
-    
-    
+
+
+
 }

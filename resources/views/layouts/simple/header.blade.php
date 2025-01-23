@@ -180,25 +180,25 @@
                     <div class="media profile-media"><img class="b-r-10"
                             src="{{ asset('assets/images/dashboard/profile.png') }}" alt="">
                         <div class="media-body"><span>{{ session('user_name') }}</span>
-                            <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
+                            <p class="mb-0 font-roboto">{{ Auth::user()->user_type }} <i class="middle fa fa-angle-down"></i></p>
                         </div>
                     </div>
                     <ul class="profile-dropdown onhover-show-div">
-                        
+
                         <li><a href="{{ route('profile.show') }}"><i data-feather="user"></i><span>Account </span></a></li>
                         {{-- <li><a href="#"><i data-feather="mail"></i><span>Inbox</span></a></li>
                         <li><a href="#"><i data-feather="file-text"></i><span>Taskboard</span></a><a href="#"><i data-feather="settings"></i><span>Settings</span></a></li>
                         --}}
-                        <li><i data-feather="user"></i><span> <a href="{{ route('logout') }}" 
+                        <li><i data-feather="user"></i><span> <a href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 Logout
                             </a></span></li>
-                       
+
 
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
-                       
+
 
 
                     </ul>

@@ -11,6 +11,34 @@
         </div>
         <nav class="sidebar-main">
             <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
+            
+            
+            
+            @if(Auth::check())
+            @php
+                $userType = Auth::user()->user_type;
+            @endphp
+        
+            @if($userType === 'User')
+                {{-- Do not show anything --}}
+                <p  >Please wait for SuperAdmin to grant permission.</p>
+
+            @elseif(in_array($userType, ['Admin', 'Cashier', 'SuperAdmin']))
+            {{-- Show everything --}}
+            <p id="welcome-message"  class="ps-5">Welcome, {{ $userType }}. You have access to all features.</p>
+            {{-- Add your content here --}}
+          
+            <script>
+                // Hide the welcome message after 10 seconds
+                setTimeout(() => {
+                    const message = document.getElementById('welcome-message');
+                    if (message) {
+                        message.style.display = 'none';
+                    }
+                }, 10000); // 10000 milliseconds = 10 seconds
+            </script>
+        
+
             <div id="sidebar-menu">
                 <ul class="sidebar-links" id="simple-bar">
                     <li class="back-btn"><a href="{{ route('index') }}"><img class="img-fluid"
@@ -82,7 +110,7 @@
                                 <circle cx="12" cy="8" r="4"></circle>
                                 <path d="M6 20c0-2.21 1.79-4 4-4h4c2.21 0 4 1.79 4 4"></path>
                             </svg>
-                            
+
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
                             </svg><span>Customers</span></a>
@@ -102,7 +130,7 @@
                                 <path d="M6 20c0-2.21 1.79-4 4-4h4c2.21 0 4 1.79 4 4"></path>
                                 <rect x="3" y="13" width="18" height="7" rx="2" ry="2"></rect>
                             </svg>
-                            
+
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-user') }}"></use>
                             </svg><span>Supplier</span></a>
@@ -122,7 +150,7 @@
                                 <path d="M3 6h18"></path>
                                 <path d="M16 10a4 4 0 0 1-8 0"></path>
                             </svg>
-                            
+
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
                             </svg><span>Purchase</span></a>
@@ -143,7 +171,7 @@
                                 <path d="M4 20l1.5-1.5"></path>
                                 <path d="M2 22l1.5-1.5"></path>
                             </svg>
-                            
+
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
                             </svg><span>Repair</span></a>
@@ -164,7 +192,7 @@
                                 <path d="M6 10v4"></path>
                                 <path d="M10 10v4"></path>
                             </svg>
-                            
+
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
                             </svg><span>Old Battery</span></a>
@@ -186,7 +214,7 @@
                                 <path d="M18 15l2-2"></path>
                                 <path d="M20 17l-2-2"></path>
                             </svg>
-                            
+
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
                             </svg><span>Rental</span></a>
@@ -207,7 +235,7 @@
                                 <line x1="12" y1="14" x2="12" y2="18"></line>
                                 <line x1="10" y1="16" x2="14" y2="16"></line>
                             </svg>
-                            
+
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
                             </svg><span>Reports</span></a>
@@ -236,7 +264,7 @@
                                 <line x1="9" y1="14" x2="9" y2="16"></line>
                                 <line x1="15" y1="14" x2="15" y2="16"></line>
                             </svg>
-                            
+
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
                             </svg><span>POS</span></a>
@@ -262,7 +290,7 @@
                                 <line x1="6.5" y1="17" x2="6.5" y2="17"></line>
                                 <line x1="17.5" y1="17" x2="17.5" y2="17"></line>
                             </svg>
-                            
+
                             <svg class="fill-icon">
                                 <use href="{{ asset('assets/svg/icon-sprite.svg#fill-ecommerce') }}"></use>
                             </svg><span>Company</span></a>
@@ -325,32 +353,32 @@
                                         <line x1="20" y1="12" x2="20" y2="12"></line>
                                         <path d="M4 8h16"></path>
                                     </svg>
-                                    
+
                                     <svg class="fill-icon">
                                         <use href="{{ asset('assets/svg/icon-sprite.svg#fill-form') }}"> </use>
                                     </svg><span>Battery</span></a>
                                 <ul class="sidebar-submenu">
                                     <li><a class="submenu-title" href="{{ route('batteries.create') }}">Add Battery<span
                                                 class="sub-arrow"><i class="fa fa-angle-right"></i></span></a>
-        
+
                                     </li>
                                     <li><a class="submenu-title" href="{{ route('batteries.index') }}">View Battery<span
                                                 class="sub-arrow"><i class="fa fa-angle-right"></i></span></a>
-        
+
                                     </li>
                                     <li><a class="submenu-title" href="#">Brand<span class="sub-arrow"><i
                                                     class="fa fa-angle-right"></i></span></a>
                                         <ul class="nav-sub-childmenu submenu-content">
                                             <li><a href="{{ route('brand.index') }}">View Brand</a></li>
                                             <li><a href="{{ route('brand.create') }}">Add Brand </a></li>
-        
-        
+
+
                                         </ul>
                                     </li>
                                 </ul>
                             </li>
-        
-        
+
+
                             <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                                     href="#">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -359,49 +387,49 @@
                                         <circle cx="12" cy="18" r="3"></circle>
                                         <path d="M9 18h6"></path>
                                     </svg>
-                                    
+
                                     <svg class="fill-icon">
                                         <use href="{{ asset('assets/svg/icon-sprite.svg#fill-table') }}"></use>
                                     </svg><span>Lubricant</span></a>
                                 <ul class="sidebar-submenu">
                                     <li><a class="submenu-title" href="{{ route('lubricants.create') }}">Add Lubricant<span
                                                 class="sub-arrow"><i class="fa fa-angle-right"></i></span></a>
-        
+
                                     </li>
                                     <li><a class="submenu-title" href="{{ route('lubricants.index') }}"> View Lubricant<span
                                                 class="sub-arrow"><i class="fa fa-angle-right"></i></span></a>
-        
+
                                     </li>
-        
+
                                     <li><a class="submenu-title" href="{{ route('lubricant_purchases.index') }}"> View purchases<span
                                         class="sub-arrow"><i class="fa fa-angle-right"></i></span></a>
-        
+
                                    </li>
-        
+
                                 </ul>
                             </li>
-        
-        
-        
-        
+
+
+
+
                             <li class="sidebar-list"><i class="fa fa-thumb-tack"></i><a class="sidebar-link sidebar-title"
                                     href="#">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="12" cy="12" r="10"></circle>
                                         <path d="M8 12l4-4l4 4"></path>
                                     </svg>
-                                    
+
                                     <svg class="fill-icon">
                                         <use href="{{ asset('assets/svg/icon-sprite.svg#fill-table') }}"></use>
                                     </svg><span>Brand</span></a>
                                 <ul class="sidebar-submenu">
                                     <li><a href="{{ route('brand.index') }}">View Brand</a></li>
                                     <li><a href="{{ route('brand.create') }}">Add Brand </a></li>
-        
+
                                 </ul>
                             </li>
-        
-        
+
+
 
 
                     {{-- <li class="sidebar-main-title">
@@ -816,6 +844,16 @@
 
                 </ul>
             </div>
+
+            @else
+            {{-- Fallback for unexpected user_type --}}
+            <p>Unauthorized access.</p>
+        @endif
+    @else
+        <p>You need to log in to access this page.</p>
+    @endif
+
+
             <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>
         </nav>
     </div>

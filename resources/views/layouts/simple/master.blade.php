@@ -51,7 +51,7 @@
 
 
 
-{{ Auth::user()->name }} {{ Auth::user()->email }}
+{{ Auth::user()->name }}    {{ Auth::user()->email }}
 
 
 
