@@ -16,7 +16,7 @@ class LubricantOrder extends Model
      */
     protected $fillable = [
         'order_id',
-        'customer_id',
+        'coustomer_id',
         'order_type',
         'items',
         'all_id',
