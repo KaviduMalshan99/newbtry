@@ -128,7 +128,7 @@ class RentalController extends Controller
     public function completedRental($id)
     {
         $customers = Customer::all();
-        $paymentTypes = ['Cash', 'Card', 'Bank Transfer'];
+        $paymentTypes = ['Cash', 'Card', 'Bank Transfer', 'Cheque'];
         $rental = Rental::with(['customer', 'oldBattery'])->findOrFail($id);
         $oldBatteries = OldBattery::where('isActive', 1)->get();
 
@@ -144,7 +144,9 @@ class RentalController extends Controller
             'late_return_fee' => 'nullable|numeric|min:0',
             'damage_fee' => 'nullable|numeric|min:0',
             'payable_amount' => 'nullable|numeric|min:0',
-            'payment_type' => 'required|in:Cash,Card,Bank Transfer',
+            'payment_type' => 'required|in:Cash,Card,Bank Transfer,Cheque',
+            'cheque_number' => 'nullable|string',
+            'cheque_date' => 'nullable|date',
         ]);
 
         // Calculate updated values
@@ -171,6 +173,8 @@ class RentalController extends Controller
             'payment_type' => $validatedData['payment_type'],
             'payment_status' => $paymentStatus,
             'prapered_by_user_id' =>  Auth::id(),
+            'cheque_number' => $validatedData['cheque_number'],
+            'cheque_date' => $validatedData['cheque_date'],
         ]);
 
         $oldBattery = OldBattery::find($rental->old_battery_id);

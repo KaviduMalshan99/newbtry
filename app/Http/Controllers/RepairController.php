@@ -91,7 +91,7 @@ class RepairController extends Controller
     {
         $repair = Repair::with(['customer', 'repairBattery'])->findOrFail($id);
         $customers = Customer::all();
-        $paymentTypes = ['Cash', 'Card', 'Bank Transfer'];
+        $paymentTypes = ['Cash', 'Card', 'Bank Transfer', 'Cheque'];
         return view('admin.repairs_management.completed-order', compact('repair', 'customers', 'paymentTypes'));
     }
 
@@ -161,9 +161,11 @@ class RepairController extends Controller
             'delivery_status' => 'required|string',
             'paid_amount' => 'nullable|numeric',
             'due_amount' => 'nullable|numeric',
-            'payment_type' => 'required|in:Cash,Card,Bank Transfer',
+            'payment_type' => 'required|in:Cash,Card,Bank Transfer,Cheque',
             'advance_amount' => 'nullable|numeric',
             'payable_amount' => 'nullable|numeric',
+            'cheque_number' => 'nullable|string',
+            'cheque_date' => 'nullable|date',
         ]);
 
         $validated['prapered_by_user_id'] = Auth::id();
@@ -193,6 +195,8 @@ class RepairController extends Controller
             'payment_type' => $validatedData['payment_type'],
             'payment_status' => $paymentStatus,
             'prapered_by_user_id' => $validated['prapered_by_user_id'],
+            'cheque_number' => $validatedData['cheque_number'],
+            'cheque_date' => $validatedData['cheque_date'],
         ]);
 
         // Redirect with a success message

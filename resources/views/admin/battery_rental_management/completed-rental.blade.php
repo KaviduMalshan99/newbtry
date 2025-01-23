@@ -214,11 +214,28 @@
                             <label for="payment_type" class="form-label">Payment Type</label>
                             <select id="payment_type" name="payment_type" class="form-select" required>
                                 @foreach ($paymentTypes as $paymentType)
-                                    <option value="{{ $paymentType }}">{{ $paymentType }}</option>
+                                    <option value="{{ $paymentType }}"
+                                        {{ $paymentType == $rental->payment_type ? 'selected' : '' }}>{{ $paymentType }}
+                                    </option>
                                 @endforeach
                             </select>
 
                         </div>
+
+                        <div id="cheque_fields" style="display: none;">
+                            <div class="mb-4">
+                                <label for="cheque_number" class="form-label">Cheque Number</label>
+                                <input type="text" id="cheque_number" name="cheque_number" class="form-control"
+                                    placeholder="Enter cheque number" value="{{ $rental->cheque_number }}" />
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="cheque_date" class="form-label">Cheque Date</label>
+                                <input type="date" id="cheque_date" name="cheque_date" class="form-control"
+                                    placeholder="Enter cheque date" value="{{ $rental->cheque_date }}" />
+                            </div>
+                        </div>
+
                         <br>
                         <div class="mb-4">
                             <button type="submit" form="rentalForm" class="btn btn-success col-md-6">Proceed</button>
@@ -231,6 +248,26 @@
     </section>
 
     <script>
+        // Function to handle cheque fields visibility
+        function toggleChequeFields() {
+            const paymentType = document.getElementById('payment_type').value;
+            const chequeFields = document.getElementById('cheque_fields');
+            if (paymentType === 'Cheque') {
+                chequeFields.style.display = 'block';
+            } else {
+                chequeFields.style.display = 'none';
+                // Optionally clear values if hiding
+                document.getElementById('cheque_number').value = '';
+                document.getElementById('cheque_date').value = '';
+            }
+        }
+
+        // Attach change event listener to Payment Type dropdown
+        document.getElementById('payment_type').addEventListener('change', toggleChequeFields);
+
+        // Call function on page load to handle pre-selected value
+        document.addEventListener('DOMContentLoaded', toggleChequeFields);
+
         document.addEventListener('DOMContentLoaded', function() {
             const totalCostInput = document.getElementById('total_cost');
             const totalPriceAfterAdvance = document.getElementById('total_price_after_advance');

@@ -34,7 +34,7 @@ class PosController extends Controller
             ->select('id', 'first_name', 'last_name', 'phone_number')
             ->get();
 
-        $paymentTypes = ['Cash', 'Card', 'Bank Transfer'];
+        $paymentTypes = ['Cash', 'Card', 'Bank Transfer', 'Cheque'];
         $old_battery_conditions = ['Good', 'Average', 'Poor'];
 
         return view('admin.POS.pos', compact('brands', 'batteries', 'lubricants', 'customers', 'paymentTypes', 'old_battery_conditions'));
@@ -91,9 +91,11 @@ class PosController extends Controller
             'due_amount' => 'required|numeric|min:0', // Ensure due_amount is a valid numeric value
             'battery_discount' => 'nullable|numeric|min:0',
             'old_battery_discount_value' => 'nullable|numeric|min:0',
-            'payment_type' => 'required|in:Cash,Card,Bank Transfer', // Ensure the payment type is one of the valid options
+            'payment_type' => 'required|in:Cash,Card,Bank Transfer,Cheque', // Ensure the payment type is one of the valid options
             'order_type' => 'required|in:New Order,Old Battery,Repair', // Ensure the order type is one of the valid options
             'items' => 'required',
+            'cheque_number' => 'nullable|string',
+            'cheque_date' => 'nullable|date',
         ]);
 
         // Calculate payment_status based on business logic
@@ -125,6 +127,12 @@ class PosController extends Controller
             $batteryOrder->order_date = $request->input('order_date', now());
             $batteryOrder->payment_status = $paymentStatus;
             $batteryOrder->prapered_by_user_id = Auth::id();
+
+            if ($validatedData['payment_type'] == 'Cheque') {
+                $batteryOrder->cheque_number = $validatedData['cheque_number'];
+                $batteryOrder->cheque_date = $validatedData['cheque_date'];
+            }
+
 
             // Save the order
             $batteryOrder->save();
@@ -369,17 +377,17 @@ class PosController extends Controller
             'payment_type' => 'required|string',
             'customer_id' => 'nullable|integer',
         ]);
-    
+
         try {
             // Use a database transaction to ensure atomicity
             DB::beginTransaction();
-    
+
             // Generate the order_id (e.g., LO0001, LO0002)
             $latestOrder = DB::table('lubricant_orders')->latest('id')->first();
-            $nextOrderId = $latestOrder 
-                ? ('LO' . str_pad($latestOrder->id + 1, 4, '0', STR_PAD_LEFT)) 
+            $nextOrderId = $latestOrder
+                ? ('LO' . str_pad($latestOrder->id + 1, 4, '0', STR_PAD_LEFT))
                 : 'LO0001';
-    
+
             // Insert data into the lubricant_orders table
             $orderId = DB::table('lubricant_orders')->insertGetId([
                 'order_id' => $nextOrderId,
@@ -400,8 +408,8 @@ class PosController extends Controller
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
-            
-    
+
+
             // Insert data into the lubricant_purchase table
             // DB::table('lubricant_purchase')->insert([
             //     'lubricant_orders_id' => $orderId,
@@ -413,13 +421,13 @@ class PosController extends Controller
             //     'created_at' => now(),
             //     'updated_at' => now(),
             // ]);
-    
+
             // Process and store lubricant order items
             // $this->storeLubricantOrderItems($orderId, $validatedData['all_id']);
-    
+
             // Commit the transaction
             DB::commit();
-    
+
             return redirect()->back()->with('success', 'Order placed successfully!');
         } catch (\Exception $e) {
             // Rollback the transaction in case of an error
@@ -427,29 +435,29 @@ class PosController extends Controller
             return redirect()->back()->with('error', 'Failed to place order: ' . $e->getMessage());
         }
     }
-    
-    
-    
-        // public function loadProductsByBrand($brandId)
-        // {
-        //     // Fetch the brand by its ID
-        //     $brand = Brand::findOrFail($brandId);
-    
-        //     // Get products based on brand type
-        //     if ($brand->type == 'battery') {
-        //         $products = Battery::where('brand_id', $brandId)
-        //             ->where('stock_quantity', '>', 0)
-        //             ->get();
-        //     } elseif ($brand->type == 'lubricant') {
-        //         $products = Lubricant::where('brand_id', $brandId)->get();
-        //     } else {
-        //         $products = collect(); // Return empty collection for unknown types
-        //     }
-    
-        //     // Return the partial view with the fetched products
-        //     return view('admin.POS.partials.product-list', compact('products'));
-        // }
-    
-    
-    
+
+
+
+    // public function loadProductsByBrand($brandId)
+    // {
+    //     // Fetch the brand by its ID
+    //     $brand = Brand::findOrFail($brandId);
+
+    //     // Get products based on brand type
+    //     if ($brand->type == 'battery') {
+    //         $products = Battery::where('brand_id', $brandId)
+    //             ->where('stock_quantity', '>', 0)
+    //             ->get();
+    //     } elseif ($brand->type == 'lubricant') {
+    //         $products = Lubricant::where('brand_id', $brandId)->get();
+    //     } else {
+    //         $products = collect(); // Return empty collection for unknown types
+    //     }
+
+    //     // Return the partial view with the fetched products
+    //     return view('admin.POS.partials.product-list', compact('products'));
+    // }
+
+
+
 }

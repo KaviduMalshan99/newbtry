@@ -31,7 +31,7 @@ class ReplacementController extends Controller
             ->distinct()
             ->get();
 
-        $paymentTypes = ['Cash', 'Card', 'Bank Transfer'];
+        $paymentTypes = ['Cash', 'Card', 'Bank Transfer', 'Cheque'];
         $old_battery_conditions = ['Good', 'Average', 'Poor'];
         $replacementReasons = ['Defective', 'Mismatch', 'Warranty Claim'];
 
@@ -177,12 +177,14 @@ class ReplacementController extends Controller
             'due_amount' => 'required|numeric', // Ensure due_amount is a valid numeric value
             'battery_discount' => 'nullable|numeric|min:0',
             'old_battery_discount_value' => 'nullable|numeric|min:0',
-            'payment_type' => 'required|in:Cash,Card,Bank Transfer', // Ensure the payment type is one of the valid options
+            'payment_type' => 'required|in:Cash,Card,Bank Transfer,Cheque', // Ensure the payment type is one of the valid options
             'items' => 'required',
 
             'replacement_reason' => 'required|in:Defective,Mismatch,Warranty Claim',
             'order_id' => 'required|exists:battery_orders,id',
             'customer_order_items' => 'required',
+            'cheque_number' => 'nullable|string',
+            'cheque_date' => 'nullable|date',
 
 
         ]);
@@ -259,6 +261,8 @@ class ReplacementController extends Controller
                 'payment_status' => $paymentStatus,
                 'refund_payment_status' => $refundStatus,
                 'prapered_by_user_id' =>  Auth::id(),
+                'cheque_number' => $validatedData['cheque_number'] ?? null,
+                'cheque_date' => $validatedData['cheque_date'] ?? null
             ]);
 
             // Fetch the order
