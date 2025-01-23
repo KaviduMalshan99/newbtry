@@ -223,7 +223,7 @@
                             <label for="payment_type" class="form-label">Payment Type</label>
                             <select id="payment_type" name="payment_type" class="form-select" required>
                                 @foreach ($paymentTypes as $paymentType)
-                                    <option value="{{ $paymentType }}">{{ $paymentType }}</option>)
+                                    <option value="{{ $paymentType }}">{{ $paymentType }}</option>
                                 @endforeach
                             </select>
 

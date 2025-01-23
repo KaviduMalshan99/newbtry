@@ -151,9 +151,23 @@
                             <label for="payment_type" class="form-label">Payment Type</label>
                             <select id="payment_type" name="payment_type" class="form-select" required>
                                 @foreach ($paymentTypes as $paymentType)
-                                    <option value="{{ $paymentType }}">{{ $paymentType }}</option>)
+                                    <option value="{{ $paymentType }}">{{ $paymentType }}</option>
                                 @endforeach
                             </select>
+                        </div>
+
+                        <div id="cheque_fields" style="display: none;">
+                            <div class="mb-4">
+                                <label for="cheque_number" class="form-label">Cheque Number</label>
+                                <input type="text" id="cheque_number" name="cheque_number" class="form-control"
+                                    placeholder="Enter cheque number" />
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="cheque_date" class="form-label">Cheque Date</label>
+                                <input type="date" id="cheque_date" name="cheque_date" class="form-control"
+                                    placeholder="Enter cheque date" />
+                            </div>
                         </div>
 
 
@@ -169,6 +183,17 @@
     </section>
 
     <script>
+        document.getElementById('payment_type').addEventListener('change', function() {
+            const chequeFields = document.getElementById('cheque_fields');
+            if (this.value === 'Cheque') {
+                chequeFields.style.display = 'block';
+            } else {
+                chequeFields.style.display = 'none';
+                // Optionally clear the values if hidden
+                document.getElementById('cheque_number').value = '';
+                document.getElementById('cheque_date').value = '';
+            }
+        });
         document.getElementById('addProduct').addEventListener('click', function() {
             const supplierSelect = document.getElementById('supplier_id');
             const batterySelect = document.getElementById('battery_id');

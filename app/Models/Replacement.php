@@ -31,6 +31,8 @@ class Replacement extends Model
         'payment_type',
         'payment_status',
         'refund_payment_status',
+        'cheque_number',
+        'cheque_date',
         'notes',
     ];
 

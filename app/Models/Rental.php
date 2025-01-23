@@ -26,6 +26,8 @@ class Rental extends Model
         'payment_type',
         'payment_status',
         'advance_amount',
+        'cheque_number',
+        'cheque_date',
     ];
 
     // Relationships

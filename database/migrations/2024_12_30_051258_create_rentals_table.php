@@ -26,12 +26,14 @@ return new class extends Migration
             $table->decimal('advance_amount', 10, 2)->default(0);
             $table->decimal('paid_amount', 10, 2)->default(0);
             $table->decimal('due_amount', 10, 2)->default(0);
-            $table->enum('payment_type', ['Cash', 'Card', 'Bank Transfer'])->default('Cash');
+            $table->enum('payment_type', ['Cash', 'Card', 'Bank Transfer', 'Cheque'])->default('Cash');
             $table->enum('payment_status', ['Not Completed', 'Completed', 'Pending'])->default('Pending');
 
             $table->decimal('total_cost', 10, 2)->nullable();
             $table->text('notes')->nullable(); // Optional Notes
             $table->string('public_id', 5)->unique();
+            $table->string('cheque_number', 20)->nullable(); // Cheque Number
+            $table->date('cheque_date')->nullable(); // Cheque Date
             $table->timestamps();
         });
     }

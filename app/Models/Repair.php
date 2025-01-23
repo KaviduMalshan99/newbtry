@@ -28,6 +28,8 @@ class Repair extends Model
         'due_amount',
         'payment_type',
         'payment_status',
+        'cheque_number',
+        'cheque_date',
     ];
 
     protected $casts = [
