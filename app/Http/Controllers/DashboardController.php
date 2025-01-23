@@ -310,15 +310,15 @@ class DashboardController extends Controller
         $startDate = Carbon::now()->subMonths(6);
 
         // Fetch order data
-        $notCompletedPaymentOrders = LubricantOrder::where('order_date', '>=', $startDate)
+        $notCompletedPaymentOrders = LubricantOrder::where('created_at', '>=', $startDate)
             ->where('payment_status', 'Not Completed') // Assuming 'Not Completed' represents canceled orders
             ->count();
 
-        $completedPaymentOrders = LubricantOrder::where('order_date', '>=', $startDate)
+        $completedPaymentOrders = LubricantOrder::where('created_at', '>=', $startDate)
             ->where('payment_status', 'Completed') // Assuming 'Completed' represents delivered orders
             ->count();
 
-        $pendingPaymentOrders = LubricantOrder::where('order_date', '>=', $startDate)
+        $pendingPaymentOrders = LubricantOrder::where('created_at', '>=', $startDate)
             ->where('payment_status', 'Pending') // Assuming 'Pending' represents orders in progress
             ->count();
 
