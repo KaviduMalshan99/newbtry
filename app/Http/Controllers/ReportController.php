@@ -4,11 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Battery;
+use App\Models\BatteryOrder;
 use App\Models\BatteryPurchase;
 use App\Models\Customer;
 use App\Models\Lubricant;
+use App\Models\LubricantOrder;
 use App\Models\Rental;
 use App\Models\Repair;
+use App\Models\Replacement;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 
@@ -74,5 +77,29 @@ class ReportController extends Controller
 
         // Return the view with repairs data
         return view('admin.reports.repair-complete-report', compact('repairs'));
+    }
+
+    public function batteryOrderIndex()
+    {
+        $battery_orders = BatteryOrder::orderBy('updated_at', 'desc')->get();
+
+        // Pass the customers to the view
+        return view('admin.reports.battery-pos-report', compact('battery_orders'));
+    }
+
+    public function lubricantOrderIndex()
+    {
+        $lubricant_orders = LubricantOrder::orderBy('updated_at', 'desc')->get();
+
+        // Pass the customers to the view
+        return view('admin.reports.lubricant-pos-report', compact('lubricant_orders'));
+    }
+
+    public function replacementOrderIndex()
+    {
+        $replacements = Replacement::orderBy('updated_at', 'desc')->get();
+
+        // Pass the customers to the view
+        return view('admin.reports.replacement-report', compact('replacements'));
     }
 }

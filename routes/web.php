@@ -26,7 +26,7 @@ use App\Models\OldBattery;
 use App\Models\RepairBattery;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainPosController;
-use App\Http\Controllers\usersDetails;  
+use App\Http\Controllers\usersDetails;
 
 use App\Http\Controllers\LubricantposController;
 
@@ -518,6 +518,9 @@ Route::prefix('admin/reports')->group(function () {
     Route::get('/rental-report', [ReportController::class, 'RentalIndex'])->name('reports.RentalIndex');
     Route::get('/complete-repair-report', [ReportController::class, 'repairCompleteIndex'])->name('reports.repairCompleteIndex');
     Route::get('/repair-report', [ReportController::class, 'repairIndex'])->name('reports.repairIndex');
+    Route::get('/battery-pos-report', [ReportController::class, 'batteryOrderIndex'])->name('reports.batteryOrderIndex');
+    Route::get('/lubricant-pos-report', [ReportController::class, 'lubricantOrderIndex'])->name('reports.lubricantOrderIndex');
+    Route::get('/replacement-report', [ReportController::class, 'replacementOrderIndex'])->name('reports.replacementOrderIndex');
 });
 
 Route::prefix('dashboard')->group(function () {
