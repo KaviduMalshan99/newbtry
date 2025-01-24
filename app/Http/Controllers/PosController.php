@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Battery;
+use App\Models\BatteryModelNumber;
 use App\Models\BatteryOrder;
 use App\Models\Brand;
 use App\Models\Company;
@@ -186,6 +187,19 @@ class PosController extends Controller
                     // Decrease stock quantity
                     $battery->stock_quantity -= $item['quantity'];
                     $battery->save();
+                }
+
+                // Update the is_active column in battery_model_numbers table
+                foreach ($items as $item) {
+                    if (isset($item['battery_id'])) {
+                        BatteryModelNumber::where('battery_id', $item['battery_id'])
+                            ->where('is_active', 1)
+                            ->limit($item['quantity'])
+                            ->update([
+                                'is_active' => 0, // Set is_active to 0
+                                'battery_order_id' => $batteryOrder->id, // Set battery_order_id to the new order's ID
+                            ]);
+                    }
                 }
             } else if ($validatedData['order_type'] == "Old Battery") {
                 foreach ($items as $item) {

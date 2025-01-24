@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Battery;
+use App\Models\BatteryModelNumber;
 use App\Models\BatteryPurchase;
 use App\Models\BatteryPurchaseItem;
 use App\Models\Company;
@@ -113,6 +114,15 @@ class BatteryPurchaseController extends Controller
                 'quantity' => $quantity,
                 'purchase_price' => $purchasePrice,
             ]);
+
+            // Generate unique model numbers and insert into battery_model_numbers table
+            for ($i = 0; $i < $quantity; $i++) {
+                BatteryModelNumber::create([
+                    'battery_id' => $batteryId,
+                    'battery_purchase_id' => $purchase->id,
+                    'model_number' => uniqid('BM-'), // Generate a unique model number
+                ]);
+            }
         }
 
         $paymentStatus = 'Pending';
@@ -227,8 +237,30 @@ class BatteryPurchaseController extends Controller
                         'supplier_id' => $item['supplier_id'],
                         'battery_id' => $item['battery_id'],
                         'quantity' => $item['quantity'],
-                        'purchase_price' => $item['purchase_price']
                     ]);
+
+                    $existingItem = BatteryPurchaseItem::find($item['id']);
+                    $existingQuantity = $existingItem->quantity;
+
+
+
+                    if ($item['quantity'] > $existingQuantity) {
+                        // Add rows for the additional quantity
+                        $additionalQuantity = $item['quantity'] - $existingQuantity;
+                        for ($i = 0; $i < $additionalQuantity; $i++) {
+                            BatteryModelNumber::create([
+                                'battery_id' => $item['battery_id'],
+                                'model_number' => uniqid('BM-'),
+                            ]);
+                        }
+                    } elseif ($item['quantity'] < $existingQuantity) {
+                        // Remove rows for the reduced quantity
+                        $reducedQuantity = $existingQuantity - $item['quantity'];
+                        BatteryModelNumber::where('battery_id', $item['battery_id'])
+                            ->where('battery_purchase_id', $purchase->id)
+                            ->limit($reducedQuantity)
+                            ->delete();
+                    }
                 } else {
 
                     // Validate the battery exists
@@ -247,6 +279,14 @@ class BatteryPurchaseController extends Controller
                         'quantity' => $item['quantity'],
                         'purchase_price' => $item['purchase_price']
                     ]);
+
+                    for ($i = 0; $i < $item['quantity']; $i++) {
+                        BatteryModelNumber::create([
+                            'battery_id' => $item['battery_id'],
+                            'model_number' => uniqid('BM-'),
+                            'battery_purchase_id' => $purchase->id,
+                        ]);
+                    }
                 }
             }
 
@@ -269,6 +309,12 @@ class BatteryPurchaseController extends Controller
             $purchase = BatteryPurchase::findOrFail($purchaseId);
 
             DB::beginTransaction();
+
+            BatteryModelNumber::where('battery_purchase_id', $purchaseId)
+                ->where('battery_id', $item['battery_id'])
+                ->where('is_active', 1)
+                ->limit($item['quantity'])
+                ->delete();
 
             // Validate the battery exists
             $battery = Battery::find($item['battery_id']);
