@@ -121,7 +121,7 @@
                             <div class="row gx-3">
                                 <div class="col-md-6 mb-4">
                                     <label for="isForSelling" class="pb-0">Is For Selling</label>
-                                    <select name="isForSelling" class="form-select">
+                                    <select name="isForSelling" id="isForSelling" class="form-select">
                                         <option value="0"
                                             {{ $repair->repairBattery->brand_id === 1 ? 'selected' : '' }}>NO
                                         </option>

@@ -25,7 +25,9 @@ class BatteryOrder extends Model
         'paid_amount',
         'due_amount',
         'payment_type',
-        'payment_status'
+        'payment_status',
+        'cheque_number',
+        'cheque_date',
 
     ];
 

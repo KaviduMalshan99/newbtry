@@ -34,7 +34,7 @@ class PosController extends Controller
             ->select('id', 'first_name', 'last_name', 'phone_number')
             ->get();
 
-        $paymentTypes = ['Cash', 'Card', 'Bank Transfer'];
+        $paymentTypes = ['Cash', 'Card', 'Bank Transfer', 'Cheque'];
         $old_battery_conditions = ['Good', 'Average', 'Poor'];
 
         return view('admin.POS.pos', compact('brands', 'batteries', 'lubricants', 'customers', 'paymentTypes', 'old_battery_conditions'));
@@ -91,9 +91,11 @@ class PosController extends Controller
             'due_amount' => 'required|numeric|min:0', // Ensure due_amount is a valid numeric value
             'battery_discount' => 'nullable|numeric|min:0',
             'old_battery_discount_value' => 'nullable|numeric|min:0',
-            'payment_type' => 'required|in:Cash,Card,Bank Transfer', // Ensure the payment type is one of the valid options
+            'payment_type' => 'required|in:Cash,Card,Bank Transfer,Cheque', // Ensure the payment type is one of the valid options
             'order_type' => 'required|in:New Order,Old Battery,Repair', // Ensure the order type is one of the valid options
             'items' => 'required',
+            'cheque_number' => 'nullable|string',
+            'cheque_date' => 'nullable|date',
         ]);
 
         // Calculate payment_status based on business logic
@@ -125,6 +127,12 @@ class PosController extends Controller
             $batteryOrder->order_date = $request->input('order_date', now());
             $batteryOrder->payment_status = $paymentStatus;
             $batteryOrder->prapered_by_user_id = Auth::id();
+
+            if ($validatedData['payment_type'] == 'Cheque') {
+                $batteryOrder->cheque_number = $validatedData['cheque_number'];
+                $batteryOrder->cheque_date = $validatedData['cheque_date'];
+            }
+
 
             // Save the order
             $batteryOrder->save();
@@ -420,7 +428,7 @@ class PosController extends Controller
             // Commit the transaction
             DB::commit();
 
-            return redirect()->route('POS.lubricant_order')->with('success', 'Order placed successfully!');
+            return redirect()->back()->with('success', 'Order placed successfully!');
         } catch (\Exception $e) {
             // Rollback the transaction in case of an error
             DB::rollBack();
@@ -434,7 +442,7 @@ class PosController extends Controller
         // {
         //     // Fetch the brand by its ID
         //     $brand = Brand::findOrFail($brandId);
-
+    
         //     // Get products based on brand type
         //     if ($brand->type == 'battery') {
         //         $products = Battery::where('brand_id', $brandId)

@@ -31,10 +31,12 @@ return new class extends Migration
             $table->decimal('total_price', 10, 2);
             $table->decimal('paid_amount', 10, 2)->default(0); // New column
             $table->decimal('due_amount', 10, 2)->default(0);  // New column
-            $table->enum('payment_type', ['Cash', 'Card', 'Bank Transfer'])->default('Cash'); // Payment Type
+            $table->enum('payment_type', ['Cash', 'Card', 'Bank Transfer', 'Cheque'])->default('Cash'); // Payment Type
             $table->enum('payment_status', ['Not Completed', 'Completed', 'Pending'])->default('Not Completed'); // Payment Status
             $table->enum('refund_payment_status', ['Not Processed', 'Completed'])->default('Not Processed'); // Refund/Payment Status
             $table->text('notes')->nullable(); // Optional Notes
+            $table->string('cheque_number', 20)->nullable(); // Cheque Number
+            $table->date('cheque_date')->nullable(); // Cheque Date
 
             // Foreign Key Constraints
             $table->foreign('order_id')->references('id')->on('battery_orders')->onDelete('cascade');

@@ -35,7 +35,7 @@ class BatteryPurchaseController extends Controller
         // Fetch all batteries
         $batteries = Battery::all();
 
-        $paymentTypes = ['Cash', 'Card', 'Bank Transfer'];
+        $paymentTypes = ['Cash', 'Card', 'Bank Transfer', 'Cheque'];
 
         return view('admin.purchases.add_battery', compact('suppliers', 'batteries', 'paymentTypes'));
     }
@@ -47,8 +47,10 @@ class BatteryPurchaseController extends Controller
             'supplier_id' => 'required|exists:suppliers,id',
             'paid_amount' => 'numeric',
             'due_amount' => 'numeric',
-            'payment_type' => 'required|in:Cash,Card,Bank Transfer',
+            'payment_type' => 'required|in:Cash,Card,Bank Transfer,Cheque',
             'items' => 'required|json', // Items should be a JSON string
+            'cheque_number' => 'nullable|string',
+            'cheque_date' => 'nullable|date',
 
         ]);
 
@@ -64,6 +66,15 @@ class BatteryPurchaseController extends Controller
         $due_amount = $data['due_amount'];
         $payment_type = $data['payment_type'];
 
+        $cheque_number = null;
+        $cheque_date = null;
+
+
+        if ($payment_type === 'Cheque' && $data['cheque_number'] && $data['cheque_date']) {
+            $cheque_number = $data['cheque_number'];
+            $cheque_date = $data['cheque_date'];
+        }
+
         // Create the purchase
         $purchase = BatteryPurchase::create([
             'supplier_id' => $supplierId,
@@ -72,6 +83,8 @@ class BatteryPurchaseController extends Controller
             'due_amount' => $due_amount,
             'payment_type' => $payment_type,
             'prapered_by_user_id' => Auth::id(),
+            'cheque_number' => $cheque_number,
+            'cheque_date' => $cheque_date,
         ]);
 
         // Process each item in the purchase
@@ -150,7 +163,7 @@ class BatteryPurchaseController extends Controller
         // Fetch the required data for the dropdowns
         $suppliers = Supplier::all();
         $batteries = Battery::all();
-        $paymentTypes = ['Cash', 'Card', 'Bank Transfer'];
+        $paymentTypes = ['Cash', 'Card', 'Bank Transfer', 'Cheque'];
 
         // Pass the data to the edit view
         return view('admin.purchases.update_battery', [
@@ -179,6 +192,17 @@ class BatteryPurchaseController extends Controller
             $paymentStatus = 'Not Completed';
         }
 
+        $payment_type = $request->payment_type;
+
+        $cheque_number = null;
+        $cheque_date = null;
+
+
+        if ($payment_type === 'Cheque' && $request->cheque_number && $request->cheque_date) {
+            $cheque_number = $request->cheque_number;
+            $cheque_date = $request->cheque_date;
+        }
+
         DB::beginTransaction();
         try {
             $purchase->update([
@@ -189,6 +213,8 @@ class BatteryPurchaseController extends Controller
                 'payment_type' => $request->payment_type,
                 'payment_status' => $paymentStatus,
                 'prapered_by_user_id' => Auth::id(),
+                'cheque_number' => $cheque_number,
+                'cheque_date' => $cheque_date,
             ]);
 
             // Get existing item IDs
