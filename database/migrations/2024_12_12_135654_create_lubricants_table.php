@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('brand_id');
+            $table->string('model_no')->unique();
             $table->decimal('purchase_price', 10, 2)->nullable();
             $table->decimal('sale_price', 10, 2)->nullable();
             $table->integer('stock_quantity')->nullable();
@@ -30,8 +31,13 @@ return new class extends Migration
     /**
      * Reverse the migrations.
      */
+
+
     public function down()
-    {
-        Schema::dropIfExists('lubricants');
-    }
+{
+    Schema::dropIfExists('lubricants');
+    Schema::table('lubricants', function (Blueprint $table) {
+        $table->dropColumn('model_no');
+    });
+}
 };

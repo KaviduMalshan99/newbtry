@@ -45,10 +45,11 @@
 
             <div class="form-group ">
                 <label for="unit_type" class="py-2">Unit Type</label>
-                <select name="type" class="form-control" required>
+                <select class="form-select" id="type" name="type" required>
+                    <option value="">Select type</option>
                     <option value="Drum">Drum</option>
                     <option value="Bottle">Bottle</option>
-                    <option value="Liter">Liter</option>
+                    <option value="ML-Liter">ML-Liter</option>
                 </select>
             </div>
 

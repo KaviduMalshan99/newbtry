@@ -31,14 +31,14 @@ class LubricantController extends Controller
     {
         // Validate the incoming request
         $validated = $request->validate([
-            'name' => 'required|string|max:255',                // Name of the lubricant
-            'brand_id' => 'required|exists:brands,brand_id',    // Ensure the brand_id exists in the brands table
-            'type' => 'required|string|max:50',                // Lubricant type (e.g., Drum, Bottle)
-            'volume' => 'required|string|max:50',              // Volume of the lubricant
-            'total_count' => 'required|integer|min:0',         // Total quantity (e.g., 20 bottles)
-            'purchase_price' => 'nullable|numeric|min:0',      // Optional purchase price
-            'sale_price' => 'nullable|numeric|min:0',          // Optional sale price
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Optional image file
+            'name' => 'required|string|max:255',
+            'brand_id' => 'required|exists:brands,brand_id',
+            'type' => 'required|string|max:50',
+            'volume' => 'required|string|max:50',
+            'total_count' => 'required|integer|min:0',
+            'purchase_price' => 'nullable|numeric|min:0',
+            'sale_price' => 'nullable|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         // Handle file upload if the image is present
@@ -46,22 +46,40 @@ class LubricantController extends Controller
             $validated['image'] = $request->file('image')->store('lubricants', 'public');
         }
 
-        // Create a new lubricant record
+        // Generate model_no based on type
+        $type = strtolower($validated['type']);
+        $prefix = match ($type) {
+            'drum' => 'D',
+            'bottle' => 'B',
+            'ml-liter' => 'ML',
+            default => 'UNK',
+        };
+
+        // Find the latest model_no for the type
+        $lastModelNo = Lubricant::where('type', $validated['type'])
+            ->orderBy('id', 'desc')
+            ->value('model_no');
+
+        $nextNumber = $lastModelNo ? intval(substr($lastModelNo, strlen($prefix))) + 1 : 1;
+        $validated['model_no'] = $prefix . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
+
+        // Create the new lubricant record
         Lubricant::create([
             'name' => $validated['name'],
             'brand_id' => $validated['brand_id'],
             'type' => $validated['type'],
             'volume' => $validated['volume'],
             'total_count' => $validated['total_count'],
-            'purchase_price' => $validated['purchase_price'] ?? 0, // Default to 0 if null
-            'sale_price' => $validated['sale_price'] ?? 0,         // Default to 0 if null
-            'image' => $validated['image'] ?? null,               // Default to null if no image
+            'purchase_price' => $validated['purchase_price'] ?? 0,
+            'sale_price' => $validated['sale_price'] ?? 0,
+            'image' => $validated['image'] ?? null,
+            'model_no' => $validated['model_no'], // Save the generated model_no
         ]);
 
-        // Redirect with success message
+        // Redirect with a success message
         return redirect()->route('POS.lubricant')->with('success', 'Lubricant created successfully.');
-
     }
+
 
 
     // Show a specific lubricant

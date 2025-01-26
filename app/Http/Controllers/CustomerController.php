@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BatteryModelNumber;
 use App\Models\BatteryOrder;
 use App\Models\Customer;
 use App\Models\Repair;
@@ -78,6 +79,16 @@ class CustomerController extends Controller
                 $items = json_decode($firstDecode, true);
 
                 if (is_array($items)) {
+                    // Attach model numbers to each item
+                    foreach ($items as &$item) {
+                        $modelNumbers = BatteryModelNumber::where('battery_id', $item['battery_id'])
+                            ->where('battery_order_id', $order->id)
+                            ->where('is_active', false)
+                            ->pluck('model_number')
+                            ->toArray();
+
+                        $item['model_numbers'] = $modelNumbers; // Add model numbers to the item
+                    }
                     $validOrders[] = [
                         'order_id' => $order->order_id,
                         'items' => $items,
