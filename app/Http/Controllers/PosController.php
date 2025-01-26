@@ -425,16 +425,17 @@ class PosController extends Controller
 
 
             // Insert data into the lubricant_purchase table
-            // DB::table('lubricant_purchase')->insert([
-            //     'lubricant_orders_id' => $orderId,
-            //     'total_price' => $validatedData['total_price'],
-            //     'paid_amount' => $validatedData['paid_amount'],
-            //     'due_amount' => $validatedData['due_amount'],
-            //     'payment_type' => $validatedData['payment_type'],
-            //     'payment_status' => $validatedData['due_amount'] > 0 ? 'Pending' : 'Paid',
-            //     'created_at' => now(),
-            //     'updated_at' => now(),
-            // ]);
+                DB::table('lubricant_purchase')->insert([
+                   
+                    'total_price' => $validatedData['total_price'],        // Total price of the purchase
+                    'paid_amount' => $validatedData['paid_amount'],        // Amount already paid
+                    'due_amount' => $validatedData['due_amount'],          // Remaining due amount
+                    'payment_type' => $validatedData['payment_type'],      // Payment method (e.g., cash, card)
+                    'payment_status' => $validatedData['due_amount'] > 0 ? 'Pending' : 'Paid', // Mark as Pending or Paid
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
 
             // Process and store lubricant order items
             // $this->storeLubricantOrderItems($orderId, $validatedData['all_id']);
@@ -456,7 +457,7 @@ class PosController extends Controller
         // {
         //     // Fetch the brand by its ID
         //     $brand = Brand::findOrFail($brandId);
-    
+
         //     // Get products based on brand type
         //     if ($brand->type == 'battery') {
         //         $products = Battery::where('brand_id', $brandId)
