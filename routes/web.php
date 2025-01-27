@@ -521,6 +521,7 @@ Route::prefix('admin/reports')->group(function () {
     Route::get('/battery-pos-report', [ReportController::class, 'batteryOrderIndex'])->name('reports.batteryOrderIndex');
     Route::get('/lubricant-pos-report', [ReportController::class, 'lubricantOrderIndex'])->name('reports.lubricantOrderIndex');
     Route::get('/replacement-report', [ReportController::class, 'replacementOrderIndex'])->name('reports.replacementOrderIndex');
+    Route::get('/income-report', [ReportController::class, 'incomeIndex'])->name('reports.incomeIndex');
 });
 
 Route::prefix('dashboard')->group(function () {

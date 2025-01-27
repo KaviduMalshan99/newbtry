@@ -13,6 +13,7 @@ use App\Models\Rental;
 use App\Models\Repair;
 use App\Models\Replacement;
 use App\Models\Supplier;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -101,5 +102,73 @@ class ReportController extends Controller
 
         // Pass the customers to the view
         return view('admin.reports.replacement-report', compact('replacements'));
+    }
+
+    public function incomeIndex(Request $request)
+    {
+        // Set default start and end dates (last 7 days as default)
+        $startDate = $request->input('start_date', Carbon::now()->subDays(7)->format('Y-m-d'));
+        $endDate = $request->input('end_date', Carbon::now()->format('Y-m-d'));
+
+        $startDate = Carbon::parse($startDate)->startOfDay();
+        $endDate = Carbon::parse($endDate)->endOfDay();
+
+        // Fetch battery and lubricant orders within the date range
+        $batteryOrders = BatteryOrder::whereBetween('created_at', [$startDate, $endDate])->get();
+        $lubricantOrders = LubricantOrder::whereBetween('created_at', [$startDate, $endDate])->get();
+
+        // Initialize income details
+        $incomeDetails = [];
+        $totalIncome = 0;
+        $totalDiscount = 0;
+        $totalSubtotal = 0;
+
+        // Loop through each day in the range
+        for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
+            $dailyStart = $date->copy()->startOfDay();
+            $dailyEnd = $date->copy()->endOfDay();
+
+            // Calculate battery income, discount, and subtotal
+            $dailyBatteryOrders = $batteryOrders->whereBetween('created_at', [$dailyStart, $dailyEnd]);
+            $dailyBatterySubtotal = $dailyBatteryOrders->sum('subtotal');
+            $dailyBatteryDiscount = $dailyBatteryOrders->sum(function ($order) {
+                return $order->battery_discount + $order->old_battery_discount_value;
+            });
+            $dailyBatteryIncome = $dailyBatteryOrders->sum('total_price');
+
+            // Calculate lubricant income, discount, and subtotal
+            $dailyLubricantOrders = $lubricantOrders->whereBetween('created_at', [$dailyStart, $dailyEnd]);
+            $dailyLubricantSubtotal = $dailyLubricantOrders->sum('subtotal');
+            $dailyLubricantDiscount = $dailyLubricantOrders->sum('lubricant_discount');
+            $dailyLubricantIncome = $dailyLubricantOrders->sum('total_price');
+
+            // Calculate daily totals
+            $dailySubtotal = $dailyBatterySubtotal + $dailyLubricantSubtotal;
+            $dailyDiscount = $dailyBatteryDiscount + $dailyLubricantDiscount;
+            $dailyTotal = $dailyBatteryIncome + $dailyLubricantIncome;
+
+            $incomeDetails[] = [
+                'date' => $date->toDateString(),
+                'battery_subtotal' => $dailyBatterySubtotal,
+                'lubricant_subtotal' => $dailyLubricantSubtotal,
+                'subtotal' => $dailySubtotal,
+                'battery_discount' => $dailyBatteryDiscount,
+                'lubricant_discount' => $dailyLubricantDiscount,
+                'total_discount' => $dailyDiscount,
+                'total_income' => $dailyTotal,
+            ];
+
+            // Accumulate totals
+            $totalIncome += $dailyTotal;
+            $totalDiscount += $dailyDiscount;
+            $totalSubtotal += $dailySubtotal;
+        }
+
+        return view('admin.reports.income-report', compact('incomeDetails', 'totalIncome', 'totalDiscount', 'totalSubtotal', 'startDate', 'endDate'));
+    }
+
+    public function incomeViewIndex(Request $request)
+    {
+        return view('admin.reports.income-report');
     }
 }
