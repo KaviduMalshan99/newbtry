@@ -239,6 +239,28 @@ class ReplacementController extends Controller
                 return response()->json(['error' => 'Invalid items data.'], 400);
             }
 
+            $replacementReason = $validatedData['replacement_reason'];
+
+            if ($replacementReason === 'Warranty Claim') {
+                // Retrieve the latest battery order for this battery
+                $batteryOrder = BatteryOrder::where('id', $validatedData['order_id'])->first();
+
+                if (!$batteryOrder) {
+                    return redirect()->route('replacements.index')->with('error', 'No purchase record found for this battery.');
+                }
+
+                // Get purchase date and warranty details
+                $purchaseDate = new \DateTime($batteryOrder->order_date);
+                $warrantyMonths = Battery::find($customerOrderItems[0]['battery_id'])->warranty_period; // Assuming BatteryOrder has a relationship with Battery
+                $warrantyEndDate = $purchaseDate->add(new \DateInterval("P{$warrantyMonths}M"));
+
+                // Check if the warranty has expired
+                if (now() > $warrantyEndDate) {
+                    // return back()->withErrors(['replacement_reason' => 'Warranty Claim is not available as the warranty period has expired.']);
+                    return redirect()->route('replacements.index')->with('error', 'Warranty Claim is not available as the warranty period has expired.');
+                }
+            }
+
             // Insert a new replacement record
             $replacement = Replacement::create([
                 'order_id' => $validatedData['order_id'],
