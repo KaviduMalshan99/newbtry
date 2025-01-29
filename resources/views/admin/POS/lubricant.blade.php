@@ -33,6 +33,17 @@
                 <div class="row">
                     <div class="col-xl-12">
 
+                        <div class="row">
+                            <div class="card">
+                                <div class="card-body">
+                                  <div class="row">
+                                    <div class="col-sm-4">1</div>
+                                    <div class="col-sm-4">2</div>
+                                    <div class="col-sm-4">3</div>
+                                  </div>
+                                </div>
+                              </div>
+                        </div>
 
                         <div class="card">
                             <div class="card-header card-no-border">
@@ -108,7 +119,7 @@
                                                 dataId="{{ $lubricant->id }}" data-name="{{ $lubricant->name }}"
                                                 stock_quantity="{{ $lubricant->total_count }}"
                                                 volume="{{ $lubricant->volume }}"
-                                                model_id="{{ $lubricant->model_no }}" 
+                                                model_id="{{ $lubricant->model_no }}"
                                                 data-price="{{ number_format($lubricant->sale_price, 2) }}"
                                                 data-image="{{ asset('storage/' . $lubricant->image) }}">
                                                 <div class="our-product-img">
@@ -442,7 +453,7 @@
                                         </div>
 
 
-                                     
+
 
 
 
@@ -473,7 +484,7 @@
                                         placeholder="Phone Number" readonly>  --}}
 
                                         <input type="hidden" id="customer_id" name="customer_id" class="form-control" placeholder="Customer ID" readonly>
-                                        
+
 
                                         {{-- <input type="hidden" id="customer_id" name="customer_id" class="form-control" placeholder="Customer ID" readonly>
 

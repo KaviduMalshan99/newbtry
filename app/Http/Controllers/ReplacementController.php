@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Battery;
+use App\Models\BatteryModelNumber;
 use App\Models\BatteryOrder;
 use App\Models\Company;
 use App\Models\OldBattery;
@@ -238,6 +239,28 @@ class ReplacementController extends Controller
                 return response()->json(['error' => 'Invalid items data.'], 400);
             }
 
+            $replacementReason = $validatedData['replacement_reason'];
+
+            if ($replacementReason === 'Warranty Claim') {
+                // Retrieve the latest battery order for this battery
+                $batteryOrder = BatteryOrder::where('id', $validatedData['order_id'])->first();
+
+                if (!$batteryOrder) {
+                    return redirect()->route('replacements.index')->with('error', 'No purchase record found for this battery.');
+                }
+
+                // Get purchase date and warranty details
+                $purchaseDate = new \DateTime($batteryOrder->order_date);
+                $warrantyMonths = Battery::find($customerOrderItems[0]['battery_id'])->warranty_period; // Assuming BatteryOrder has a relationship with Battery
+                $warrantyEndDate = $purchaseDate->add(new \DateInterval("P{$warrantyMonths}M"));
+
+                // Check if the warranty has expired
+                if (now() > $warrantyEndDate) {
+                    // return back()->withErrors(['replacement_reason' => 'Warranty Claim is not available as the warranty period has expired.']);
+                    return redirect()->route('replacements.index')->with('error', 'Warranty Claim is not available as the warranty period has expired.');
+                }
+            }
+
             // Insert a new replacement record
             $replacement = Replacement::create([
                 'order_id' => $validatedData['order_id'],
@@ -267,6 +290,19 @@ class ReplacementController extends Controller
 
             // Fetch the order
             $batteryOrder = BatteryOrder::findOrFail($validatedData['order_id']);
+
+            // Update the is_active column in battery_model_numbers table
+            foreach ($items as $item) {
+                if (isset($item['battery_id'])) {
+                    BatteryModelNumber::where('battery_id', $item['battery_id'])
+                        ->where('is_active', 1)
+                        ->limit($item['quantity'])
+                        ->update([
+                            'is_active' => 0, // Set is_active to 0
+                            'battery_order_id' => $batteryOrder->id, // Set battery_order_id to the new order's ID
+                        ]);
+                }
+            }
 
             // Get items to remove from payload
             $itemsToRemove = json_decode($validatedData['customer_order_items'], true);
