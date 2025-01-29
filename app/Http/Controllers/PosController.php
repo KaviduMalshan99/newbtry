@@ -433,29 +433,29 @@ class PosController extends Controller
 
 
 //             // Insert data into the lubricant_purchase table
-// <<<<<<< HEAD
-//                 DB::table('lubricant_purchase')->insert([
-//                     'supplier_id' => $validatedData['supplier_id'], 
-//                     'total_price' => $validatedData['total_price'],        // Total price of the purchase
-//                     'paid_amount' => $validatedData['paid_amount'],        // Amount already paid
-//                     'due_amount' => $validatedData['due_amount'],          // Remaining due amount
-//                     'payment_type' => $validatedData['payment_type'],      // Payment method (e.g., cash, card)
-//                     'payment_status' => $validatedData['due_amount'] > 0 ? 'Pending' : 'Paid', // Mark as Pending or Paid
-//                     'created_at' => now(),
-//                     'updated_at' => now(),
-//                 ]);
-// =======
-//             DB::table('lubricant_purchase')->insert([
 
-//                 'total_price' => $validatedData['total_price'],        // Total price of the purchase
-//                 'paid_amount' => $validatedData['paid_amount'],        // Amount already paid
-//                 'due_amount' => $validatedData['due_amount'],          // Remaining due amount
-//                 'payment_type' => $validatedData['payment_type'],      // Payment method (e.g., cash, card)
-//                 'payment_status' => $validatedData['due_amount'] > 0 ? 'Pending' : 'Paid', // Mark as Pending or Paid
-//                 'created_at' => now(),
-//                 'updated_at' => now(),
-//             ]);
-// >>>>>>> 187db4153c50656f7c2e5c75683f41e2f3f302e0
+                DB::table('lubricant_purchase')->insert([
+                    'supplier_id' => $validatedData['supplier_id'], 
+                    'total_price' => $validatedData['total_price'],        // Total price of the purchase
+                    'paid_amount' => $validatedData['paid_amount'],        // Amount already paid
+                    'due_amount' => $validatedData['due_amount'],          // Remaining due amount
+                    'payment_type' => $validatedData['payment_type'],      // Payment method (e.g., cash, card)
+                    'payment_status' => $validatedData['due_amount'] > 0 ? 'Pending' : 'Paid', // Mark as Pending or Paid
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+            DB::table('lubricant_purchase')->insert([
+
+                'total_price' => $validatedData['total_price'],        // Total price of the purchase
+                'paid_amount' => $validatedData['paid_amount'],        // Amount already paid
+                'due_amount' => $validatedData['due_amount'],          // Remaining due amount
+                'payment_type' => $validatedData['payment_type'],      // Payment method (e.g., cash, card)
+                'payment_status' => $validatedData['due_amount'] > 0 ? 'Pending' : 'Paid', // Mark as Pending or Paid
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
 
 
             // Process and store lubricant order items
