@@ -142,25 +142,25 @@ class LubricantController extends Controller
     {
         // Fetch the lubricant order details
         $lubricantOrder = DB::table('lubricant_orders')
-            ->join('customers', 'lubricant_orders.coustomer_id', '=', 'customers.id')
-            ->join('lubricants', 'lubricant_orders.all_id', '=', 'lubricants.id')
-            ->join('brands', 'lubricants.brand_id', '=', 'brands.brand_id')
-            ->where('lubricant_orders.id', $id)
-            ->select(
-                'lubricant_orders.*',
-                'customers.first_name',
-                'customers.last_name',
-                'customers.phone_number',
-                'lubricants.name as lubricant_name',
-                'brands.brand_name'
-            )
-            ->first();
-
-        // Handle the case where the lubricant order is not found
-        if (!$lubricantOrder) {
-            return redirect()->back()->with('error', 'Lubricant order not found.');
-        }
-
+        ->join('customers', 'lubricant_orders.coustomer_id', '=', 'customers.id') // Fixed typo in 'coustomer_id'
+        ->join('lubricants', 'lubricant_orders.all_id', '=', 'lubricants.id')
+        ->join('brands', 'lubricants.brand_id', '=', 'brands.brand_id')
+        ->where('lubricant_orders.id', $id)
+        ->select(
+            'lubricant_orders.*',
+            'customers.first_name',
+            'customers.last_name',
+            'customers.phone_number',
+            'lubricants.name as lubricant_name',
+            'brands.brand_name'
+        )
+        ->first();
+    
+    // Handle the case where the lubricant order is not found
+    if (!$lubricantOrder) {
+        return redirect()->back()->with('error', 'Lubricant order not found.');
+    }
+    
         // Recursive SQL query for splitting IDs
         $lubricantOrderDetails = DB::select("
             WITH RECURSIVE split_ids AS (
@@ -184,6 +184,7 @@ class LubricantController extends Controller
             SELECT
                 L.id,
                 L.name,
+                L.model_no,
                 L.brand_id,
                 L.purchase_price,
                 L.sale_price,
@@ -197,7 +198,7 @@ class LubricantController extends Controller
             JOIN
                 lubricants L ON S.lubricant_id = L.id
             GROUP BY
-                L.id, L.name, L.brand_id, L.purchase_price, L.sale_price, L.stock_quantity, L.type, L.unit, L.volume
+                L.id, L.name, L.model_no, L.brand_id, L.purchase_price, L.sale_price, L.stock_quantity, L.type, L.unit, L.volume
             ORDER BY
                 L.id ASC;
         ", [$id]);

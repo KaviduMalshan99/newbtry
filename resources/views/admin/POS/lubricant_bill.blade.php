@@ -135,7 +135,7 @@
                     <td>{{ $lubricantOrder->first_name }}</td>
                     <td class="label">Contact:</td>
                     <td>{{ $lubricantOrder->phone_number }}</td>
-                    <td>{{ $lubricantOrder->lubricant_name }}</td>
+                  
                 </tr>
             </table>
         </div>
@@ -155,10 +155,11 @@
                 <tr>
                  
                     <td class="label">Lubricant Name:</td>
-                    <td>{{ $lubricant->name }}</td>
+                    <td>{{$lubricant->model_no }} - {{ $lubricant->name }}</td>
                    
                     <td class="label">Brand:</td>
                     <td>{{ $lubricantOrder->brand_name }}</td>
+                   
                 </tr>
                 @endforeach
                 {{-- <tr>
@@ -170,7 +171,7 @@
                 
                 <tr>
                     <td class="label">Type :</td>
-                    <td>{{ $lubricantOrder->mesurement_type }}</td>
+                    <td>{{ $lubricantOrder->measurement_type }} </td>
                     <td class="label">Quantity:</td>
                     <td>{{ $lubricantOrder->unit }}</td>
                 </tr>

@@ -426,7 +426,7 @@ class PosController extends Controller
 
             // Insert data into the lubricant_purchase table
                 DB::table('lubricant_purchase')->insert([
-                   
+                    'supplier_id' => $validatedData['supplier_id'], 
                     'total_price' => $validatedData['total_price'],        // Total price of the purchase
                     'paid_amount' => $validatedData['paid_amount'],        // Amount already paid
                     'due_amount' => $validatedData['due_amount'],          // Remaining due amount
@@ -443,7 +443,7 @@ class PosController extends Controller
             // Commit the transaction
             DB::commit();
 
-            return redirect()->back()->with('success', 'Order placed successfully!');
+            return redirect()->route('POS.lubricant_order')->with('success', 'Order placed successfully!');
         } catch (\Exception $e) {
             // Rollback the transaction in case of an error
             DB::rollBack();

@@ -108,6 +108,7 @@
                                                 dataId="{{ $lubricant->id }}" data-name="{{ $lubricant->name }}"
                                                 stock_quantity="{{ $lubricant->total_count }}"
                                                 volume="{{ $lubricant->volume }}"
+                                                model_id="{{ $lubricant->model_no }}" 
                                                 data-price="{{ number_format($lubricant->sale_price, 2) }}"
                                                 data-image="{{ asset('storage/' . $lubricant->image) }}">
                                                 <div class="our-product-img">
@@ -472,6 +473,7 @@
                                         placeholder="Phone Number" readonly>  --}}
 
                                         <input type="hidden" id="customer_id" name="customer_id" class="form-control" placeholder="Customer ID" readonly>
+                                        
 
                                         {{-- <input type="hidden" id="customer_id" name="customer_id" class="form-control" placeholder="Customer ID" readonly>
 
@@ -583,6 +585,7 @@
 
                 document.getElementById("stockQuantity").value = stock_quantity;
                 document.getElementById("volumeField").value = volume;
+                document.getElementById("modelField").value = model_id;
 
 
 
@@ -698,6 +701,7 @@
                         const image = productWrapper.getAttribute("data-image");
                         const stock_quantity = productWrapper.getAttribute("stock_quantity");
                         const volume = productWrapper.getAttribute("volume");
+                        const model_id = productWrapper.getAttribute("model_id");
 
 
 
@@ -711,7 +715,7 @@
                     </div>
                     <div class="category-details item-row">
                         <div class="order-details-right">
-                            <span class="text-gray mb-1">Category: <span class="font-dark">Product</span></span>
+                            <span class="text-gray mb-1 data-id="${id}"><span class="font-dark"></span>${model_id}</span>
                             <h6 class="f-14 f-w-500 mb-3 battery-id" data-id="${id}">${name}</h6>
                             <h6 class="f-14 f-w-500 mb-3 " data-id="${id}"> volume : ${volume} ml</h6>
                             <h6 class="f-14 f-w-500 mb-3 " data-id="${id}">Available : ${stock_quantity}</h6>
