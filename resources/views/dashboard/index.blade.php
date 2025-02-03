@@ -89,6 +89,9 @@
                                         class="icon-arrow-up icon-rotate me-1"></i><span>+50%</span></div>
                             </div>
                         </div>
+
+
+                        
                         <div class="col-xl-12">
                             <div class="card widget-1">
                                 <div class="card-body">

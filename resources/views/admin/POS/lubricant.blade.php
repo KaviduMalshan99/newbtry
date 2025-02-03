@@ -29,21 +29,23 @@
     <!-- Container-fluid starts-->
     <div class="container-fluid">
         <div class="row">
+            <div class="row">
+                <div class="card mx-2">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-sm-3"><button type="button" class="btn btn-outline-success">Add New Lubricants</button></div>
+                        <div class="col-sm-3"><button type="button" class="btn btn-outline-secondary">Show All Lubricants</button></div>
+                        <div class="col-sm-3"><button type="button" class="btn btn-outline-info">Lubricant  Orders</button></div>
+                        <div class="col-sm-3"><button type="button" class="btn btn-outline-warning">Secondary</button></div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
             <div class="col-xxl-9 col-xl-8">
                 <div class="row">
                     <div class="col-xl-12">
 
-                        <div class="row">
-                            <div class="card">
-                                <div class="card-body">
-                                  <div class="row">
-                                    <div class="col-sm-4">1</div>
-                                    <div class="col-sm-4">2</div>
-                                    <div class="col-sm-4">3</div>
-                                  </div>
-                                </div>
-                              </div>
-                        </div>
+
 
                         <div class="card">
                             <div class="card-header card-no-border">
@@ -129,8 +131,8 @@
                                                 <div class="our-product-content">
                                                     <h6 class="f-14 f-w-500 pt-2 pb-1">{{ $lubricant->name }}</h6>
                                                     <div class="d-flex justify-content-between align-items-center">
-                                                        <h6 class="txt-primary">RS
-                                                            {{ number_format($lubricant->sale_price, 2) }}</h6>
+                                                        <p class="txt-primary pt-3">RS
+                                                            {{ number_format($lubricant->sale_price, 2) }}</p>
                                                         <div class="add-quantity btn border text-gray f-12 f-w-500">
                                                             <i class="fa fa-minus remove-minus count-decrease"></i>
                                                             <button class="btn add-btn btn-sm p-1  ">Add</button>
@@ -158,8 +160,8 @@
                                             <div class="our-product-content">
                                                 <h6 class="f-14 f-w-500 pt-2 pb-1">{{ $battery->model_name }}</h6>
                                                 <div class="d-flex justify-content-between align-items-center">
-                                                    <h6 class="txt-primary">RS
-                                                        {{ number_format($battery->selling_price, 2) }}</h6>
+                                                    <p class="txt-primary pt-3">RS
+                                                        {{ number_format($battery->selling_price, 2) }}</p>
                                                     <div class="add-quantity btn border text-gray f-12 f-w-500">
                                                         <i class="fa fa-minus remove-minus count-decrease"></i>
                                                         <button class="btn add-btn btn-sm p-1  ">Add</button>
